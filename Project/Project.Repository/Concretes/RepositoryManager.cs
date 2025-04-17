@@ -13,5 +13,10 @@ public class RepositoryManager : IRepositoryManager
         _userRepository = new Lazy<IUserRepository>(() => new UserRepository(_repositoryContext));
     }
 
-    public IUserRepository UserRepository => throw new NotImplementedException();
+    public IUserRepository UserRepository => _userRepository.Value;
+
+    public async Task Save()
+    {
+        await _repositoryContext.SaveChangesAsync();
+    }
 }

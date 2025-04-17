@@ -5,4 +5,5 @@ public interface IRepositoryManager
 {
 
     IUserRepository UserRepository { get; }
+    Task Save();
 }
