@@ -27,7 +27,10 @@ namespace Project.Presentation.Controller;
         public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
             var user = await serviceManager.UserService.GetUserById(id, false);
-            return user != null ? Ok(user) : NotFound("User not found");
+            if(user == null){
+                return NotFound();
+            }
+            return Ok(user);
         }
 
         [HttpPost]
