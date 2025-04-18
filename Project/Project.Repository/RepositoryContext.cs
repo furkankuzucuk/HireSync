@@ -7,7 +7,7 @@ namespace Project.Repository;
 public class RepositoryContext : DbContext
 {
     public RepositoryContext(DbContextOptions options) : base(options) { }
-    public DbSet<User> User { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<Login> Logins { get; set; }
     public DbSet<Job> Jobs { get; set; }
     public DbSet<Department> Departments { get; set; }

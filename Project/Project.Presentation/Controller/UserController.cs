@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Project.Entities;
+using Project.Entities.DataTransferObjects.User;
 using Project.Services.Concretes;
 using Project.Services.Contracts;
 
@@ -34,15 +35,21 @@ namespace Project.Presentation.Controller;
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        public async Task<IActionResult> CreateUser([FromBody] UserDtoInsertion user)
         {
+            if(user is null){
+                return BadRequest("User data is null");
+            }
             var createdUser = await serviceManager.UserService.CreateUser(user);
             return CreatedAtAction(nameof(GetUserById), new { id = createdUser.UserId }, createdUser);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] User user)
+        public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] UserDtoUpdate user)
         {
+            if(user is null){
+                return BadRequest("User data is null");
+            }
             await serviceManager.UserService.UpdateUser(id, user, false);
             return NoContent();
         }

@@ -1,3 +1,6 @@
+using System.Reflection;
+using Project.Services.Mapper;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +10,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile)); // Profilin bulunduğu assembly'i belirtmek
+//builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(Project.Presentation.AssemblyReference).Assembly);
 
@@ -22,6 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.MapControllers();
 
 app.Run();
 

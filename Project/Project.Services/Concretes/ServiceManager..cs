@@ -1,4 +1,5 @@
 
+using AutoMapper;
 using Project.Repository.Contracts;
 using Project.Services.Contracts;
 
@@ -8,12 +9,12 @@ public class ServiceManager : IServiceManager
 {
     private readonly IRepositoryManager repositoryManager;
     private readonly Lazy<IUserService> userService;
-    
+    private readonly IMapper mapper;
 
-    public ServiceManager(IRepositoryManager repositoryManager)
+    public ServiceManager(IRepositoryManager repositoryManager,IMapper mapper)
     {
         this.repositoryManager = repositoryManager;
-        userService = new Lazy<IUserService>(() => new UserService(repositoryManager));
+        userService = new Lazy<IUserService>(() => new UserService(repositoryManager,mapper));
     }
 
     public IUserService UserService => userService.Value;

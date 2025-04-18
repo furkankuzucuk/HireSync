@@ -1,5 +1,7 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Project.Entities;
+using Project.Entities.DataTransferObjects.User;
 using Project.Entities.Exceptions;
 using Project.Repository.Contracts;
 using Project.Services.Contracts;
@@ -9,56 +11,54 @@ namespace Project.Services.Concretes;
 public class UserService : IUserService
 {
     private readonly IRepositoryManager repositoryManager;
-    
-    public UserService(IRepositoryManager repositoryManager){
-        this.repositoryManager = repositoryManager;
-    }
-    public async Task<User> CreateUser(User user)
+    private readonly IMapper _mapper;
+    public UserService(IRepositoryManager manager,IMapper mapper)
     {
-        repositoryManager.UserRepository.CreateUser(user);
-         await repositoryManager.Save();
-         return user;
+        repositoryManager = manager;
+        _mapper = mapper;
+    }
+    public async Task<UserDto> CreateUser(UserDtoInsertion user)
+    {
+        var userEntity = _mapper.Map<User>(user);
+        repositoryManager.UserRepository.CreateUser(userEntity);
+        await repositoryManager.Save();
+        return _mapper.Map<UserDto>(userEntity);
     }
 
     public async Task DeleteOneUser(int id, bool trackChanges)
     {
-        var userEntity = repositoryManager.UserRepository.GetUserById(id,trackChanges).FirstOrDefault();
-
-        if (userEntity == null)
-        {
-        throw new UserNotFoundException(id); // Burada da özel hata fırlatılıyor
+        var userEntity = await repositoryManager.UserRepository.GetUserById(id,trackChanges).FirstOrDefaultAsync();
+        if(userEntity == null){
+            throw new UserNotFoundException(id);
         }
-
         repositoryManager.UserRepository.DeleteUser(userEntity);
         await repositoryManager.Save();
     }
 
-    public async Task<IEnumerable<User>> GetAllUsers(bool trackChanges)
+    public async Task<IEnumerable<UserDto>> GetAllUsers(bool trackChanges)
     {
         var users = await repositoryManager.UserRepository.GetAllUsers(trackChanges).ToListAsync();
-        return users;
+        return _mapper.Map<IEnumerable<UserDto>>(users); 
     }
 
-    public async Task<User> GetUserById(int id, bool trackChanges)
+    public async Task<UserDto> GetUserById(int id, bool trackChanges)
     {
-        var userEntity = await repositoryManager.UserRepository.GetUserById(id,trackChanges).FirstOrDefaultAsync();
+        var userEntity = await repositoryManager.UserRepository.GetUserById(id, trackChanges).FirstOrDefaultAsync();
         if (userEntity == null)
-    {
-        throw new UserNotFoundException(id); // Burada da özel hata fırlatılıyor
-    }
-        return userEntity;
+        {
+            throw new UserNotFoundException(id);
+        }
+        return _mapper.Map<UserDto>(userEntity);
     }
 
-    public async Task UpdateUser(int id, User user, bool trackChanges)
+    public async Task UpdateUser(int id, UserDtoUpdate user, bool trackChanges)
     {
-        var userEntity = await repositoryManager.UserRepository.GetUserById(id,trackChanges).FirstOrDefaultAsync();
-
+        var userEntity = await repositoryManager.UserRepository.GetUserById(id, trackChanges).FirstOrDefaultAsync();
         if (userEntity == null)
-    {
-        throw new UserNotFoundException(id); // Burada da özel hata fırlatılıyor
-    }
-        repositoryManager.UserRepository.UpdateUser(userEntity);
+        {
+            throw new UserNotFoundException(id);
+        }
+        _mapper.Map(user, userEntity);
         await repositoryManager.Save();
-
     }
 }
