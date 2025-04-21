@@ -6,6 +6,10 @@ using Project.Entities.DataTransferObjects.Login;
 using Project.Entities.Exceptions;
 using Project.Repository.Contracts;
 using Project.Services.Contracts;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System.Text;
 
 namespace Project.Services.Concretes;
 
@@ -13,11 +17,13 @@ public class LoginService : ILoginService
 {
     private readonly IRepositoryManager repositoryManager;
     private readonly IMapper mapper;
+    private readonly IConfiguration _configuration;
 
-    public LoginService(IRepositoryManager repositoryManager,IMapper mapper)
+    public LoginService(IRepositoryManager repositoryManager,IMapper mapper,IConfiguration configuration)
     {
         this.repositoryManager = repositoryManager;
         this.mapper = mapper;
+        _configuration = configuration;
     }
     public async Task<LoginDto> CreateLogin(LoginDtoInsertion loginDto)
     {
@@ -49,16 +55,16 @@ public class LoginService : ILoginService
     }
     public async Task<LoginResponseDto> AuthenticateUser(LoginDto loginDto)
         {
-            var user = await repositoryManager.LoginRepository
+            var loginJW = await repositoryManager.LoginRepository
                 .FindByCondition(u => u.UserName == loginDto.UserName && u.Password == loginDto.Password, false)
                 .FirstOrDefaultAsync();
 
-            if (user == null)
+            if (loginJW == null)
                 return null;
 
-            var role = user.Role; // Role bazlı yönlendirme için
+            var role = loginJW.User.RoleName; // Role bazlı yönlendirme için
 
-            var token = GenerateJwtToken(user);
+            var token = GenerateJwtToken(loginJW);
 
             return new LoginResponseDto
             {
@@ -67,13 +73,13 @@ public class LoginService : ILoginService
             };
         }
 
-        private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(Login user)
         {
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Role, user.Role), // Role bilgisi ekleniyor
+                new Claim(ClaimTypes.Role, user.User.RoleName), // Role bilgisi ekleniyor
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));

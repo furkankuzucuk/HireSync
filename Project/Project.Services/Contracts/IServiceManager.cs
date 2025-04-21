@@ -3,6 +3,6 @@ namespace Project.Services.Contracts;
 
 public interface IServiceManager
 {
-    IUserService UserService {get;}
-    
+    IUserService UserService {get; }
+    ILoginService LoginService {get; }
 }
