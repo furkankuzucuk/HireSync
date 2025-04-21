@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.Text;
+using System.Security.Cryptography;
 
 namespace Project.Services.Concretes;
 
@@ -27,12 +28,19 @@ public class LoginService : ILoginService
     }
     public async Task<LoginDto> CreateLogin(LoginDtoInsertion loginDto)
     {
-        
-            var loginEntity = mapper.Map<Login>(loginDto);
-            repositoryManager.LoginRepository.CreateLogin(loginEntity);
-            await repositoryManager.Save();
-            return mapper.Map<LoginDto>(loginEntity);
+            
+        loginDto.Password = HashPassword(loginDto.Password);
+        var loginEntity = mapper.Map<Login>(loginDto);
+        repositoryManager.LoginRepository.CreateLogin(loginEntity);
+        await repositoryManager.Save();
+        return mapper.Map<LoginDto>(loginEntity);
     }
+    private string HashPassword(string password)
+    {
+        using var sha256 = SHA256.Create();
+        var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+        return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+    }   
 
     public async Task<LoginDto> GetLoginById(int id, bool trackChanges)
     {
@@ -55,22 +63,23 @@ public class LoginService : ILoginService
     }
     public async Task<LoginResponseDto> AuthenticateUser(LoginDto loginDto)
         {
-            var loginJW = await repositoryManager.LoginRepository
-                .FindByCondition(u => u.UserName == loginDto.UserName && u.Password == loginDto.Password, false)
-                .FirstOrDefaultAsync();
+                    var loginJW = await repositoryManager.LoginRepository
+                    .FindByCondition(u => u.UserName == loginDto.UserName && u.Password == loginDto.Password, false)
+                    .Include(u => u.User) // User bilgisini include etmeyi unutmayın
+                    .FirstOrDefaultAsync();
 
-            if (loginJW == null)
-                return null;
+                    if (loginJW == null || loginJW.User == null)
+                        return null;
 
-            var role = loginJW.User.RoleName; // Role bazlı yönlendirme için
+                    var role = loginJW.User.RoleName;
 
-            var token = GenerateJwtToken(loginJW);
+                    var token = GenerateJwtToken(loginJW);
 
-            return new LoginResponseDto
-            {
-                Token = token,
-                Role = role
-            };
+                    return new LoginResponseDto
+                        {
+                            Token = token,
+                            Role = role
+                        };
         }
 
         private string GenerateJwtToken(Login user)
