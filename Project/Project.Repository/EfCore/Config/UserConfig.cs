@@ -20,6 +20,7 @@ public class UserConfig : IEntityTypeConfiguration<User>
                 Phone ="5553330278",
                 Address = "New York",
                 Gender = "Male",
+                RoleName = "Admin",
                 JobId = 1,
                 Salary = 60000
             },
@@ -33,6 +34,7 @@ public class UserConfig : IEntityTypeConfiguration<User>
                 Phone = "5553330279",
                 Address = "Los Angeles",
                 Gender = "Female",
+                RoleName = "Worker",
                 JobId = 2,
                 Salary = 55000
             }

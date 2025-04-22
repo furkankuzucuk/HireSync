@@ -10,6 +10,7 @@ public class User{
     public string Address { get; set; }
     public DateTime Birthday { get; set; }
     public decimal Salary  { get; set; }
+    public string RoleName {get; set;}
 
     public int JobId { get; set; } 
     public Job Job { get; set; } //JobId nin Jobs sınıfından geldiğini belirlemek için 
