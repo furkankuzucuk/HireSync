@@ -1,6 +1,7 @@
 
 using AutoMapper;
 using Project.Entities;
+using Project.Entities.DataTransferObjects.Job;
 using Project.Entities.DataTransferObjects.Login;
 using Project.Entities.DataTransferObjects.User;
 
@@ -17,6 +18,11 @@ public class MappingProfile : Profile
     CreateMap<Login,LoginDto>().ReverseMap();
     CreateMap<LoginDtoInsertion,Login>().ReverseMap();
     CreateMap<LoginDtoUpdate,Login>().ReverseMap();
+
+    CreateMap<Job, JobDto>().ReverseMap();
+    CreateMap<JobInsertDto, Job>().ReverseMap();
+    CreateMap<JobUpdateDto, Job>().ReverseMap();
+
     }
 
 }
