@@ -59,7 +59,7 @@ namespace Project.Presentation.Controller
 
         // POST api/login/authenticate (Kullanıcı giriş yapacak)
         [HttpPost("authenticate")]
-        public async Task<IActionResult> AuthenticateUser([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> AuthenticateUser([FromBody] LoginAuthenticationDto loginDto)
         {
             if (loginDto == null)
             {

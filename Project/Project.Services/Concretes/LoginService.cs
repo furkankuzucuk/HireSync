@@ -61,7 +61,7 @@ public class LoginService : ILoginService
         await repositoryManager.Save();
 
     }
-    public async Task<LoginResponseDto> AuthenticateUser(LoginDto loginDto)
+    public async Task<LoginResponseDto> AuthenticateUser(LoginAuthenticationDto loginDto)
         {
                     var loginJW = await repositoryManager.LoginRepository
                     .FindByCondition(u => u.UserName == loginDto.UserName && u.Password == loginDto.Password, false)
