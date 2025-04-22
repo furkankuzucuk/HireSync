@@ -1,50 +1,58 @@
-// src/pages/LoginPage.tsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { login } from '../services/LoginService';
+import React, { useState } from "react";
+import '../css/LoginPage.css';  // CSS dosyasını import et
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [email, setEmail] = useState<string>(""); // E-posta state
+  const [password, setPassword] = useState<string>(""); // Şifre state
+  const [errorMessage, setErrorMessage] = useState<string>(""); // Hata mesajı state
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    try {
-      const response = await login(email, password);
-      if (response.role === 'admin') {
-        // Token gibi bilgileri burada saklayabilirsin
-        navigate('/admin-dashboard');
-      } else {
-        setError('Yetkisiz giriş');
-      }
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Sunucu hatası');
+    if (email === "" || password === "") {
+      setErrorMessage("Lütfen tüm alanları doldurun.");
+    } else {
+      setErrorMessage("");
+      // Burada API çağrısı yapılabilir veya giriş işlemi gerçekleştirilebilir
+      alert("Giriş başarılı!");
     }
   };
 
+  function api(){
+    
+  }
   return (
-    <div style={{ textAlign: 'center', marginTop: '10%' }}>
+    <div className="login-container">
+      <h2>Giriş Yap</h2>
+      {errorMessage && <p className="error">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
-        <h2>Giriş Yap</h2>
-        <input
-          type="text"
-          placeholder="E-posta"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        /><br /><br />
-        <input
-          type="password"
-          placeholder="Şifre"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        /><br /><br />
+        <div>
+          <label htmlFor="email">E-posta:</label>
+          <input
+            id="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="E-posta adresinizi girin"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Şifre:</label>
+          <input
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Şifrenizi girin"
+            required
+          />
+        </div>
         <button type="submit">Giriş Yap</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
+      <div className="footer-links">
+        <a href="/forgot-password">Şifrenizi Unuttunuz?</a> | 
+        <a href="/register">Kayıt Ol</a>
+      </div>
     </div>
   );
 };
