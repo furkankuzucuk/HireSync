@@ -1,34 +1,43 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/AdminDashboard';
 import WorkerDashboard from './pages/WorkerDashboard';
 import CandidateDashboard from './pages/CandidateDashboard';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 const App = () => {
-  const [role, setRole] = useState<string | null>(null); // Kullanıcı rolünü sakla
+  const [role, setRole] = useState<string | null>(null);
 
   const handleLoginSuccess = (role: string) => {
-    setRole(role); // Giriş başarılıysa rolü kaydet
+    setRole(role);
   };
 
   return (
-    <div className="App">
-      {!role ? (
-        <LoginPage onLoginSuccess={handleLoginSuccess} />
-      ) : role === "Admin" ? (
-        <AdminDashboard />
-      ) : role === "Worker" ? (
-        <WorkerDashboard />
-      ) 
-      : role == "Candidate" ? (
-
-        <CandidateDashboard/>
-      )
-      
-      : (
-        <div>Yetkisiz erişim</div>
-      )}
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            !role ? (
+              <LoginPage onLoginSuccess={handleLoginSuccess} />
+            ) : role === "Admin" ? (
+              <AdminDashboard />
+            ) : role === "Worker" ? (
+              <WorkerDashboard />
+            ) : role === "Candidate" ? (
+              <CandidateDashboard />
+            ) : (
+              <div>Yetkisiz Erişim</div>
+            )
+          }
+        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Routes>
+    </Router>
   );
 };
 
