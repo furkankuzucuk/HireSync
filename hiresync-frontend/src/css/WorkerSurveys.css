@@ -1,0 +1,37 @@
+.worker-surveys {
+    background: #f1f4f6;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .worker-surveys h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .worker-surveys table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+  }
+  
+  .worker-surveys th,
+  .worker-surveys td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .btn.blue {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn.blue:hover {
+    background-color: #0056b3;
+  }
+  

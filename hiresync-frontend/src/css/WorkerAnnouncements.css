@@ -1,0 +1,28 @@
+.worker-announcements {
+    background: #f1f4f6;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .worker-announcements h2 {
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .worker-announcements ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .worker-announcements li {
+    padding: 6px 0;
+    font-size: 16px;
+    color: #222;
+  }
+  
+  .worker-announcements li::before {
+    content: '🔺';
+    margin-right: 8px;
+    color: red;
+  }
+  
