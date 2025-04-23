@@ -1,0 +1,35 @@
+.job-listings {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .job-listings h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .btn.blue {
+    background-color: #2196f3;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .btn.blue:hover {
+    background-color: #1976d2;
+  }
+  

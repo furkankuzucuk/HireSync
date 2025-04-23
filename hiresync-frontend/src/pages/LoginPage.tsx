@@ -20,6 +20,13 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: (role: string) => void 
         role: "Admin"
       };
 
+      const mockCandidateUser = {
+        username: "aday",
+        password: "aday123",
+        role: "Candidate"
+      };
+      
+
       const mockWorkerUser = {
         username: "worker",
         password: "worker123",
@@ -33,7 +40,12 @@ const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: (role: string) => void 
       // Worker kullanıcıyı kontrol edelim
       else if (username === mockWorkerUser.username && password === mockWorkerUser.password) {
         onLoginSuccess(mockWorkerUser.role); // Worker paneline yönlendir
-      } else {
+        
+      } 
+      else if (username === mockCandidateUser.username && password === mockCandidateUser.password) {
+        onLoginSuccess(mockCandidateUser.role); // Aday paneline yönlendir
+      }
+      else {
         setErrorMessage("Kullanıcı adı veya şifre yanlış.");
       }
     }
