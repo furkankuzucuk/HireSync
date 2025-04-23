@@ -1,0 +1,21 @@
+.worker-dashboard {
+    max-width: 800px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.08);
+    text-align: center;
+  }
+  
+  .worker-dashboard h1 {
+    color: #007bff;
+    margin-bottom: 20px;
+  }
+  
+  .worker-dashboard p {
+    color: #444;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+  

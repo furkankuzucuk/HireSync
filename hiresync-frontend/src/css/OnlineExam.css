@@ -1,0 +1,41 @@
+.online-exam {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .online-exam h2 {
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .online-exam form label {
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
+    color: #444;
+  }
+  
+  .online-exam form input,
+  .online-exam form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .online-exam button {
+    background-color: green;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .online-exam button:hover {
+    background-color: #056805;
+  }
+  
