@@ -1,8 +1,15 @@
 
 using AutoMapper;
 using Project.Entities;
+using Project.Entities.DataTransferObjects.Department;
+using Project.Entities.DataTransferObjects.Exam;
 using Project.Entities.DataTransferObjects.Job;
+using Project.Entities.DataTransferObjects.JobApplication;
+using Project.Entities.DataTransferObjects.JobList;
+using Project.Entities.DataTransferObjects.LeaveRequest;
 using Project.Entities.DataTransferObjects.Login;
+using Project.Entities.DataTransferObjects.PerformanceReview;
+using Project.Entities.DataTransferObjects.SatisfactionSurvey;
 using Project.Entities.DataTransferObjects.User;
 
 namespace Project.Services.Mapper;
@@ -11,17 +18,46 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-    CreateMap<User,UserDto>().ReverseMap();
-    CreateMap<UserDtoInsertion,User>().ReverseMap();
-    CreateMap<UserDtoUpdate,User>().ReverseMap();
+            CreateMap<User,UserDto>().ReverseMap();
+            CreateMap<UserDtoInsertion,User>().ReverseMap();
+            CreateMap<UserDtoUpdate,User>().ReverseMap();
 
-    CreateMap<Login,LoginDto>().ReverseMap();
-    CreateMap<LoginDtoInsertion,Login>().ReverseMap();
-    CreateMap<LoginDtoUpdate,Login>().ReverseMap();
+            CreateMap<Login,LoginDto>().ReverseMap();
+            CreateMap<LoginDtoInsertion,Login>().ReverseMap();
+            CreateMap<LoginDtoUpdate,Login>().ReverseMap();
 
-    CreateMap<Job, JobDto>().ReverseMap();
-    CreateMap<JobInsertDto, Job>().ReverseMap();
-    CreateMap<JobUpdateDto, Job>().ReverseMap();
+            CreateMap<Job, JobDto>().ReverseMap();
+            CreateMap<JobInsertDto, Job>().ReverseMap();
+            CreateMap<JobUpdateDto, Job>().ReverseMap();
+
+            CreateMap<Department,DepartmentDto>().ReverseMap();
+            CreateMap<DepartmentInsertDto,Department>().ReverseMap();
+            CreateMap<DepartmentUpdateDto,Department>().ReverseMap();
+
+
+            CreateMap<JobApplication, JobApplicationDto>().ReverseMap();
+            CreateMap<JobApplicationInsertDto, JobApplication>().ReverseMap();
+            CreateMap<JobApplicationUpdateDto, JobApplication>().ReverseMap();
+
+            CreateMap<JobList, JobListDto>().ReverseMap();
+            CreateMap<JobListInsertDto, JobList>().ReverseMap();
+            CreateMap<JobListUpdateDto, JobList>().ReverseMap();
+
+            CreateMap<LeaveRequest, LeaveRequestDto>().ReverseMap();
+            CreateMap<LeaveRequestInsertDto, LeaveRequest>().ReverseMap();
+            CreateMap<LeaveRequestUpdateDto, LeaveRequest>().ReverseMap();
+
+            CreateMap<PerformanceReview, PerformanceReviewDto>().ReverseMap();
+            CreateMap<PerformanceReviewInsertDto, PerformanceReview>().ReverseMap();
+            CreateMap<PerformanceReviewUpdateDto, PerformanceReview>().ReverseMap();
+
+            CreateMap<SatisfactionSurvey, SatisfactionSurveyDto>().ReverseMap();
+            CreateMap<SatisfactionSurveyInsertDto, SatisfactionSurvey>().ReverseMap();
+            CreateMap<SatisfactionSurveyUpdateDto, SatisfactionSurvey>().ReverseMap();
+
+            CreateMap<Exam, ExamDto>().ReverseMap();
+            CreateMap<ExamInsertDto, Exam>().ReverseMap();
+            CreateMap<ExamUpdateDto, Exam>().ReverseMap();
 
     }
 

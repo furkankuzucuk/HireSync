@@ -8,5 +8,11 @@ public interface IRepositoryManager
     ILoginRepository LoginRepository {get; }
     IJobRepository JobRepository {get; }
     IDepartmentRepository DepartmentRepository {get; }
+    IJobApplicationRepository JobApplicationRepository {get; }
+    IJobListRepository JobListRepository {get; }
+    ILeaveRequestRepository LeaveRequestRepository {get; }
+    IPerformanceReviewRepository PerformanceReviewRepository {get; }
+    ISatisfactionSurveyRepository SatisfactionSurveyRepository {get; }
+    IExamRepository ExamRepository {get; }
     Task Save();
 }

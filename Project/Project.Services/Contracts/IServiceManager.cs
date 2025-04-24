@@ -7,4 +7,10 @@ public interface IServiceManager
     ILoginService LoginService {get; }
     IJobService JobService {get; }
     IDepartmentService DepartmentService {get; }
+    IJobApplicationService JobApplicationService {get; }
+    IJobListService JobListService {get; }
+    ILeaveRequestService LeaveRequestService {get; }
+    IPerformanceReviewService PerformanceReviewService {get; }
+    ISatisfactionSurveyService SatisfactionSurveyService {get; }
+    IExamService ExamService {get; }
 }
