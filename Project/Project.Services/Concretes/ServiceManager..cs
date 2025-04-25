@@ -18,6 +18,7 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IPerformanceReviewService> performanceReviewService;
     private readonly Lazy<ISatisfactionSurveyService> satisfactionSurveyService;
     private readonly Lazy<IExamService> examService;
+    private readonly Lazy<ICandidateService> candidateService;
     private readonly IMapper mapper;
 
     public ServiceManager(IRepositoryManager repositoryManager,IMapper mapper,IConfiguration configuration)
@@ -33,6 +34,7 @@ public class ServiceManager : IServiceManager
         performanceReviewService = new Lazy<IPerformanceReviewService> (() => new PerformanceReviewService(repositoryManager,mapper));
         satisfactionSurveyService = new Lazy<ISatisfactionSurveyService>(() => new SatisfactionSurveyService(repositoryManager,mapper));
         examService = new Lazy<IExamService>(() => new ExamService(repositoryManager,mapper));
+        candidateService = new Lazy<ICandidateService>(() => new CandidateService(repositoryManager,mapper));
     }
 
     public IUserService UserService => userService.Value;
@@ -45,5 +47,6 @@ public class ServiceManager : IServiceManager
     public IPerformanceReviewService PerformanceReviewService => performanceReviewService.Value;
     public ISatisfactionSurveyService SatisfactionSurveyService => satisfactionSurveyService.Value;
     public IExamService ExamService => examService.Value;
+    public ICandidateService CandidateService => candidateService.Value;
     public async Task SaveAsync() => await repositoryManager.Save();
 }

@@ -14,5 +14,6 @@ public interface IRepositoryManager
     IPerformanceReviewRepository PerformanceReviewRepository {get; }
     ISatisfactionSurveyRepository SatisfactionSurveyRepository {get; }
     IExamRepository ExamRepository {get; }
+    ICandidateRepository CandidateRepository {get; }
     Task Save();
 }

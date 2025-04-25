@@ -12,5 +12,6 @@ public interface IServiceManager
     ILeaveRequestService LeaveRequestService {get; }
     IPerformanceReviewService PerformanceReviewService {get; }
     ISatisfactionSurveyService SatisfactionSurveyService {get; }
+    ICandidateService CandidateService {get; }
     IExamService ExamService {get; }
 }

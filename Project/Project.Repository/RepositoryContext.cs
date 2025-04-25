@@ -20,9 +20,12 @@ public class RepositoryContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        
+        modelBuilder.Entity<User>()
+        .Property(u => u.Salary)
+        .HasPrecision(18, 2); // 18 toplam basamak, 2 ondalık
+
         base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+       // modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
    
     }
 }

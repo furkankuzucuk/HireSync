@@ -1,6 +1,7 @@
 
 using AutoMapper;
 using Project.Entities;
+using Project.Entities.DataTransferObjects.Candidate;
 using Project.Entities.DataTransferObjects.Department;
 using Project.Entities.DataTransferObjects.Exam;
 using Project.Entities.DataTransferObjects.Job;
@@ -58,6 +59,10 @@ public class MappingProfile : Profile
             CreateMap<Exam, ExamDto>().ReverseMap();
             CreateMap<ExamInsertDto, Exam>().ReverseMap();
             CreateMap<ExamUpdateDto, Exam>().ReverseMap();
+
+            CreateMap<Candidate,CandidateDto>().ReverseMap();
+            CreateMap<CandidateDtoInsertion,Candidate>().ReverseMap();
+            CreateMap<CandidateDtoUpdate,Candidate>().ReverseMap();
 
     }
 

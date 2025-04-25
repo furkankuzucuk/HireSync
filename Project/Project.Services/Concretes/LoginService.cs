@@ -28,9 +28,18 @@ public class LoginService : ILoginService
     }
     public async Task<LoginDto> CreateLogin(LoginDtoInsertion loginDto)
     {
+         var user = await repositoryManager.UserRepository
+        .FindByCondition(u => u.Email == loginDto.Mail, trackChanges: false)
+        .FirstOrDefaultAsync();
+
+        if (user == null)
+        {
+            throw new EntityNotFoundException<User>(loginDto.Mail); // Kullanıcı yoksa hata
+        }
             
         loginDto.Password = HashPassword(loginDto.Password);
         var loginEntity = mapper.Map<Login>(loginDto);
+        loginEntity.UserId = user.UserId; 
         repositoryManager.LoginRepository.CreateLogin(loginEntity);
         await repositoryManager.Save();
         return mapper.Map<LoginDto>(loginEntity);

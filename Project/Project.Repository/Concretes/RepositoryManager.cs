@@ -15,6 +15,7 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ILeaveRequestRepository> _leaveRepository;
     private readonly Lazy<IPerformanceReviewRepository> _performanceRepository;
     private readonly Lazy<ISatisfactionSurveyRepository> _satisfactionSurveyRepository;
+    private readonly Lazy<ICandidateRepository> _candidateRepository;
     private readonly Lazy<IExamRepository> _examRepository;
 
     public RepositoryManager(RepositoryContext repositoryContext){
@@ -29,6 +30,7 @@ public class RepositoryManager : IRepositoryManager
         _performanceRepository = new Lazy<IPerformanceReviewRepository>(() => new PerformanceReviewRepository(_repositoryContext));
         _satisfactionSurveyRepository = new Lazy<ISatisfactionSurveyRepository>(() => new SatisfactionSurveyRepository(_repositoryContext));
         _examRepository = new Lazy<IExamRepository>(() => new ExamRepository(_repositoryContext));
+        _candidateRepository = new Lazy<ICandidateRepository>(() => new CandidateRepository(_repositoryContext));
     }
 
     public IUserRepository UserRepository => _userRepository.Value;
@@ -41,6 +43,7 @@ public class RepositoryManager : IRepositoryManager
     public IPerformanceReviewRepository PerformanceReviewRepository => _performanceRepository.Value;
     public ISatisfactionSurveyRepository SatisfactionSurveyRepository => _satisfactionSurveyRepository.Value;
     public IExamRepository ExamRepository => _examRepository.Value;
+    public ICandidateRepository CandidateRepository => _candidateRepository.Value;
 
     public async Task Save()
     {
