@@ -1,13 +1,44 @@
-import React from 'react';
-import LoginPage from './pages/LoginPage'; // LoginPage bileşenini dahil et
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+import LoginPage from './pages/LoginPage';
+import AdminDashboard from './pages/AdminDashboard';
+import WorkerDashboard from './pages/WorkerDashboard';
+import CandidateDashboard from './pages/CandidateDashboard';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 const App = () => {
+  const [role, setRole] = useState<string | null>(null);
+
+  const handleLoginSuccess = (role: string) => {
+    setRole(role);
+  };
+
   return (
-    <div className="App">
-      <LoginPage /> {/* LoginPage'i burada çağır */}
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            !role ? (
+              <LoginPage onLoginSuccess={handleLoginSuccess} />
+            ) : role === "Admin" ? (
+              <AdminDashboard />
+            ) : role === "Worker" ? (
+              <WorkerDashboard />
+            ) : role === "Candidate" ? (
+              <CandidateDashboard />
+            ) : (
+              <div>Yetkisiz Erişim</div>
+            )
+          }
+        />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Routes>
+    </Router>
   );
 };
 
 export default App;
-

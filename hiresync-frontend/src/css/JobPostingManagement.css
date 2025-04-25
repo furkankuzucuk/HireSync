@@ -1,0 +1,54 @@
+.job-posting {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .job-posting h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .job-posting form label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+    color: #444;
+  }
+  
+  .job-posting form input,
+  .job-posting form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .job-posting button {
+    padding: 10px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .job-posting button:hover {
+    background-color: #0056b3;
+  }
+  
+  .job-posting table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+  }
+  
+  .job-posting th,
+  .job-posting td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  

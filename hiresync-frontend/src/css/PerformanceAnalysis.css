@@ -1,0 +1,29 @@
+.performance-analysis {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .performance-analysis h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .performance-analysis table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+  }
+  
+  .performance-analysis th,
+  .performance-analysis td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .performance-analysis th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  

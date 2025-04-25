@@ -1,38 +1,69 @@
 import React, { useState } from "react";
 import '../css/LoginPage.css';  // CSS dosyasını import et
 
-const LoginPage = () => {
-  const [email, setEmail] = useState<string>(""); // E-posta state
+const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: (role: string) => void }) => {
+  const [username, setUsername] = useState<string>(""); // Kullanıcı adı state
   const [password, setPassword] = useState<string>(""); // Şifre state
   const [errorMessage, setErrorMessage] = useState<string>(""); // Hata mesajı state
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === "" || password === "") {
+    if (username === "" || password === "") {
       setErrorMessage("Lütfen tüm alanları doldurun.");
     } else {
       setErrorMessage("");
-      // Burada API çağrısı yapılabilir veya giriş işlemi gerçekleştirilebilir
-      alert("Giriş başarılı!");
+
+      // Mock veri kullanarak giriş yapalım
+      const mockAdminUser = {
+        username: "admin",
+        password: "admin123",
+        role: "Admin"
+      };
+
+      const mockCandidateUser = {
+        username: "aday",
+        password: "aday123",
+        role: "Candidate"
+      };
+      
+
+      const mockWorkerUser = {
+        username: "worker",
+        password: "worker123",
+        role: "Worker"
+      };
+
+      // Admin kullanıcıyı kontrol edelim
+      if (username === mockAdminUser.username && password === mockAdminUser.password) {
+        onLoginSuccess(mockAdminUser.role); // Admin paneline yönlendir
+      }
+      // Worker kullanıcıyı kontrol edelim
+      else if (username === mockWorkerUser.username && password === mockWorkerUser.password) {
+        onLoginSuccess(mockWorkerUser.role); // Worker paneline yönlendir
+        
+      } 
+      else if (username === mockCandidateUser.username && password === mockCandidateUser.password) {
+        onLoginSuccess(mockCandidateUser.role); // Aday paneline yönlendir
+      }
+      else {
+        setErrorMessage("Kullanıcı adı veya şifre yanlış.");
+      }
     }
   };
 
-  function api(){
-    
-  }
   return (
     <div className="login-container">
       <h2>Giriş Yap</h2>
       {errorMessage && <p className="error">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="email">E-posta:</label>
+          <label htmlFor="username">Kullanıcı Adı:</label>
           <input
-            id="email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="E-posta adresinizi girin"
+            id="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Kullanıcı adınızı girin"
             required
           />
         </div>
