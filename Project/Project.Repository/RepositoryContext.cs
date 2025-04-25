@@ -17,6 +17,7 @@ public class RepositoryContext : DbContext
     public DbSet<JobApplication> JobApplications { get; set; }  // JobApplication DbSet eklendi
     public DbSet<SatisfactionSurvey> SatisfactionSurveys {get; set;}
     public DbSet<JobList> JobLists {get; set;}
+    public DbSet<Candidate> Candidates {get; set;}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

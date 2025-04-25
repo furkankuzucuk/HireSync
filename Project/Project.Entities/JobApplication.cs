@@ -3,8 +3,8 @@ public class JobApplication
 {
     public int JobApplicationId { get; set; }  // Primary Key
     public int CandidateId {get; set;}
-    public int JobId { get; set; }  // Foreign Key
-    public Job Job { get; set; }  // Navigation property to Job
+    public int JobListId { get; set; }  // Foreign Key
+    public JobList JobList { get; set; }  // Navigation property to Job
     public string AppMail { get; set; }  // Nvarchar(50)
     public string Location { get; set; } // Nvarchar(50)
 

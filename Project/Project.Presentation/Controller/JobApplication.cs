@@ -36,7 +36,14 @@ namespace Project.Presentation.Controller
                 return BadRequest("Job Application data is null");
 
             var createdJobApplication = await serviceManager.JobApplicationService.CreateJobApplication(jobApplicationDto);
-            return CreatedAtAction(nameof(GetJobApplicationById), new { id = createdJobApplication.JobApplicationId }, createdJobApplication);
+             return CreatedAtAction(nameof(GetApplicationsByCandidateId), new { candidateId = createdJobApplication.CandidateId }, createdJobApplication);
+        }
+
+        [HttpGet("candidate/{candidateId}")]
+        public async Task<IActionResult> GetApplicationsByCandidateId(int candidateId)
+        {
+            var apps = await serviceManager.JobApplicationService.GetApplicationsByCandidateId(candidateId);
+            return Ok(apps);
         }
 
         [HttpPut("{id}")]
