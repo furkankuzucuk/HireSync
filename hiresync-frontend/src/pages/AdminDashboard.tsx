@@ -1,49 +1,48 @@
-import React, { useState } from "react";
-import "../css/AdminDashboard.css";
-import JobPostingManagement from "./JobPostingManagement";
-import OnlineExam from "./OnlineExam";
-import PerformanceAnalysis from "./PerformanceAnalysis";
-import LeaveRequests from "./LeaveRequests";
+// src/pages/AdminDashboard.tsx
+import React from "react";
+import { Outlet, Link } from "react-router-dom";
+import useLogout from "./useLogout";
+import "../css/AdminDashboard.css"; // CSS dosyasını unutma
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState("dashboard");
-
-  const renderTab = () => {
-    switch (activeTab) {
-      case "dashboard":
-        return (
-          <div className="tab-content">
-            <h2>🏠 Hoş Geldiniz, Yönetici</h2>
-            <p>Bugün: {new Date().toLocaleDateString("tr-TR")}</p>
-            {/* Dashboard kartları ve duyurular buraya */}
-          </div>
-        );
-      case "jobs":
-        return <JobPostingManagement />;
-      case "exams":
-        return <OnlineExam />;
-      case "performance":
-        return <PerformanceAnalysis />;
-      case "leaves":
-        return <LeaveRequests />;
-      default:
-        return null;
-    }
-  };
+  const logout = useLogout();
+  const username = localStorage.getItem("username");
 
   return (
-    <div className="admin-dashboard">
-      <aside className="sidebar">
-        <h2>Yönetici Paneli</h2>
-        <ul>
-          <li onClick={() => setActiveTab("dashboard")}>🏠 Ana Sayfa</li>
-          <li onClick={() => setActiveTab("jobs")}>📌 İş İlanları</li>
-          <li onClick={() => setActiveTab("exams")}>📝 Online Sınavlar</li>
-          <li onClick={() => setActiveTab("performance")}>📊 Performans Analizi</li>
-          <li onClick={() => setActiveTab("leaves")}>📅 İzin Talepleri</li>
+    <div className="admin-layout d-flex">
+
+      {/* Sidebar */}
+      <div className="sidebar bg-dark text-white p-3 vh-100" style={{ width: "250px" }}>
+        <h4 className="text-center mb-4">Yönetici Paneli</h4>
+        <p className="text-center">Hoş Geldin, <strong>{username}</strong> 👋</p>
+        <ul className="nav flex-column mt-4">
+          <li className="nav-item">
+            <Link className="nav-link text-white" to="/admin-dashboard">🏠 Ana Sayfa</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link text-white" to="/admin-dashboard/jobs">📌 İş İlanları Yönetimi</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link text-white" to="/admin-dashboard/exams">📝 Online Sınavlar</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link text-white" to="/admin-dashboard/performance">📊 Performans Analizi</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link text-white" to="/admin-dashboard/leaves">📅 İzin Talepleri</Link>
+          </li>
         </ul>
-      </aside>
-      <main className="content">{renderTab()}</main>
+
+        <button onClick={logout} className="btn btn-danger w-100 mt-4">
+          🚪 Çıkış Yap
+        </button>
+      </div>
+
+      {/* Main Content */}
+      <div className="content-area flex-grow-1 p-4" style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
+        <Outlet />
+      </div>
+
     </div>
   );
 };
