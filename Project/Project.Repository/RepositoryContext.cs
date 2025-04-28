@@ -18,6 +18,7 @@ public class RepositoryContext : DbContext
     public DbSet<SatisfactionSurvey> SatisfactionSurveys {get; set;}
     public DbSet<JobList> JobLists {get; set;}
     public DbSet<Candidate> Candidates {get; set;}
+    public DbSet<UserExam> UserExams {get; set;}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

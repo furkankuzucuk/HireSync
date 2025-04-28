@@ -19,9 +19,15 @@ namespace Project.Services.Concretes
             this.mapper = mapper;
         }
 
-        public async Task<LeaveRequestDto> CreateLeaveRequest(LeaveRequestInsertDto leaveRequest)
+        public async Task<LeaveRequestDto> CreateLeaveRequest(int userId,LeaveRequestInsertDto leaveRequest)
         {
+            
             var entity = mapper.Map<LeaveRequest>(leaveRequest);
+
+            entity.UserId = userId; // Burada userId Controller'dan gelmiş olacak
+            entity.Status = "Pending"; // İstersen otomatik status
+            entity.RequestDate = DateTime.UtcNow; // İstersen otomatik zaman
+
             repositoryManager.LeaveRequestRepository.CreateLeaveRequest(entity);
             await repositoryManager.Save();
             return mapper.Map<LeaveRequestDto>(entity);

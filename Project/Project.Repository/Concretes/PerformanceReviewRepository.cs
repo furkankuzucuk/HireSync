@@ -21,5 +21,10 @@ namespace Project.Repository.Concretes
 
         public void DeletePerformanceReview(PerformanceReview performanceReview) =>
             Delete(performanceReview);
+
+        public IQueryable<PerformanceReview> GetReviewByUserId(int userId, bool trackChanges)
+        {
+            return FindByCondition(r => r.UserId == userId, trackChanges);
+        }
     }
 }

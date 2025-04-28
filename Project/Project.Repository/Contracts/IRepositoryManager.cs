@@ -15,5 +15,6 @@ public interface IRepositoryManager
     ISatisfactionSurveyRepository SatisfactionSurveyRepository {get; }
     IExamRepository ExamRepository {get; }
     ICandidateRepository CandidateRepository {get; }
+    IUserExamRepository UserExamRepository {get; }
     Task Save();
 }

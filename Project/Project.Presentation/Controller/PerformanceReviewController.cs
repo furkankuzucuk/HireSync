@@ -29,6 +29,14 @@ namespace Project.Presentation.Controller
             return Ok(review);
         }
 
+        [HttpGet("user/{userId}")]
+        public async Task<IActionResult> GetReviewsByUserId(int userId)
+        {
+            var reviews = await serviceManager.PerformanceReviewService.GetReviewsByUserId(userId, false);
+            return Ok(reviews);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> CreatePerformanceReview([FromBody] PerformanceReviewInsertDto performanceReviewDto)
         {

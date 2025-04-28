@@ -7,7 +7,7 @@ namespace Project.Services.Contracts
     {
         Task<IEnumerable<LeaveRequestDto>> GetAllLeaveRequests(bool trackChanges);
         Task<LeaveRequestDto> GetLeaveRequestById(int id, bool trackChanges);
-        Task<LeaveRequestDto> CreateLeaveRequest(LeaveRequestInsertDto leaveRequest);
+        Task<LeaveRequestDto> CreateLeaveRequest(int id,LeaveRequestInsertDto leaveRequest);
         Task UpdateLeaveRequest(int id, LeaveRequestUpdateDto leaveRequest, bool trackChanges);
         Task DeleteLeaveRequest(int id, bool trackChanges);
     }

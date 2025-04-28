@@ -1,16 +1,12 @@
 namespace Project.Entities;
 
 public class PerformanceReview {
-    public int PerformanceReviewId { get; set; }  // Primary Key
+        public int PerformanceReviewId { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
 
-    public int UserId { get; set; }   // Foreign Key
-    public User User { get; set; }    // Navigation Property to User
-
-    public byte PerformanceRate { get; set; }   // Tinyint (byte veri tipi)
-    public string ReviewText { get; set; }      // Nvarchar(1000)
-
-    public int ExamId { get; set; }     // Foreign Key
-    public Exam Exam { get; set; }      // Navigation Property to Exam
-
-    public DateTime ReviewDate { get; set; }   // DateTime
+        public double AverageScore { get; set; }   // UserExam'lerin ortalaması
+        public byte PerformanceRate { get; set; }  // 1-5 arası puan
+        public string ReviewSummary { get; set; }
+        public DateTime ReviewDate { get; set; }
 }

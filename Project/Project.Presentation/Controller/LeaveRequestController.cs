@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project.Entities.DataTransferObjects.LeaveRequest;
 using Project.Services.Contracts;
@@ -30,12 +31,19 @@ namespace Project.Presentation.Controller
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateLeaveRequest([FromBody] LeaveRequestInsertDto leaveRequestDto)
         {
             if (leaveRequestDto == null)
                 return BadRequest("Leave request data is null");
 
-            var createdLeaveRequest = await serviceManager.LeaveRequestService.CreateLeaveRequest(leaveRequestDto);
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null){
+                return Unauthorized("User ID not found in token.");
+            }
+            int userId = int.Parse(userIdClaim.Value);
+
+            var createdLeaveRequest = await serviceManager.LeaveRequestService.CreateLeaveRequest(userId,leaveRequestDto);
             return CreatedAtAction(nameof(GetLeaveRequestById), new { id = createdLeaveRequest.LeaveRequestId }, createdLeaveRequest);
         }
 

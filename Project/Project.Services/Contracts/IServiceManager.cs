@@ -14,4 +14,5 @@ public interface IServiceManager
     ISatisfactionSurveyService SatisfactionSurveyService {get; }
     ICandidateService CandidateService {get; }
     IExamService ExamService {get; }
+    IUserExamService UserExamService {get;}
 }

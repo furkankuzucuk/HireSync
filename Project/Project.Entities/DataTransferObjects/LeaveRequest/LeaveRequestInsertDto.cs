@@ -2,7 +2,7 @@ namespace Project.Entities.DataTransferObjects.LeaveRequest
 {
     public record LeaveRequestInsertDto
     {
-        public int UserId { get; set; }
+        
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string LeaveType { get; set; }

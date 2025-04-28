@@ -37,6 +37,45 @@ namespace Project.Services.Concretes
             await repositoryManager.Save();
         }
 
+        public async Task<PerformanceReviewDto> GeneratePerformanceReviewForUser(int userId)
+        {
+             var userExams = await repositoryManager.UserExamRepository
+            .FindByCondition(ue => ue.UserId == userId, trackChanges: false)
+            .ToListAsync();
+
+            if (userExams == null || !userExams.Any())
+            {
+                throw new Exception($"User with id {userId} has no exams to review.");
+            }
+
+    // 2. Ortalama puanı hesapla
+            var averageScore = userExams.Average(ue => ue.Score);
+
+            // 3. Ortalama skora göre performans notu belirle (örnek basit bir mantıkla)
+            byte performanceRate;
+            if (averageScore >= 90) performanceRate = 5;
+            else if (averageScore >= 75) performanceRate = 4;
+            else if (averageScore >= 60) performanceRate = 3;
+            else if (averageScore >= 50) performanceRate = 2;
+            else performanceRate = 1;
+
+    // 4. Yeni PerformanceReview oluştur
+            var performanceReview = new PerformanceReview
+            {
+                UserId = userId,
+                PerformanceRate = performanceRate,
+                ReviewText = $"User has an average score of {averageScore:F2}",
+                ReviewDate = DateTime.UtcNow,
+                ExamId = userExams.OrderByDescending(e => e.ExamDate).First().ExamId // Son girdiği sınavı referans alıyoruz
+            };
+
+            repositoryManager.PerformanceReviewRepository.CreateReview(performanceReview);
+            await repositoryManager.Save();
+
+    // 5. Dto'ya map'leyip dön
+            return mapper.Map<PerformanceReviewDto>(performanceReview);
+        }
+
         public async Task<IEnumerable<PerformanceReviewDto>> GetAllPerformanceReviews(bool trackChanges)
         {
             var reviews = await repositoryManager.PerformanceReviewRepository.GetAllPerformanceReviews(trackChanges).ToListAsync();
@@ -51,6 +90,16 @@ namespace Project.Services.Concretes
 
             return mapper.Map<PerformanceReviewDto>(entity);
         }
+
+        public async Task<IEnumerable<PerformanceReviewDto>> GetReviewsByUserId(int userId, bool trackChanges)
+        {
+            var reviews = await repositoryManager.PerformanceReviewRepository
+                .GetReviewByUserId(userId, trackChanges)
+                .ToListAsync();
+
+            return mapper.Map<IEnumerable<PerformanceReviewDto>>(reviews);
+        }
+
 
         public async Task UpdatePerformanceReview(int id, PerformanceReviewUpdateDto performanceReview, bool trackChanges)
         {
