@@ -45,7 +45,7 @@ namespace Project.Presentation.Controller
             if (dto is null)
                 return BadRequest("Department data is null");
 
-            await serviceManager.DepartmentService.UpdateDepartment(id, dto, false);
+            await serviceManager.DepartmentService.UpdateDepartment(id, dto, true);
             return NoContent();
         }
 

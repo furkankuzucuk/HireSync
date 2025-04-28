@@ -52,7 +52,7 @@ namespace Project.Presentation.Controller
             if (jobApplicationDto == null)
                 return BadRequest("Job Application data is null");
 
-            await serviceManager.JobApplicationService.UpdateJobApplication(id, jobApplicationDto, false);
+            await serviceManager.JobApplicationService.UpdateJobApplication(id, jobApplicationDto, true);
             return NoContent();
         }
 

@@ -53,7 +53,7 @@ namespace Project.Presentation.Controller
             if (leaveRequestDto == null)
                 return BadRequest("Leave request data is null");
 
-            await serviceManager.LeaveRequestService.UpdateLeaveRequest(id, leaveRequestDto, false);
+            await serviceManager.LeaveRequestService.UpdateLeaveRequest(id, leaveRequestDto, true);
             return NoContent();
         }
 

@@ -45,7 +45,7 @@ namespace Project.Presentation.Controller
             if (jobListDto == null)
                 return BadRequest("Job List data is null");
 
-            await serviceManager.JobListService.UpdateJobList(id, jobListDto, false);
+            await serviceManager.JobListService.UpdateJobList(id, jobListDto, true);
             return NoContent();
         }
 

@@ -47,13 +47,21 @@ namespace Project.Presentation.Controller
             return CreatedAtAction(nameof(GetPerformanceReviewById), new { id = createdReview.PerformanceReviewId }, createdReview);
         }
 
+        [HttpPost("generate-review/{userId}")]
+        public async Task<IActionResult> GeneratePerformanceReview(int userId)
+        {
+            var review = await serviceManager.PerformanceReviewService.GeneratePerformanceReviewForUser(userId);
+            return Ok(review);
+        }
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePerformanceReview(int id, [FromBody] PerformanceReviewUpdateDto performanceReviewDto)
         {
             if (performanceReviewDto == null)
                 return BadRequest("Performance review data is null");
 
-            await serviceManager.PerformanceReviewService.UpdatePerformanceReview(id, performanceReviewDto, false);
+            await serviceManager.PerformanceReviewService.UpdatePerformanceReview(id, performanceReviewDto, true);
             return NoContent();
         }
 

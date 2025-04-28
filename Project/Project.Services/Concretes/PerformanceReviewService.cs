@@ -10,36 +10,36 @@ namespace Project.Services.Concretes
 {
     public class PerformanceReviewService : IPerformanceReviewService
     {
-        private readonly IRepositoryManager repositoryManager;
+        private readonly IRepositoryManager _repositoryManager;
         private readonly IMapper mapper;
 
         public PerformanceReviewService(IRepositoryManager repositoryManager, IMapper mapper)
         {
-            this.repositoryManager = repositoryManager;
+            _repositoryManager = repositoryManager;
             this.mapper = mapper;
         }
 
         public async Task<PerformanceReviewDto> CreatePerformanceReview(PerformanceReviewInsertDto performanceReview)
         {
             var entity = mapper.Map<PerformanceReview>(performanceReview);
-            repositoryManager.PerformanceReviewRepository.CreatePerformanceReview(entity);
-            await repositoryManager.Save();
+            _repositoryManager.PerformanceReviewRepository.CreatePerformanceReview(entity);
+            await _repositoryManager.Save();
             return mapper.Map<PerformanceReviewDto>(entity);
         }
 
         public async Task DeletePerformanceReview(int id, bool trackChanges)
         {
-            var entity = await repositoryManager.PerformanceReviewRepository.GetPerformanceReviewById(id, trackChanges).FirstOrDefaultAsync();
+            var entity = await _repositoryManager.PerformanceReviewRepository.GetPerformanceReviewById(id, trackChanges).FirstOrDefaultAsync();
             if (entity == null)
                 throw new EntityNotFoundException<PerformanceReview>(id);
 
-            repositoryManager.PerformanceReviewRepository.DeletePerformanceReview(entity);
-            await repositoryManager.Save();
+            _repositoryManager.PerformanceReviewRepository.DeletePerformanceReview(entity);
+            await _repositoryManager.Save();
         }
 
         public async Task<PerformanceReviewDto> GeneratePerformanceReviewForUser(int userId)
         {
-             var userExams = await repositoryManager.UserExamRepository
+             var userExams = await _repositoryManager.UserExamRepository
             .FindByCondition(ue => ue.UserId == userId, trackChanges: false)
             .ToListAsync();
 
@@ -64,13 +64,13 @@ namespace Project.Services.Concretes
             {
                 UserId = userId,
                 PerformanceRate = performanceRate,
-                ReviewText = $"User has an average score of {averageScore:F2}",
+                ReviewSummary = $"User has an average score of {averageScore:F2}",
                 ReviewDate = DateTime.UtcNow,
-                ExamId = userExams.OrderByDescending(e => e.ExamDate).First().ExamId // Son girdiği sınavı referans alıyoruz
+                //ExamId = userExams.OrderByDescending(e => e.ExamDate).First().ExamId // Son girdiği sınavı referans alıyoruz
             };
 
-            repositoryManager.PerformanceReviewRepository.CreateReview(performanceReview);
-            await repositoryManager.Save();
+            _repositoryManager.PerformanceReviewRepository.CreatePerformanceReview(performanceReview);
+            await _repositoryManager.Save();
 
     // 5. Dto'ya map'leyip dön
             return mapper.Map<PerformanceReviewDto>(performanceReview);
@@ -78,13 +78,13 @@ namespace Project.Services.Concretes
 
         public async Task<IEnumerable<PerformanceReviewDto>> GetAllPerformanceReviews(bool trackChanges)
         {
-            var reviews = await repositoryManager.PerformanceReviewRepository.GetAllPerformanceReviews(trackChanges).ToListAsync();
+            var reviews = await _repositoryManager.PerformanceReviewRepository.GetAllPerformanceReviews(trackChanges).ToListAsync();
             return mapper.Map<IEnumerable<PerformanceReviewDto>>(reviews);
         }
 
         public async Task<PerformanceReviewDto> GetPerformanceReviewById(int id, bool trackChanges)
         {
-            var entity = await repositoryManager.PerformanceReviewRepository.GetPerformanceReviewById(id, trackChanges).FirstOrDefaultAsync();
+            var entity = await _repositoryManager.PerformanceReviewRepository.GetPerformanceReviewById(id, trackChanges).FirstOrDefaultAsync();
             if (entity == null)
                 throw new EntityNotFoundException<PerformanceReview>(id);
 
@@ -93,7 +93,7 @@ namespace Project.Services.Concretes
 
         public async Task<IEnumerable<PerformanceReviewDto>> GetReviewsByUserId(int userId, bool trackChanges)
         {
-            var reviews = await repositoryManager.PerformanceReviewRepository
+            var reviews = await _repositoryManager.PerformanceReviewRepository
                 .GetReviewByUserId(userId, trackChanges)
                 .ToListAsync();
 
@@ -103,12 +103,12 @@ namespace Project.Services.Concretes
 
         public async Task UpdatePerformanceReview(int id, PerformanceReviewUpdateDto performanceReview, bool trackChanges)
         {
-            var entity = await repositoryManager.PerformanceReviewRepository.GetPerformanceReviewById(id, trackChanges).FirstOrDefaultAsync();
+            var entity = await _repositoryManager.PerformanceReviewRepository.GetPerformanceReviewById(id, trackChanges).FirstOrDefaultAsync();
             if (entity == null)
                 throw new EntityNotFoundException<PerformanceReview>(id);
 
             mapper.Map(performanceReview, entity);
-            await repositoryManager.Save();
+            await _repositoryManager.Save();
         }
     }
 }

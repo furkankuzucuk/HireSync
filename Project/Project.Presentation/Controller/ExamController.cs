@@ -45,7 +45,7 @@ namespace Project.Presentation.Controller
             if (examDto == null)
                 return BadRequest("Invalid exam data.");
 
-            await serviceManager.ExamService.UpdateExam(id, examDto, false);
+            await serviceManager.ExamService.UpdateExam(id, examDto, true);
             return NoContent();
         }
 

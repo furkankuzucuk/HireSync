@@ -45,7 +45,7 @@ namespace Project.Presentation.Controller
             if (satisfactionSurveyDto == null)
                 return BadRequest("Satisfaction survey data is null");
 
-            await serviceManager.SatisfactionSurveyService.UpdateSatisfactionSurvey(id, satisfactionSurveyDto, false);
+            await serviceManager.SatisfactionSurveyService.UpdateSatisfactionSurvey(id, satisfactionSurveyDto, true);
             return NoContent();
         }
 

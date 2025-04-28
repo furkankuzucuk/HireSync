@@ -46,7 +46,7 @@ namespace Project.Presentation.Controller
             if (jobDto is null)
                 return BadRequest("Job data is null");
 
-            await serviceManager.JobService.UpdateJob(id, jobDto, trackChanges: false);
+            await serviceManager.JobService.UpdateJob(id, jobDto, trackChanges: true);
             return NoContent();
         }
 

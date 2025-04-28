@@ -52,7 +52,7 @@ namespace Project.Presentation.Controller
             if (userExamDto == null)
                 return BadRequest("User exam data is null.");
 
-            await _serviceManager.UserExamService.UpdateUser(id, userExamDto, false);
+            await _serviceManager.UserExamService.UpdateUser(id, userExamDto, true);
             return NoContent();
         }
 

@@ -52,7 +52,7 @@ namespace Project.Presentation.Controller
                 return BadRequest("Invalid login data.");
             }
 
-            await _serviceManager.LoginService.UpdateLogin(id,loginDto,false);
+            await _serviceManager.LoginService.UpdateLogin(id,loginDto,true);
 
             return NoContent(); // NoContent() başarılı güncelleme sonrası döndürülür
         }

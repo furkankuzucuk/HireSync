@@ -50,7 +50,7 @@ namespace Project.Presentation.Controller;
             if(user is null){
                 return BadRequest("User data is null");
             }
-            await serviceManager.UserService.UpdateUser(id, user, false);
+            await serviceManager.UserService.UpdateUser(id, user, true);
             return NoContent();
         }
 
