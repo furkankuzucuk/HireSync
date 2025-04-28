@@ -1,32 +1,24 @@
-import React, { useState } from 'react';
-import '../css/CandidateDashboard.css';
-import JobListings from './JobListings';
-import ApplicationStatus from './ApplicationStatus';
+import React from "react";
+import { Outlet, Link } from "react-router-dom";
+import "../css/CandidateDashboard.css";
 
 const CandidateDashboard = () => {
-  const [activeTab, setActiveTab] = useState("jobs");
-
-  const renderTab = () => {
-    switch (activeTab) {
-      case "jobs":
-        return <JobListings />;
-      case "status":
-        return <ApplicationStatus />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="candidate-dashboard">
       <aside className="sidebar">
         <h2>Aday Paneli</h2>
         <ul>
-          <li onClick={() => setActiveTab("jobs")}>📌 İş İlanları</li>
-          <li onClick={() => setActiveTab("status")}>📄 Başvuru Durumu</li>
+          <li>
+            <Link to="/candidate-dashboard">📌 İş İlanları</Link>
+          </li>
+          <li>
+            <Link to="/candidate-dashboard/status">📄 Başvuru Durumu</Link>
+          </li>
         </ul>
       </aside>
-      <main className="content">{renderTab()}</main>
+      <main className="content">
+        <Outlet /> {/* Alt route componentlerini burada göstereceğiz */}
+      </main>
     </div>
   );
 };

@@ -1,53 +1,42 @@
 import React, { useState } from "react";
-import '../css/LoginPage.css';  // CSS dosyasını import et
+import axios from "axios";
+import "../css/LoginPage.css";
 
-const LoginPage = ({ onLoginSuccess }: { onLoginSuccess: (role: string) => void }) => {
-  const [username, setUsername] = useState<string>(""); // Kullanıcı adı state
-  const [password, setPassword] = useState<string>(""); // Şifre state
-  const [errorMessage, setErrorMessage] = useState<string>(""); // Hata mesajı state
+interface LoginPageProps {
+  onLoginSuccess: (role: string) => void;
+}
+
+const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (username === "" || password === "") {
       setErrorMessage("Lütfen tüm alanları doldurun.");
-    } else {
-      setErrorMessage("");
+      return;
+    }
 
-      // Mock veri kullanarak giriş yapalım
-      const mockAdminUser = {
-        username: "admin",
-        password: "admin123",
-        role: "Admin"
-      };
+    try {
+      const response = await axios.post("http://localhost:5065/api/login/authenticate", {
+        userName: username,
+        password: password
+      });
 
-      const mockCandidateUser = {
-        username: "aday",
-        password: "aday123",
-        role: "Candidate"
-      };
-      
+      const { token, role } = response.data;
 
-      const mockWorkerUser = {
-        username: "worker",
-        password: "worker123",
-        role: "Worker"
-      };
+      // Başarıyla giriş yapıldı, bilgileri localStorage'a kaydediyoruz
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
+      localStorage.setItem("username", username); // Kullanıcı adını da kaydediyoruz
+      localStorage.setItem("tokenExpiration", (Date.now() + 3600 * 1000).toString()); // 1 saatlik geçerlilik
 
-      // Admin kullanıcıyı kontrol edelim
-      if (username === mockAdminUser.username && password === mockAdminUser.password) {
-        onLoginSuccess(mockAdminUser.role); // Admin paneline yönlendir
-      }
-      // Worker kullanıcıyı kontrol edelim
-      else if (username === mockWorkerUser.username && password === mockWorkerUser.password) {
-        onLoginSuccess(mockWorkerUser.role); // Worker paneline yönlendir
-        
-      } 
-      else if (username === mockCandidateUser.username && password === mockCandidateUser.password) {
-        onLoginSuccess(mockCandidateUser.role); // Aday paneline yönlendir
-      }
-      else {
-        setErrorMessage("Kullanıcı adı veya şifre yanlış.");
-      }
+      onLoginSuccess(role); // App.tsx'e rolü gönderiyoruz, yönlendirme orada oluyor
+    } catch (error) {
+      console.error(error);
+      setErrorMessage("Kullanıcı adı veya şifre yanlış."); // Hatalı girişte mesaj göster
     }
   };
 
