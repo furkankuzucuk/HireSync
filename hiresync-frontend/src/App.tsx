@@ -23,7 +23,11 @@ import ResetPassword from './pages/ResetPassword';
 import AdminHome from './pages/AdminHome';
 import WorkerHome from './pages/WorkerHome';
 import CandidateHome from './pages/CandidateHome';
-import ProtectedRoute from './pages/ProtectedRoute'; // ProtectedRoute ekledik
+import ProtectedRoute from './pages/ProtectedRoute';
+import LandingPage from './pages/LandingPage';
+
+
+
 
 // Login sonrası yönlendirme component'ı
 const LoginPageWrapper = () => {
@@ -50,10 +54,13 @@ const App = () => {
   return (
     <Router>
       <Routes>
-
+      <Route path="/" element={<LandingPage />} />
+        {/* Landing Page */}
+        <Route path="/" element={<LandingPage />} />
+        
         {/* Login */}
-        <Route path="/" element={<LoginPageWrapper />} />
-
+        <Route path="/login" element={<LoginPageWrapper />} />
+        
         {/* Protected Routes */}
         <Route element={<ProtectedRoute />}>
           

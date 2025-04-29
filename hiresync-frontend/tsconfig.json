@@ -13,7 +13,8 @@
     "paths": {
       "*": ["node_modules/*", "src/*"]
     },
-    "types": ["node", "babel__generator", "babel__traverse"]   // <<< BURAYI EKLE
+    "types": ["node", "babel__generator", "babel__traverse", "react-scripts"],  // <-- Burayı güncelledik
+    "resolveJsonModule": true  // <-- Bu satırı da ekledik
   },
   "include": [
     "src/**/*"

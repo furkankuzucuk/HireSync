@@ -1,11 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../css/JobPostingManagement.css";
 
+interface Department {
+  departmentId: number;
+  departmentName: string;
+}
+
 const JobPostingManagement = () => {
   const [description, setDescription] = useState("");
-  const [departmentId, setDepartmentId] = useState<number>(2);
+  const [departmentId, setDepartmentId] = useState<number>(0);
+  const [departments, setDepartments] = useState<Department[]>([]);
   const [successMessage, setSuccessMessage] = useState("");
+
+  useEffect(() => {
+    const fetchDepartments = async () => {
+      try {
+        const response = await axios.get("http://localhost:5065/api/departments");
+        setDepartments(response.data);
+
+        if (response.data.length > 0) {
+          setDepartmentId(response.data[0].departmentId); // ilk departmanı seç
+        }
+      } catch (error: any) {
+        console.error("Departmanlar yüklenemedi:", error.response ? error.response.data : error.message);
+      }
+    };
+
+    fetchDepartments();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,15 +37,16 @@ const JobPostingManagement = () => {
       const newJob = {
         departmentId: departmentId,
         description: description,
-        // CreateDate YOK! Backend kendisi verecek.
       };
 
       const response = await axios.post("http://localhost:5065/api/joblists", newJob);
 
       if (response.status === 201) {
         setSuccessMessage("İş ilanı başarıyla yayınlandı!");
-        setDescription(""); 
-        setDepartmentId(2); 
+        setDescription("");
+        if (departments.length > 0) {
+          setDepartmentId(departments[0].departmentId);
+        }
       }
     } catch (error: any) {
       console.error("İlan yayınlama hatası:", error.response ? error.response.data : error.message);
@@ -47,15 +71,13 @@ const JobPostingManagement = () => {
             className="form-control"
             value={departmentId}
             onChange={(e) => setDepartmentId(parseInt(e.target.value))}
+            required
           >
-            <option value={2}>Information Technology</option>
-            <option value={3}>Bilgi Teknolojileri (IT)</option>
-            <option value={4}>İnsan Kaynakları (HR)</option>
-            <option value={5}>Satış ve Pazarlama</option>
-            <option value={6}>Muhasebe ve Finans</option>
-            <option value={7}>Üretim ve Operasyon</option>
-            <option value={8}>Müşteri Hizmetleri</option>
-            <option value={9}>Kurumsal İletişim ve Halkla İlişkiler (PR)</option>
+            {departments.map((dept) => (
+              <option key={dept.departmentId} value={dept.departmentId}>
+                {dept.departmentName}
+              </option>
+            ))}
           </select>
         </div>
 

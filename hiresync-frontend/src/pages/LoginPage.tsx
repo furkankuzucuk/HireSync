@@ -10,6 +10,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,51 +28,60 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
       const { token, role } = response.data;
 
-      // Başarıyla giriş yapıldı, bilgileri localStorage'a kaydediyoruz
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
-      localStorage.setItem("username", username); // Kullanıcı adını da kaydediyoruz
-      localStorage.setItem("tokenExpiration", (Date.now() + 3600 * 1000).toString()); // 1 saatlik geçerlilik
+      localStorage.setItem("username", username);
+      localStorage.setItem("tokenExpiration", (Date.now() + 3600 * 1000).toString());
 
-      onLoginSuccess(role); // App.tsx'e rolü gönderiyoruz, yönlendirme orada oluyor
+      setSuccessMessage("Kullanıcı girişi başarılı!");
+      setErrorMessage("");
+
+      setTimeout(() => {
+        setSuccessMessage("");
+        onLoginSuccess(role);
+      }, 2500); // 5 saniye sonra yönlendirme
     } catch (error) {
       console.error(error);
-      setErrorMessage("Kullanıcı adı veya şifre yanlış."); // Hatalı girişte mesaj göster
+      setErrorMessage("Kullanıcı adı veya şifre yanlış.");
+      setSuccessMessage("");
     }
   };
 
   return (
-    <div className="login-container">
-      <h2>Giriş Yap</h2>
-      {errorMessage && <p className="error">{errorMessage}</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="username">Kullanıcı Adı:</label>
-          <input
-            id="username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            placeholder="Kullanıcı adınızı girin"
-            required
-          />
+    <div className="login-page">
+      <div className="login-container">
+        <h2>Giriş Yap</h2>
+        {errorMessage && <p className="error">{errorMessage}</p>}
+        {successMessage && <p className="success">{successMessage}</p>}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="username">Kullanıcı Adı:</label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Kullanıcı adınızı girin"
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Şifre:</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Şifrenizi girin"
+              required
+            />
+          </div>
+          <button type="submit">Giriş Yap</button>
+        </form>
+        <div className="footer-links">
+          <a href="/forgot-password">Şifrenizi Unuttunuz?</a> | 
+          <a href="/register">Kayıt Ol</a>
         </div>
-        <div>
-          <label htmlFor="password">Şifre:</label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Şifrenizi girin"
-            required
-          />
-        </div>
-        <button type="submit">Giriş Yap</button>
-      </form>
-      <div className="footer-links">
-        <a href="/forgot-password">Şifrenizi Unuttunuz?</a> | 
-        <a href="/register">Kayıt Ol</a>
       </div>
     </div>
   );
