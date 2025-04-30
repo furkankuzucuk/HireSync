@@ -24,8 +24,14 @@ namespace Project.Services.Concretes
             if (jobListDto == null)
                 throw new ArgumentNullException(nameof(jobListDto), "İlan bilgileri boş olamaz.");
 
+            var department = await repositoryManager.DepartmentRepository.GetDepartmentById(jobListDto.DepartmentId,false).FirstOrDefaultAsync();
+            
+            if (department == null){
+                throw new EntityNotFoundException<Department>(jobListDto.DepartmentId);
+            }
             var entity = mapper.Map<JobList>(jobListDto);
 
+            entity.DepartmentName = department.DepartmentName;
             // CreateDate'yi burada otomatik ayarla
             entity.CreateDate = DateTime.Now;
 

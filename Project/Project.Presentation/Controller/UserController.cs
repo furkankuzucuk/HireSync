@@ -34,13 +34,23 @@ namespace Project.Presentation.Controller;
             return Ok(user);
         }
 
-        [HttpPost]
+        [HttpPost("create-user")]
         public async Task<IActionResult> CreateUser([FromBody] UserDtoInsertion user)
         {
             if(user is null){
                 return BadRequest("User data is null");
             }
             var createdUser = await serviceManager.UserService.CreateUser(user);
+            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.UserId }, createdUser);
+        }
+
+        [HttpPost("create-candidate")] //ADAY ekleme isteği
+        public async Task<IActionResult> CreateCandidateUser([FromBody] UserDtoCandidateInsert user)
+        {
+            if(user is null){
+                return BadRequest("User data is null");
+            }
+            var createdUser = await serviceManager.UserService.CreateCandidateUser(user);
             return CreatedAtAction(nameof(GetUserById), new { id = createdUser.UserId }, createdUser);
         }
 

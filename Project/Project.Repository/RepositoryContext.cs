@@ -19,13 +19,10 @@ public class RepositoryContext : DbContext
     public DbSet<JobList> JobLists {get; set;}
     public DbSet<Candidate> Candidates {get; set;}
     public DbSet<UserExam> UserExams {get; set;}
+    public DbSet<Question> Questions {get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>()
-        .Property(u => u.Salary)
-        .HasPrecision(18, 2); // 18 toplam basamak, 2 ondalık
-
         base.OnModelCreating(modelBuilder);
        // modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
    

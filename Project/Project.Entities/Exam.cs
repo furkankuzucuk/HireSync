@@ -6,4 +6,5 @@ public class Exam {
         public DateTime ExamDate { get; set; }
 
         public ICollection<UserExam> UserExams { get; set; }
+        public ICollection<Question> Questions {get; set;}
 }

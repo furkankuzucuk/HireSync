@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Project.Entities.DataTransferObjects.JobApplication;
 using Project.Services.Contracts;
@@ -36,7 +37,7 @@ namespace Project.Presentation.Controller
                 return BadRequest("Job Application data is null");
 
             var createdJobApplication = await serviceManager.JobApplicationService.CreateJobApplication(jobApplicationDto);
-             return CreatedAtAction(nameof(GetApplicationsByCandidateId), new { candidateId = createdJobApplication.CandidateId }, createdJobApplication);
+             return CreatedAtAction(nameof(GetApplicationsByCandidateId), new { userId = createdJobApplication.UserId }, createdJobApplication);
         }
 
         [HttpGet("candidate/{candidateId}")]
@@ -55,6 +56,69 @@ namespace Project.Presentation.Controller
             await serviceManager.JobApplicationService.UpdateJobApplication(id, jobApplicationDto, true);
             return NoContent();
         }
+
+        [HttpPost("upload")]
+        public async Task<IActionResult> UploadResume([FromForm] IFormFile file, [FromForm] int jobApplicationId)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("No file uploaded.");
+            }
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", file.FileName);
+            
+            // Dosyayı kaydet
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // JobApplication verisini al
+            var jobApplication = await serviceManager.JobApplicationService.GetJobApplicationById(jobApplicationId, false);
+            if (jobApplication == null)
+            {
+                return NotFound($"Job application with ID {jobApplicationId} not found.");
+            }
+
+            // JobApplication'ı güncelle
+            var jobApplicationUpdateDto = new JobApplicationUpdateDto
+            {
+                ResumePath = "/uploads/" + file.FileName, // Web'e açık URL'i veritabanına kaydediyoruz
+            };
+
+            // Güncelleme işlemini yap
+            await serviceManager.JobApplicationService.UpdateJobApplication(jobApplicationId, jobApplicationUpdateDto, true);
+
+            // Dosya yolunu döndür
+            return Ok(new { FilePath = "/uploads/" + file.FileName });
+        }
+
+        [HttpGet("download/{id}")]
+        public async Task<IActionResult> DownloadResume(int id)
+        {
+            // Başvuru verisini al
+            var jobApplication = await serviceManager.JobApplicationService.GetJobApplicationById(id, false);
+            if (jobApplication == null)
+            {
+                return NotFound($"Job application with ID {id} not found.");
+            }
+
+            // CV dosyasının yolunu al
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", jobApplication.ResumePath.TrimStart('/'));
+
+            // Dosyayı var mı kontrol et
+            if (!System.IO.File.Exists(filePath))
+            {
+                return NotFound("File not found.");
+            }
+
+            // Dosyayı döndür
+            var fileBytes = System.IO.File.ReadAllBytes(filePath);
+            var fileName = Path.GetFileName(filePath);
+            return File(fileBytes, "application/octet-stream", fileName);
+        }
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteJobApplication(int id)

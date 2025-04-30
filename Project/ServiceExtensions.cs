@@ -51,6 +51,7 @@ public static class ServiceExtensions
         {
             options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
             options.AddPolicy("Worker", policy => policy.RequireRole("Worker"));
+            options.AddPolicy("Candidate", policy => policy.RequireRole("Candidate"));
         });
     }
 

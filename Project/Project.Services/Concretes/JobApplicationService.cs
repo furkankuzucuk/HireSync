@@ -55,7 +55,7 @@ namespace Project.Services.Concretes
         public async Task<IEnumerable<JobApplicationDto>> GetApplicationsByCandidateId(int candidateId)
         {
             var applications = await repositoryManager.JobApplicationRepository
-            .FindByCondition(a => a.CandidateId == candidateId, false)
+            .FindByCondition(a => a.UserId == candidateId, false)
             .ToListAsync();
             return mapper.Map<IEnumerable<JobApplicationDto>>(applications);
         }
@@ -70,5 +70,7 @@ namespace Project.Services.Concretes
             mapper.Map(jobApplication, jobApplicationEntity);
             await repositoryManager.Save();
         }
+
+        
     }
 }

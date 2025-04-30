@@ -5,7 +5,7 @@ namespace Project.Entities.DataTransferObjects.JobApplication
     {
         public int JobApplicationId { get; set; }
         public int JobListId { get; set; }
-        public int CandidateId {get; set;}
+        public int UserId {get; set;}
         public string AppMail { get; set; }
         public string Location { get; set; }
         public DateTime AppDate { get; set; }

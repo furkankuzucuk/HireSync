@@ -17,6 +17,15 @@ public class UserService : IUserService
         repositoryManager = manager;
         _mapper = mapper;
     }
+
+    public async Task<UserDto> CreateCandidateUser(UserDtoCandidateInsert user)
+    {
+        var userEntity = _mapper.Map<User>(user); //adayları ekleme fonksiyonu
+        repositoryManager.UserRepository.CreateUser(userEntity);
+        await repositoryManager.Save();
+        return _mapper.Map<UserDto>(userEntity);
+    }
+
     public async Task<UserDto> CreateUser(UserDtoInsertion user)
     {
         var userEntity = _mapper.Map<User>(user);

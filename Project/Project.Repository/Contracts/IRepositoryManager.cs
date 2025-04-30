@@ -16,5 +16,6 @@ public interface IRepositoryManager
     IExamRepository ExamRepository {get; }
     ICandidateRepository CandidateRepository {get; }
     IUserExamRepository UserExamRepository {get; }
+    IQuestonRepository QuestonRepository {get; }
     Task Save();
 }

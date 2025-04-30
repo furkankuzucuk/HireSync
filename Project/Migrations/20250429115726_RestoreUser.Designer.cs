@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.Repository;
 
@@ -11,9 +12,11 @@ using Project.Repository;
 namespace Project.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20250429115726_RestoreUser")]
+    partial class RestoreUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -144,15 +147,15 @@ namespace Project.Migrations
                     b.Property<DateTime>("AppDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("CandidateId")
+                        .HasColumnType("int");
+
                     b.Property<int>("JobListId")
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
 
                     b.HasKey("JobApplicationId");
 
@@ -174,10 +177,6 @@ namespace Project.Migrations
 
                     b.Property<int>("DepartmentId")
                         .HasColumnType("int");
-
-                    b.Property<string>("DepartmentName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()

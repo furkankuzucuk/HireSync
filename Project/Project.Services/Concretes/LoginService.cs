@@ -99,12 +99,13 @@ public class LoginService : ILoginService
     }
 
     private string GenerateJwtToken(Login user)
-{
+    {
+    var role = user.User.RoleName ?? "Candidate"; 
     var claims = new[]
     {
         new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
         new Claim(ClaimTypes.Name, user.UserName),
-        new Claim(ClaimTypes.Role, user.User.RoleName),
+        new Claim(ClaimTypes.Role, role),
     };
 
     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
