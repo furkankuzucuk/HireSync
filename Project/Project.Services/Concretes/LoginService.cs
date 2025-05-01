@@ -106,6 +106,7 @@ public class LoginService : ILoginService
         new Claim(JwtRegisteredClaimNames.Sub, user.UserId.ToString()),
         new Claim(ClaimTypes.Name, user.UserName),
         new Claim(ClaimTypes.Role, role),
+        new Claim("UserId", user.UserId.ToString()), 
     };
 
     var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));

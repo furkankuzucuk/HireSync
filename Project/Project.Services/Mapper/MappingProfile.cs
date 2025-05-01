@@ -22,6 +22,7 @@ public class MappingProfile : Profile
     {
             CreateMap<User,UserDto>().ReverseMap();
             CreateMap<UserDtoInsertion,User>().ReverseMap();
+            CreateMap<UserDtoCandidateInsert,User>().ReverseMap();
             CreateMap<UserDtoUpdate,User>().ReverseMap();
 
             CreateMap<Login,LoginDto>().ReverseMap();
