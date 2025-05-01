@@ -5,12 +5,8 @@
   text-align: center;
 }
 
-.hero img {
-  display: none;  /* Logo resmini kaldırıyoruz */
-}
-
 .hero h1 {
-  color: #007bff;  /* YAZI rengini mavi yapıyoruz */
+  color: #FFFF;  /* YAZI rengini mavi yapıyoruz */
 }
 
 .hero p {
@@ -45,4 +41,11 @@
 .btn-primary:hover {
   background-color: #0056b3;
   border-color: #0056b3;
+}
+.hero {
+  background: linear-gradient(to right, #0d6efd, #3b82f6);
+}
+
+img[alt="HireSync Logo"] {
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
 }

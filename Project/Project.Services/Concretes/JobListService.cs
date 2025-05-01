@@ -24,55 +24,67 @@ namespace Project.Services.Concretes
             if (jobListDto == null)
                 throw new ArgumentNullException(nameof(jobListDto), "İlan bilgileri boş olamaz.");
 
-            var department = await repositoryManager.DepartmentRepository.GetDepartmentById(jobListDto.DepartmentId,false).FirstOrDefaultAsync();
-            
-            if (department == null){
-                throw new EntityNotFoundException<Department>(jobListDto.DepartmentId);
-            }
-            var entity = mapper.Map<JobList>(jobListDto);
+            var department = await repositoryManager.DepartmentRepository
+                .GetDepartmentById(jobListDto.DepartmentId, false)
+                .FirstOrDefaultAsync();
 
-            entity.DepartmentName = department.DepartmentName;
-            // CreateDate'yi burada otomatik ayarla
+            if (department == null)
+                throw new EntityNotFoundException<Department>(jobListDto.DepartmentId);
+
+            var entity = mapper.Map<JobList>(jobListDto);
             entity.CreateDate = DateTime.Now;
 
             repositoryManager.JobListRepository.CreateJobList(entity);
             await repositoryManager.Save();
 
-            return mapper.Map<JobListDto>(entity);
-        }
-
-        public async Task DeleteJobList(int id, bool trackChanges)
-        {
-            var entity = await repositoryManager.JobListRepository
-                .GetJobListById(id, trackChanges)
+            // Entity'yi Department ile birlikte çekip DTO'ya dönüştür
+            var jobWithDepartment = await repositoryManager.JobListRepository
+                .GetJobListByIdWithDepartment(entity.JobListId, false)
                 .FirstOrDefaultAsync();
 
-            if (entity == null)
-                throw new EntityNotFoundException<JobList>(id);
-
-            repositoryManager.JobListRepository.DeleteJobList(entity);
-            await repositoryManager.Save();
+            return new JobListDto
+            {
+                JobListId = jobWithDepartment.JobListId,
+                DepartmentId = jobWithDepartment.DepartmentId,
+                DepartmentName = jobWithDepartment.Department?.DepartmentName,
+                Description = jobWithDepartment.Description,
+                CreateDate = jobWithDepartment.CreateDate
+            };
         }
 
         public async Task<IEnumerable<JobListDto>> GetAllJobLists(bool trackChanges)
         {
             var jobLists = await repositoryManager.JobListRepository
-                .GetAllJobLists(trackChanges)
+                .GetAllJobListsWithDepartment(trackChanges)
                 .ToListAsync();
 
-            return mapper.Map<IEnumerable<JobListDto>>(jobLists);
+            return jobLists.Select(j => new JobListDto
+            {
+                JobListId = j.JobListId,
+                DepartmentId = j.DepartmentId,
+                DepartmentName = j.Department?.DepartmentName,
+                Description = j.Description,
+                CreateDate = j.CreateDate
+            });
         }
 
         public async Task<JobListDto> GetJobListById(int id, bool trackChanges)
         {
-            var entity = await repositoryManager.JobListRepository
-                .GetJobListById(id, trackChanges)
+            var jobList = await repositoryManager.JobListRepository
+                .GetJobListByIdWithDepartment(id, trackChanges)
                 .FirstOrDefaultAsync();
 
-            if (entity == null)
+            if (jobList == null)
                 throw new EntityNotFoundException<JobList>(id);
 
-            return mapper.Map<JobListDto>(entity);
+            return new JobListDto
+            {
+                JobListId = jobList.JobListId,
+                DepartmentId = jobList.DepartmentId,
+                DepartmentName = jobList.Department?.DepartmentName,
+                Description = jobList.Description,
+                CreateDate = jobList.CreateDate
+            };
         }
 
         public async Task UpdateJobList(int id, JobListUpdateDto jobListDto, bool trackChanges)
@@ -85,7 +97,19 @@ namespace Project.Services.Concretes
                 throw new EntityNotFoundException<JobList>(id);
 
             mapper.Map(jobListDto, entity);
+            await repositoryManager.Save();
+        }
 
+        public async Task DeleteJobList(int id, bool trackChanges)
+        {
+            var entity = await repositoryManager.JobListRepository
+                .GetJobListById(id, trackChanges)
+                .FirstOrDefaultAsync();
+
+            if (entity == null)
+                throw new EntityNotFoundException<JobList>(id);
+
+            repositoryManager.JobListRepository.DeleteJobList(entity);
             await repositoryManager.Save();
         }
     }

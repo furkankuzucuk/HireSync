@@ -25,14 +25,11 @@ import WorkerHome from './pages/WorkerHome';
 import CandidateHome from './pages/CandidateHome';
 import ProtectedRoute from './pages/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
-
-
-
+import JobDetails from './pages/JobDetails'; // Eklenen component
 
 // Login sonrası yönlendirme component'ı
 const LoginPageWrapper = () => {
   const navigate = useNavigate();
-  const [loginState, setLoginState] = useState<'idle' | 'success'>('idle');
 
   const handleLoginSuccess = (role: string) => {
     if (role === "Admin") {
@@ -44,7 +41,6 @@ const LoginPageWrapper = () => {
     } else {
       alert("Yetkisiz kullanıcı rolü.");
     }
-    setLoginState('success');
   };
 
   return <LoginPage onLoginSuccess={handleLoginSuccess} />;
@@ -54,16 +50,17 @@ const App = () => {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<LandingPage />} />
-        {/* Landing Page */}
+
+        {/* Genel erişilebilir sayfalar */}
         <Route path="/" element={<LandingPage />} />
-        
-        {/* Login */}
         <Route path="/login" element={<LoginPageWrapper />} />
-        
-        {/* Protected Routes */}
+        <Route path="/job-details/:id" element={<JobDetails />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+
+        {/* Giriş gerektiren sayfalar */}
         <Route element={<ProtectedRoute />}>
-          
+
           {/* Admin Nested Routes */}
           <Route path="/admin-dashboard" element={<AdminDashboard />}>
             <Route index element={<AdminHome />} />
@@ -91,11 +88,7 @@ const App = () => {
 
         </Route>
 
-        {/* Forgot Password + Reset */}
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-
-        {/* Yakalanmayan URL'ler */}
+        {/* Hatalı URL yönlendirmesi */}
         <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>
