@@ -30,15 +30,28 @@ namespace Project.Presentation.Controller
             return Ok(jobApplication);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateJobApplication([FromBody] JobApplicationInsertDto jobApplicationDto)
+        [HttpPost] //başvuru oluşturma cv ile beraber 
+        public async Task<IActionResult> CreateJobApplication([FromForm] JobApplicationInsertDto jobApplicationDto, [FromForm] IFormFile file)
         {
-            if (jobApplicationDto == null)
-                return BadRequest("Job Application data is null");
+            if (jobApplicationDto == null || file == null || file.Length == 0)
+            {
+                return BadRequest("Job Application data or file is null.");
+            }
 
+            // Dosyayı kaydet
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", file.FileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Başvuru verisini kaydet
+            jobApplicationDto.ResumePath = "/uploads/" + file.FileName;  // Web URL
             var createdJobApplication = await serviceManager.JobApplicationService.CreateJobApplication(jobApplicationDto);
-             return CreatedAtAction(nameof(GetApplicationsByCandidateId), new { userId = createdJobApplication.UserId }, createdJobApplication);
+
+            return CreatedAtAction(nameof(GetJobApplicationById), new { id = createdJobApplication.JobApplicationId }, createdJobApplication);
         }
+
 
         [HttpGet("candidate/{candidateId}")]
         public async Task<IActionResult> GetApplicationsByCandidateId(int candidateId)
@@ -57,7 +70,7 @@ namespace Project.Presentation.Controller
             return NoContent();
         }
 
-        [HttpPost("upload")]
+        [HttpPost("upload")] 
         public async Task<IActionResult> UploadResume([FromForm] IFormFile file, [FromForm] int jobApplicationId)
         {
             if (file == null || file.Length == 0)
@@ -93,7 +106,7 @@ namespace Project.Presentation.Controller
             return Ok(new { FilePath = "/uploads/" + file.FileName });
         }
 
-        [HttpGet("download/{id}")]
+        [HttpGet("download/{id}")] //cv goruntuleme
         public async Task<IActionResult> DownloadResume(int id)
         {
             // Başvuru verisini al
