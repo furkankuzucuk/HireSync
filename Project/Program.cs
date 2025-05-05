@@ -6,25 +6,33 @@ using Project.Services.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Swagger ve diğer servisler
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigureServiceManager();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
 
-builder.Services.AddAutoMapper(typeof(MappingProfile)); // Profilin bulunduğu assembly'i belirtmek
-//builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);  
+// ✅ CORS EKLENDİ
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 builder.Services.AddControllers()
     .AddApplicationPart(typeof(Project.Presentation.AssemblyReference).Assembly);
 
-var app = builder.Build(); 
+var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Middleware pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -33,11 +41,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication();  
-app.UseAuthorization();  
+// ✅ CORS middleware'i AUTHENTICATION'dan ÖNCE çağrılmalı
+app.UseCors("AllowAll");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
-
-
