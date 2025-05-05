@@ -25,9 +25,10 @@ import WorkerHome from './pages/WorkerHome';
 import CandidateHome from './pages/CandidateHome';
 import ProtectedRoute from './pages/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
-import JobDetails from './pages/JobDetails'; // Eklenen component
+import JobDetails from './pages/JobDetails';
+import CandidateRegisterPage from './pages/CandidateRegisterPage';
 
-// Login sonrası yönlendirme component'ı
+// ✅ Login sonrası yönlendirme component'ı
 const LoginPageWrapper = () => {
   const navigate = useNavigate();
 
@@ -51,17 +52,18 @@ const App = () => {
     <Router>
       <Routes>
 
-        {/* Genel erişilebilir sayfalar */}
+        {/* 🔓 Genel erişilebilir sayfalar */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPageWrapper />} />
         <Route path="/job-details/:id" element={<JobDetails />} />
+        <Route path="/register" element={<CandidateRegisterPage />} /> {/* ✅ Başvuru (Kayıt) sayfası */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Giriş gerektiren sayfalar */}
+        {/* 🔒 Giriş gerektiren alanlar */}
         <Route element={<ProtectedRoute />}>
 
-          {/* Admin Nested Routes */}
+          {/* Admin Routes */}
           <Route path="/admin-dashboard" element={<AdminDashboard />}>
             <Route index element={<AdminHome />} />
             <Route path="jobs" element={<JobPostingManagement />} />
@@ -70,7 +72,7 @@ const App = () => {
             <Route path="leaves" element={<LeaveRequests />} />
           </Route>
 
-          {/* Worker Nested Routes */}
+          {/* Worker Routes */}
           <Route path="/worker-dashboard" element={<WorkerDashboard />}>
             <Route index element={<WorkerHome />} />
             <Route path="leave" element={<WorkerLeaveRequest />} />
@@ -79,7 +81,7 @@ const App = () => {
             <Route path="announcements" element={<WorkerAnnouncements />} />
           </Route>
 
-          {/* Candidate Nested Routes */}
+          {/* Candidate Routes */}
           <Route path="/candidate-dashboard" element={<CandidateDashboard />}>
             <Route index element={<CandidateHome />} />
             <Route path="jobs" element={<JobListings />} />
@@ -88,7 +90,7 @@ const App = () => {
 
         </Route>
 
-        {/* Hatalı URL yönlendirmesi */}
+        {/* ❌ Hatalı yol yönlendirmesi */}
         <Route path="*" element={<Navigate to="/" replace />} />
 
       </Routes>

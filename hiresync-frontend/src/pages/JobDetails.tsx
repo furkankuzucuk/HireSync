@@ -1,10 +1,12 @@
+// src/pages/JobDetails.tsx
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const JobDetails = () => {
   const { id } = useParams();
   const [job, setJob] = useState<any>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -18,6 +20,10 @@ const JobDetails = () => {
     fetchJob();
   }, [id]);
 
+  const handleApplyClick = () => {
+    navigate(`/register?jobListId=${id}`);
+  };
+
   if (!job) return <div className="container mt-5">Yükleniyor...</div>;
 
   return (
@@ -29,9 +35,12 @@ const JobDetails = () => {
         <div className="card-body p-4">
           <h5 className="card-title">Pozisyon Açıklaması</h5>
           <p className="card-text">{job.description}</p>
-          <hr />
           <p className="text-muted">Yayın Tarihi: {new Date(job.createDate).toLocaleDateString()}</p>
-          <Link to="/" className="btn btn-secondary mt-3">Geri Dön</Link>
+
+          <button className="btn btn-success me-2" onClick={handleApplyClick}>
+            Başvur
+          </button>
+          <Link to="/" className="btn btn-secondary">Geri Dön</Link>
         </div>
       </div>
     </div>
