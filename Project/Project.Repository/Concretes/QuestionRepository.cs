@@ -4,7 +4,7 @@ using Project.Repository.Contracts;
 
 namespace Project.Repository.Concretes;
 
-public class QuestionRepository : RepositoryBase<Question>, IQuestonRepository
+public class QuestionRepository : RepositoryBase<Question>, IQuestionRepository
 {
     public QuestionRepository(RepositoryContext context) : base(context)
     {

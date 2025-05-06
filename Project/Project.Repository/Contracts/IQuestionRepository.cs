@@ -3,7 +3,7 @@ using Project.Entities;
 
 namespace Project.Repository.Contracts;
 
-public interface IQuestonRepository : IRepositoryBase<Question>
+public interface IQuestionRepository : IRepositoryBase<Question>
 {
         IQueryable<Question> GetAllQuestions(bool trackChanges);
         IQueryable<Question> GetQuestionById(int id, bool trackChanges);

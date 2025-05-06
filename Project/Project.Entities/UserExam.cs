@@ -10,7 +10,7 @@ namespace Project.Entities
 
         public int ExamId { get; set; }
         public Exam Exam { get; set; }
-
+        public Dictionary<int, string> UserAnswers { get; set; } // QuestionId, UserAnswer şeklinde 
         public int Score { get; set; }
     }
 }

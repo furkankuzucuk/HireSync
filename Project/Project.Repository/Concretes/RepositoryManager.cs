@@ -19,7 +19,7 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ICandidateRepository> _candidateRepository;
     private readonly Lazy<IExamRepository> _examRepository;
     private readonly Lazy<IUserExamRepository> _userExamRepository;
-    private readonly Lazy<IQuestonRepository> _questionRepository;
+    private readonly Lazy<IQuestionRepository> _questionRepository;
 
     public RepositoryManager(RepositoryContext repositoryContext){
         _repositoryContext = repositoryContext;
@@ -35,7 +35,7 @@ public class RepositoryManager : IRepositoryManager
         _examRepository = new Lazy<IExamRepository>(() => new ExamRepository(_repositoryContext));
         _candidateRepository = new Lazy<ICandidateRepository>(() => new CandidateRepository(_repositoryContext));
         _userExamRepository = new Lazy<IUserExamRepository>(() => new UserExamRepository(_repositoryContext));
-        _questionRepository = new Lazy<IQuestonRepository>(() => new QuestionRepository(_repositoryContext));
+        _questionRepository = new Lazy<IQuestionRepository>(() => new QuestionRepository(_repositoryContext));
     }
 
     public IUserRepository UserRepository => _userRepository.Value;
@@ -50,7 +50,7 @@ public class RepositoryManager : IRepositoryManager
     public IExamRepository ExamRepository => _examRepository.Value;
     public ICandidateRepository CandidateRepository => _candidateRepository.Value;
     public IUserExamRepository UserExamRepository => _userExamRepository.Value;
-    public IQuestonRepository QuestonRepository => _questionRepository.Value;
+    public IQuestionRepository QuestionRepository => _questionRepository.Value;
 
     public async Task Save()
     {

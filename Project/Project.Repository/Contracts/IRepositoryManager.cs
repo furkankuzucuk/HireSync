@@ -1,4 +1,6 @@
 
+using Project.Repository.Concretes;
+
 namespace Project.Repository.Contracts;
 
 public interface IRepositoryManager
@@ -16,6 +18,6 @@ public interface IRepositoryManager
     IExamRepository ExamRepository {get; }
     ICandidateRepository CandidateRepository {get; }
     IUserExamRepository UserExamRepository {get; }
-    IQuestonRepository QuestonRepository {get; }
+    IQuestionRepository QuestionRepository {get; }
     Task Save();
 }
