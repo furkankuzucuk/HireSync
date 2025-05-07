@@ -1,5 +1,6 @@
 
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using Project.Repository.Contracts;
 using Project.Services.Contracts;
 
@@ -23,13 +24,15 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<IQuestionService> questionService;
     private readonly Lazy<IEmailService> emailService;
     private readonly IMapper mapper;
-    private SmtpSettings smtpSettings1;
+    
 
-    public ServiceManager(IRepositoryManager repositoryManager,IMapper mapper,IConfiguration configuration)
+    public ServiceManager(IRepositoryManager repositoryManager,IMapper mapper,IConfiguration configuration,IOptions<SmtpSettings> smtpSettings)
     {
         this.repositoryManager = repositoryManager;
+        this.mapper = mapper;
         userService = new Lazy<IUserService>(() => new UserService(repositoryManager,mapper));
-        loginService = new Lazy<ILoginService>(() => new LoginService(repositoryManager,mapper,configuration));
+        emailService = new Lazy<IEmailService>(() => new EmailService(smtpSettings));
+        loginService = new Lazy<ILoginService>(() => new LoginService(repositoryManager,mapper,configuration,emailService.Value));
         jobService = new Lazy<IJobService>(() => new JobService(repositoryManager,mapper));
         departmentService = new Lazy<IDepartmentService>(() => new DepartmentService(repositoryManager,mapper));
         jobApplicationService = new Lazy<IJobApplicationService> (() => new JobApplicationService(repositoryManager,mapper));
@@ -41,7 +44,6 @@ public class ServiceManager : IServiceManager
         candidateService = new Lazy<ICandidateService>(() => new CandidateService(repositoryManager,mapper));
         userExamService = new Lazy<IUserExamService>(() => new UserExamService(repositoryManager,mapper));
         questionService = new Lazy<IQuestionService>(() => new QuestionService(repositoryManager,mapper));
-        emailService = new Lazy<IEmailService>(() => new EmailService(smtpSettings1));
     }
 
     public IUserService UserService => userService.Value;
@@ -57,5 +59,6 @@ public class ServiceManager : IServiceManager
     public ICandidateService CandidateService => candidateService.Value;
     public IUserExamService UserExamService => userExamService.Value;
     public IQuestionService QuestionService => questionService.Value;
+    public IEmailService EmailService => emailService.Value;
     public async Task SaveAsync() => await repositoryManager.Save();
 }

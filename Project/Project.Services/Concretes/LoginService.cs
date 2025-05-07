@@ -20,11 +20,12 @@ public class LoginService : ILoginService
     private readonly IConfiguration _configuration;
     private IEmailService _emailService;
 
-    public LoginService(IRepositoryManager repositoryManager, IMapper mapper, IConfiguration configuration)
+    public LoginService(IRepositoryManager repositoryManager, IMapper mapper, IConfiguration configuration,IEmailService emailService)
     {
         this.repositoryManager = repositoryManager;
         this.mapper = mapper;
         _configuration = configuration;
+        _emailService = emailService;
     }
 
     public async Task<LoginDto> CreateLogin(LoginDtoInsertion loginDto)

@@ -18,10 +18,11 @@ builder.Services.ConfigureServiceManager();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
-var smtpSettings = builder.Configuration.GetSection("SmtpSettings").Get<SmtpSettings>();
+//var smtpSettings = builder.Configuration.GetSection("SmtpSettings").Get<SmtpSettings>();
 
 // Email servisini kaydet
-builder.Services.AddSingleton(smtpSettings);
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 
 // ✅ CORS EKLENDİ

@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Project.Services.Contracts;
 
 namespace Project.Services.Concretes
@@ -9,9 +10,9 @@ namespace Project.Services.Concretes
     {
         private readonly SmtpSettings _smtpSettings;
 
-        public EmailService(SmtpSettings smtpSettings)
+        public EmailService(IOptions<SmtpSettings> smtpSettings)
         {
-            _smtpSettings = smtpSettings;
+            _smtpSettings = smtpSettings.Value ?? throw new ArgumentNullException(nameof(smtpSettings));
         }
 
         public async Task SendPasswordResetEmailAsync(string email, string resetLink)
@@ -29,7 +30,9 @@ namespace Project.Services.Concretes
             {
                 Port = _smtpSettings.Port,
                 Credentials = new NetworkCredential(_smtpSettings.Username, _smtpSettings.Password),
-                EnableSsl = _smtpSettings.EnableSsl
+                EnableSsl = _smtpSettings.EnableSsl,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false // Bu önemli!
             };
 
             await smtpClient.SendMailAsync(mailMessage);
