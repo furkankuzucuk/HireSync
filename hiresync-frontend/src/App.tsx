@@ -39,7 +39,8 @@ const LoginPageWrapper = () => {
       navigate('/worker-dashboard');
     } else if (role === "Candidate") {
       navigate('/candidate-dashboard');
-    } else {
+    }
+    else {
       alert("Yetkisiz kullanıcı rolü.");
     }
   };

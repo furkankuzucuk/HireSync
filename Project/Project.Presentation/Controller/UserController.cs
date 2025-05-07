@@ -44,15 +44,20 @@ namespace Project.Presentation.Controller;
             return CreatedAtAction(nameof(GetUserById), new { id = createdUser.UserId }, createdUser);
         }
 
-        [HttpPost("create-candidate")] //ADAY ekleme isteği
-        public async Task<IActionResult> CreateCandidateUser([FromBody] UserDtoCandidateInsert user)
-        {
-            if(user is null){
-                return BadRequest("User data is null");
-            }
-            var createdUser = await serviceManager.UserService.CreateCandidateUser(user);
-            return CreatedAtAction(nameof(GetUserById), new { id = createdUser.UserId }, createdUser);
-        }
+        [HttpPost("create-candidate")] //Aday ekleme isteği
+public async Task<IActionResult> CreateCandidateUser([FromBody] UserDtoCandidateInsert user)
+{
+    if(user is null)
+    {
+        return BadRequest("User data is null");
+    }
+
+    // RoleName zaten "Candidate" olarak atanacağı için burada ayrıca bir kontrol yapmamıza gerek yok
+    var createdUser = await serviceManager.UserService.CreateCandidateUser(user);
+    return CreatedAtAction(nameof(GetUserById), new { id = createdUser.UserId }, createdUser);
+}
+
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] UserDtoUpdate user)

@@ -1,16 +1,16 @@
-// src/pages/JobDetails.tsx
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const JobDetails = () => {
-  const { id } = useParams();
-  const [job, setJob] = useState<any>(null);
-  const navigate = useNavigate();
+  const { id } = useParams(); // İlanın ID'sini alıyoruz
+  const [job, setJob] = useState<any>(null); // İlan verilerini tutacak state
+  const navigate = useNavigate(); // Sayfa yönlendirmesi için kullanacağız
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
+        // İlan detaylarını API'den alıyoruz
         const response = await axios.get(`http://localhost:5065/api/joblists/${id}`);
         setJob(response.data);
       } catch (error) {
@@ -21,6 +21,7 @@ const JobDetails = () => {
   }, [id]);
 
   const handleApplyClick = () => {
+    // Başvur butonuna tıklandığında kullanıcıyı aday kaydı sayfasına yönlendiriyoruz
     navigate(`/register?jobListId=${id}`);
   };
 
@@ -37,9 +38,12 @@ const JobDetails = () => {
           <p className="card-text">{job.description}</p>
           <p className="text-muted">Yayın Tarihi: {new Date(job.createDate).toLocaleDateString()}</p>
 
+          {/* Başvuru butonuna tıklandığında kullanıcılara başvuru formuna yönlendirme */}
           <button className="btn btn-success me-2" onClick={handleApplyClick}>
             Başvur
           </button>
+
+          {/* Geri dön butonu */}
           <Link to="/" className="btn btn-secondary">Geri Dön</Link>
         </div>
       </div>
