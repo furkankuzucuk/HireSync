@@ -31,23 +31,19 @@ namespace Project.Presentation.Controller
         }
 
         [HttpPost] //başvuru oluşturma cv ile beraber 
-        public async Task<IActionResult> CreateJobApplication([FromForm] JobApplicationInsertDto jobApplicationDto, [FromForm] IFormFile file)
+        public async Task<IActionResult> CreateJobApplication([FromBody] JobApplicationInsertDto jobApplicationDto)
         {
-            if (jobApplicationDto == null || file == null || file.Length == 0)
+            if (jobApplicationDto == null)
             {
                 return BadRequest("Job Application data or file is null.");
             }
-
-            // Dosyayı kaydet
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", file.FileName);
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(stream);
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null){
+                return Unauthorized("User ID not found in token.");
             }
-
-            // Başvuru verisini kaydet
-            jobApplicationDto.ResumePath = "/uploads/" + file.FileName;  // Web URL
-            var createdJobApplication = await serviceManager.JobApplicationService.CreateJobApplication(jobApplicationDto);
+            int userId = int.Parse(userIdClaim.Value);
+ 
+            var createdJobApplication = await serviceManager.JobApplicationService.CreateJobApplication(userId,jobApplicationDto);
 
             return CreatedAtAction(nameof(GetJobApplicationById), new { id = createdJobApplication.JobApplicationId }, createdJobApplication);
         }

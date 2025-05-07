@@ -18,6 +18,7 @@ public class LoginService : ILoginService
     private readonly IRepositoryManager repositoryManager;
     private readonly IMapper mapper;
     private readonly IConfiguration _configuration;
+    private IEmailService _emailService;
 
     public LoginService(IRepositoryManager repositoryManager, IMapper mapper, IConfiguration configuration)
     {
@@ -128,5 +129,44 @@ public class LoginService : ILoginService
         using var sha256 = SHA256.Create();
         var hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
         return BitConverter.ToString(hashedBytes).Replace("-", "").ToLower();
+    }
+
+    public async Task<bool> GeneratePasswordResetToken(string email)
+    {
+        var login = await repositoryManager.LoginRepository.GetLoginByEmailAsync(email, false);
+        if (login == null) return false;
+
+        // Token oluştur (örneğin GUID)
+        var token = Guid.NewGuid().ToString();
+        login.PasswordResetToken = token;
+        login.ResetTokenExpires = DateTime.UtcNow.AddHours(1); // 1 saat geçerli
+        
+        repositoryManager.LoginRepository.UpdateLogin(login);
+        await repositoryManager.Save();
+
+        // Email gönder
+        var resetLink = $"https://yourapp.com/reset-password?token={token}";
+        await _emailService.SendPasswordResetEmailAsync(email, resetLink);
+
+        return true;
+    }
+
+    public async Task<bool> ResetPassword(string token, string newPassword)
+    {
+        var login = await repositoryManager.LoginRepository.GetLoginByResetTokenAsync(token, false);
+        if (login == null || login.ResetTokenExpires < DateTime.UtcNow)
+        {
+            return false;
+        }
+
+        // Şifreyi güncelle
+        login.Password = HashPassword(newPassword); // Şifreleme yönteminize göre güncelleyin
+        login.PasswordResetToken = null;
+        login.ResetTokenExpires = null;
+        
+        repositoryManager.LoginRepository.UpdateLogin(login);
+        await repositoryManager.Save();
+
+        return true;
     }
 }

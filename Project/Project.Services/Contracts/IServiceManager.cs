@@ -16,4 +16,5 @@ public interface IServiceManager
     IExamService ExamService {get; }
     IQuestionService QuestionService {get; }
     IUserExamService UserExamService {get;}
+    IEmailService EmailService {get;}
 }

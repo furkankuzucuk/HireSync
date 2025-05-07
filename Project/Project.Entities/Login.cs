@@ -11,4 +11,7 @@ namespace Project.Entities;
      public string Mail {get; set;}
      public DateTime CreatedAt { get; set; }
      public DateTime? LastLogin { get; set; }
+
+     public string? PasswordResetToken { get; set; }
+     public DateTime? ResetTokenExpires { get; set; }
  }

@@ -19,9 +19,10 @@ namespace Project.Services.Concretes
             this.mapper = mapper;
         }
 
-        public async Task<JobApplicationDto> CreateJobApplication(JobApplicationInsertDto jobApplication)
+        public async Task<JobApplicationDto> CreateJobApplication(int userId,JobApplicationInsertDto jobApplication)
         {
             var jobApplicationEntity = mapper.Map<JobApplication>(jobApplication);
+            jobApplicationEntity.UserId = userId;
             repositoryManager.JobApplicationRepository.CreateJobApplication(jobApplicationEntity);
             await repositoryManager.Save();
             return mapper.Map<JobApplicationDto>(jobApplicationEntity);

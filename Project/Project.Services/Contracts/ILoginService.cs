@@ -9,4 +9,7 @@ public interface ILoginService
     Task UpdateLogin (int id,LoginDtoUpdate loginDto,bool trackChanges);
     Task<LoginDto> CreateLogin (LoginDtoInsertion loginDto);
     Task<LoginResponseDto> AuthenticateUser(LoginAuthenticationDto loginDto);
+
+    Task<bool> GeneratePasswordResetToken(string email);
+    Task<bool> ResetPassword(string token, string newPassword);
 }

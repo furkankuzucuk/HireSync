@@ -21,7 +21,9 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<ICandidateService> candidateService;
     private readonly Lazy<IUserExamService> userExamService;
     private readonly Lazy<IQuestionService> questionService;
+    private readonly Lazy<IEmailService> emailService;
     private readonly IMapper mapper;
+    private SmtpSettings smtpSettings1;
 
     public ServiceManager(IRepositoryManager repositoryManager,IMapper mapper,IConfiguration configuration)
     {
@@ -39,6 +41,7 @@ public class ServiceManager : IServiceManager
         candidateService = new Lazy<ICandidateService>(() => new CandidateService(repositoryManager,mapper));
         userExamService = new Lazy<IUserExamService>(() => new UserExamService(repositoryManager,mapper));
         questionService = new Lazy<IQuestionService>(() => new QuestionService(repositoryManager,mapper));
+        emailService = new Lazy<IEmailService>(() => new EmailService(smtpSettings1));
     }
 
     public IUserService UserService => userService.Value;

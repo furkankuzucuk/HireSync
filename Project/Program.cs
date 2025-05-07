@@ -2,6 +2,9 @@ using System.Reflection;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Project.Services;
+using Project.Services.Concretes;
+using Project.Services.Contracts;
 using Project.Services.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,11 @@ builder.Services.ConfigureServiceManager();
 builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddAuthenticationAndAuthorization(builder.Configuration);
+var smtpSettings = builder.Configuration.GetSection("SmtpSettings").Get<SmtpSettings>();
+
+// Email servisini kaydet
+builder.Services.AddSingleton(smtpSettings);
+
 
 // ✅ CORS EKLENDİ
 builder.Services.AddCors(options =>

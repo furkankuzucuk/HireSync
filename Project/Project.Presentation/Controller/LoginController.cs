@@ -75,5 +75,48 @@ namespace Project.Presentation.Controller
 
             return Ok(loginResponse); // Token ve role ile birlikte başarılı giriş
         }
+
+        [HttpPost("forgot-password")] //emaili giren kullanıcı bu isteği göndermeli
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
+        {
+            if (forgotPasswordDto == null || string.IsNullOrEmpty(forgotPasswordDto.Email))
+            {
+                return BadRequest("Email is required.");
+            }
+
+            var result = await _serviceManager.LoginService.GeneratePasswordResetToken(forgotPasswordDto.Email);
+            
+            if (!result)
+            {
+                // Güvenlik nedeniyle her zaman başarılı gibi gösteriyoruz
+                return Ok("If your email is registered, you will receive a password reset link.");
+            }
+
+            return Ok("If your email is registered, you will receive a password reset link.");
+        }
+
+    // POST api/login/reset-password
+       [HttpPost("reset-password")] //şifre sıfırlama sayfasında kullanıcı bu isteği atar
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+        {
+            if (resetPasswordDto == null)
+            {
+                return BadRequest("Invalid reset data.");
+            }
+
+            if (resetPasswordDto.NewPassword != resetPasswordDto.ConfirmPassword)
+            {
+                return BadRequest("Passwords do not match.");
+            }
+
+            var result = await _serviceManager.LoginService.ResetPassword(resetPasswordDto.Token, resetPasswordDto.NewPassword);
+            
+            if (!result)
+            {
+                return BadRequest("Invalid or expired token.");
+            }
+
+            return Ok("Password has been reset successfully.");
+        }
     }
 }
