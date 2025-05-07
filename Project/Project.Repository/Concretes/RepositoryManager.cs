@@ -1,6 +1,7 @@
 
 using Microsoft.EntityFrameworkCore.Storage;
 using Project.Repository.Contracts;
+using Project.Services.Contracts;
 
 namespace Project.Repository.Concretes;
 
@@ -16,6 +17,8 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ILeaveRequestRepository> _leaveRepository;
     private readonly Lazy<IPerformanceReviewRepository> _performanceRepository;
     private readonly Lazy<ISatisfactionSurveyRepository> _satisfactionSurveyRepository;
+    private readonly Lazy<ISurveyAnswerRepository> _surveyAnswerRepository;
+    private readonly Lazy<ISurveyQuestionRepository> _surveyQuestionRepository;
     private readonly Lazy<ICandidateRepository> _candidateRepository;
     private readonly Lazy<IExamRepository> _examRepository;
     private readonly Lazy<IUserExamRepository> _userExamRepository;
@@ -36,6 +39,8 @@ public class RepositoryManager : IRepositoryManager
         _candidateRepository = new Lazy<ICandidateRepository>(() => new CandidateRepository(_repositoryContext));
         _userExamRepository = new Lazy<IUserExamRepository>(() => new UserExamRepository(_repositoryContext));
         _questionRepository = new Lazy<IQuestionRepository>(() => new QuestionRepository(_repositoryContext));
+        _surveyAnswerRepository = new Lazy<ISurveyAnswerRepository>(() => new SurveyAnswerRepository(_repositoryContext));
+        _surveyQuestionRepository = new Lazy<ISurveyQuestionRepository>(() => new SurveyQuestionRepository(_repositoryContext));
     }
 
     public IUserRepository UserRepository => _userRepository.Value;
@@ -51,6 +56,8 @@ public class RepositoryManager : IRepositoryManager
     public ICandidateRepository CandidateRepository => _candidateRepository.Value;
     public IUserExamRepository UserExamRepository => _userExamRepository.Value;
     public IQuestionRepository QuestionRepository => _questionRepository.Value;
+    public ISurveyAnswerRepository SurveyAnswerRepository => _surveyAnswerRepository.Value;
+    public ISurveyQuestionRepository SurveyQuestionRepository => _surveyQuestionRepository.Value;
 
     public async Task Save()
     {

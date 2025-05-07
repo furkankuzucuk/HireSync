@@ -1,5 +1,6 @@
 
 using Project.Repository.Concretes;
+using Project.Services.Contracts;
 
 namespace Project.Repository.Contracts;
 
@@ -15,6 +16,8 @@ public interface IRepositoryManager
     ILeaveRequestRepository LeaveRequestRepository {get; }
     IPerformanceReviewRepository PerformanceReviewRepository {get; }
     ISatisfactionSurveyRepository SatisfactionSurveyRepository {get; }
+    ISurveyAnswerRepository SurveyAnswerRepository {get; }
+    ISurveyQuestionRepository SurveyQuestionRepository {get; }
     IExamRepository ExamRepository {get; }
     ICandidateRepository CandidateRepository {get; }
     IUserExamRepository UserExamRepository {get; }

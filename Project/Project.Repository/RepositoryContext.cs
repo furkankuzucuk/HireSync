@@ -16,6 +16,8 @@ public class RepositoryContext : DbContext
     public DbSet<PerformanceReview> PerformanceReviews { get; set; }
     public DbSet<JobApplication> JobApplications { get; set; }  // JobApplication DbSet eklendi
     public DbSet<SatisfactionSurvey> SatisfactionSurveys {get; set;}
+    public DbSet<SurveyAnswer> SurveyAnswers {get; set;}
+    public DbSet<SurveyQuestion> SurveyQuestions {get; set;}
     public DbSet<JobList> JobLists {get; set;}
     public DbSet<Candidate> Candidates {get; set;}
     public DbSet<UserExam> UserExams {get; set;}
