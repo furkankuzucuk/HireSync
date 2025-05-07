@@ -77,28 +77,29 @@ public class LoginService : ILoginService
         await repositoryManager.Save();
     }
 
-    public async Task<LoginResponseDto> AuthenticateUser(LoginAuthenticationDto loginDto)
+   public async Task<LoginResponseDto> AuthenticateUser(LoginAuthenticationDto loginDto)
+{
+    // 🔥 Giriş şifresini hash'liyoruz
+    var hashedPassword = HashPassword(loginDto.Password);
+
+    var loginJW = await repositoryManager.LoginRepository
+        .FindByCondition(u => u.UserName == loginDto.UserName && u.Password == hashedPassword, false)
+        .Include(u => u.User)
+        .FirstOrDefaultAsync();
+
+    if (loginJW == null || loginJW.User == null)
+        return null;
+
+    var role = loginJW.User.RoleName ?? "NULL"; // Role null ise "NULL" dönecek
+    var token = GenerateJwtToken(loginJW);
+
+    return new LoginResponseDto
     {
-        // 🔥 Giriş şifresini hash'liyoruz
-        var hashedPassword = HashPassword(loginDto.Password);
+        Token = token,
+        Role = role
+    };
+}
 
-        var loginJW = await repositoryManager.LoginRepository
-            .FindByCondition(u => u.UserName == loginDto.UserName && u.Password == hashedPassword, false)
-            .Include(u => u.User)
-            .FirstOrDefaultAsync();
-
-        if (loginJW == null || loginJW.User == null)
-            return null;
-
-        var role = loginJW.User.RoleName;
-        var token = GenerateJwtToken(loginJW);
-
-        return new LoginResponseDto
-        {
-            Token = token,
-            Role = role
-        };
-    }
 
     private string GenerateJwtToken(Login user)
     {

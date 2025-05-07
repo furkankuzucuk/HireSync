@@ -1,4 +1,3 @@
-
 namespace Project.Entities.DataTransferObjects.User;
 
 public class UserDtoCandidateInsert
@@ -11,4 +10,6 @@ public class UserDtoCandidateInsert
     public string Address { get; set; }
     public DateTime Birthday { get; set; }
     
+    // RoleName'i dışarıdan almayacağız, burada "Candidate" olarak otomatik ayarlayacağız.
+    public string RoleName { get; set; } = "Candidate";  // Default olarak Candidate olacak
 }
