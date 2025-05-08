@@ -32,5 +32,10 @@ namespace Project.Repository.Concretes
         {
             Update(answer);
         }
+
+        public IQueryable<SurveyAnswer> GetSurveyAnswerById(int answerId, bool trackChanges)
+        {
+             return FindByCondition(a => a.SurveyAnswerId == answerId, trackChanges);
+        }
     }
 }
