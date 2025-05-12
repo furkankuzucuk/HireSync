@@ -19,9 +19,10 @@ namespace Project.Services.Concretes
             _mapper = mapper;
         }
 
-        public async Task<SurveyAnswerDto> CreateSurveyAnswer(SurveyAnswerInsertDto answerDto)
+        public async Task<SurveyAnswerDto> CreateSurveyAnswer(int userId,SurveyAnswerInsertDto answerDto)
         {
             var answerEntity = _mapper.Map<SurveyAnswer>(answerDto);
+            answerEntity.UserId = userId;
             _repositoryManager.SurveyAnswerRepository.CreateSurveyAnswer(answerEntity);
             await _repositoryManager.Save();
             return _mapper.Map<SurveyAnswerDto>(answerEntity);
@@ -54,6 +55,24 @@ namespace Project.Services.Concretes
                 .ToListAsync();
             return _mapper.Map<IEnumerable<SurveyAnswerDto>>(answers);
         }
+
+        public async Task SubmitSurveyAnswers(int userId, SurveySubmissionDto submission)
+        {
+            foreach (var answerDto in submission.Answers)
+            {
+                var answer = new SurveyAnswer
+                {
+                    SurveyQuestionId = answerDto.SurveyQuestionId,
+                    UserId = userId,
+                    Answer = answerDto.Answer
+                };
+
+                _repositoryManager.SurveyAnswerRepository.CreateSurveyAnswer(answer);
+            }
+
+            await _repositoryManager.Save();
+        }
+
 
         public async Task DeleteSurveyAnswer(int id, bool trackChanges)
         {

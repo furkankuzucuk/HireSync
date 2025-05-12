@@ -31,6 +31,20 @@ namespace Project.Presentation.Controller
             return Ok(surveyQuestion);
         }
 
+        [HttpGet("survey/{surveyId}")]
+        public async Task<IActionResult> GetSurveyQuestionsBySurveyId(int surveyId)
+        {
+            var questions = await serviceManager.SurveyQuestionService.GetSurveyQuestionsBySurveyId(surveyId, false);
+            return Ok(questions);
+        }
+
+        [HttpGet("results/{surveyId}")]
+        public async Task<IActionResult> GetSurveyResults(int surveyId)
+        {
+            var results = await serviceManager.SurveyQuestionService.GetSurveyResultsGroupedByQuestion(surveyId);
+            return Ok(results);
+        }
+
         // POST api/surveyquestions
         [HttpPost]
         public async Task<IActionResult> CreateSurveyQuestion([FromBody] SurveyQuestionInsertDto surveyQuestionDto)

@@ -42,7 +42,13 @@ namespace Project.Presentation.Controller
             if (userExamDto == null)
                 return BadRequest("User exam data is null.");
 
-            var createdUserExam = await _serviceManager.UserExamService.CreateUser(userExamDto);
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null){
+                return Unauthorized("User ID not found in token.");
+            }
+            int userId = int.Parse(userIdClaim.Value);
+
+            var createdUserExam = await _serviceManager.UserExamService.CreateUser(userId,userExamDto);
             return CreatedAtAction(nameof(GetUserExamById), new { id = createdUserExam.UserExamId }, createdUserExam);
         }
 

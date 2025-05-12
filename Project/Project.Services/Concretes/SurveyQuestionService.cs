@@ -46,6 +46,15 @@ namespace Project.Services.Concretes
             return _mapper.Map<SurveyQuestionDto>(question);
         }
 
+        public async Task<IEnumerable<SurveyQuestionDto>> GetSurveyQuestionsBySurveyId(int surveyId, bool trackChanges)
+        {
+            var questions = await _repositoryManager.SurveyQuestionRepository
+                .GetSurveyQuestionsBySurveyId(surveyId, trackChanges)
+                .ToListAsync();
+
+            return _mapper.Map<IEnumerable<SurveyQuestionDto>>(questions);
+        }
+
         public async Task DeleteSurveyQuestion(int id, bool trackChanges)
         {
             var question = await _repositoryManager.SurveyQuestionRepository
@@ -58,6 +67,25 @@ namespace Project.Services.Concretes
             _repositoryManager.SurveyQuestionRepository.DeleteSurveyQuestion(question);
             await _repositoryManager.Save();
         }
+
+        public async Task<IEnumerable<SurveyQuestionResultDto>> GetSurveyResultsGroupedByQuestion(int surveyId)
+        {
+            var questions = await _repositoryManager.SurveyQuestionRepository
+                .FindByCondition(q => q.SatisfactionSurveyId == surveyId, false)
+                .Include(q => q.SurveyAnswers)
+                .ToListAsync();
+
+            var resultList = questions.Select(q => new SurveyQuestionResultDto
+            {
+                QuestionText = q.QuestionText,
+                AnswerDistribution = q.SurveyAnswers
+                    .GroupBy(a => a.Answer)
+                    .ToDictionary(g => g.Key, g => g.Count())
+            });
+
+            return resultList;
+        }
+
 
         public async Task UpdateSurveyQuestion(int id,SurveyQuestionUpdateDto surveyQuestionDto,bool trackChanges)
         {

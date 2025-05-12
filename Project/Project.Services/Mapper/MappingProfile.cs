@@ -11,6 +11,7 @@ using Project.Entities.DataTransferObjects.LeaveRequest;
 using Project.Entities.DataTransferObjects.Login;
 using Project.Entities.DataTransferObjects.PerformanceReview;
 using Project.Entities.DataTransferObjects.SatisfactionSurvey;
+using Project.Entities.DataTransferObjects.SurveyAnswer;
 using Project.Entities.DataTransferObjects.User;
 
 namespace Project.Services.Mapper
@@ -63,6 +64,14 @@ namespace Project.Services.Mapper
             CreateMap<SatisfactionSurvey, SatisfactionSurveyDto>().ReverseMap();
             CreateMap<SatisfactionSurveyInsertDto, SatisfactionSurvey>().ReverseMap();
             CreateMap<SatisfactionSurveyUpdateDto, SatisfactionSurvey>().ReverseMap();
+
+            CreateMap<SurveyAnswer, SurveyAnswerDto>().ReverseMap();
+            CreateMap<SurveyAnswerInsertDto, SurveyAnswer>().ReverseMap();
+            CreateMap<SurveyAnswerUpdateDto, SurveyAnswer>().ReverseMap();
+
+            CreateMap<SurveyQuestion, SurveyQuestionDto>().ReverseMap();
+            CreateMap<SurveyQuestionInsertDto, SurveyQuestion>().ReverseMap();
+            CreateMap<SurveyQuestionUpdateDto, SurveyQuestion>().ReverseMap();
 
             // Exam
             CreateMap<Exam, ExamDto>().ReverseMap();

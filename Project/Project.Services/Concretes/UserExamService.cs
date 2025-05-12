@@ -20,9 +20,10 @@ namespace Project.Services.Concretes
             _mapper = mapper;
         }
 
-        public async Task<UserExamDto> CreateUser(UserExamInsertDto userExamDto)
+        public async Task<UserExamDto> CreateUser(int userId,UserExamInsertDto userExamDto)
         {
             var userExamEntity = _mapper.Map<UserExam>(userExamDto);
+            userExamEntity.UserId = userId;
             _repositoryManager.UserExamRepository.CreateUser(userExamEntity);
             await _repositoryManager.Save();
             return _mapper.Map<UserExamDto>(userExamEntity);
