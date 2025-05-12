@@ -1,20 +1,41 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Import axios
 import '../css/ForgotPassword.css';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // For showing loading state
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate email input
     if (!email) {
       setError("Lütfen geçerli bir e-posta adresi girin.");
       return;
     }
-    // Backend'e gönderilecek: POST /api/request-reset-password
-    console.log("E-posta gönderildi:", email);
-    setSent(true);
+
+    setLoading(true); // Start loading indicator
+    setError(''); // Clear previous errors
+
+    try {
+      // Make API call to the back-end
+      const response = await axios.post('/api/forgot-password', { email });
+
+      // Handle successful response
+      if (response.status === 200) {
+        setSent(true); // Set success state to show success message
+      } else {
+        setError("Beklenmedik bir hata oluştu. Lütfen tekrar deneyin.");
+      }
+    } catch (err) {
+      // Handle error response
+      setError("Bir hata oluştu. Lütfen tekrar deneyin.");
+    } finally {
+      setLoading(false); // Stop loading indicator
+    }
   };
 
   return (
@@ -33,7 +54,7 @@ const ForgotPassword = () => {
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
-                  setError(''); // Hata mesajını temizle
+                  setError(''); // Clear error message when user types
                 }}
                 required
                 className="input-field"
@@ -41,7 +62,9 @@ const ForgotPassword = () => {
               />
               {error && <p className="error-message">{error}</p>}
             </div>
-            <button type="submit" className="submit-button">Bağlantı Gönder</button>
+            <button type="submit" className="submit-button" disabled={loading}>
+              {loading ? 'Gönderiliyor...' : 'Bağlantı Gönder'}
+            </button>
           </form>
         )}
       </div>
