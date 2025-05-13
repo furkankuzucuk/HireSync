@@ -30,7 +30,7 @@ namespace Project.Presentation.Controller
             return Ok(survey);
         }
 
-        [HttpGet("user")]
+        [HttpGet("user-department")]
         [Authorize]
         public async Task<IActionResult> GetSurveysForLoggedInUser()
         {

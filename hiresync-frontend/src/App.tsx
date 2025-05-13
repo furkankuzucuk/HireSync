@@ -53,20 +53,20 @@ const LoginPageWrapper = () => {
 };
 
 const App = () => {
-  const [surveyId, setSurveyId] = useState(1); // Example survey ID
-  const [questions, setQuestions] = useState([]);
+ // const [surveyId, setSurveyId] = useState(1); // Example survey ID
+  //const [questions, setQuestions] = useState([]);
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      try {
-        const response = await getSurveyQuestions(surveyId); // Fetch survey questions
-        setQuestions(response);
-      } catch (error) {
-        alert('Error fetching survey questions.');
-      }
-    };
-    fetchQuestions();
-  }, [surveyId]);
+  // useEffect(() => {
+  //   const fetchQuestions = async () => {
+  //     try {
+  //       const response = await getSurveyQuestions(surveyId); // Fetch survey questions
+  //       setQuestions(response);
+  //     } catch (error) {
+  //       alert('Error fetching survey questions.');
+  //     }
+  //   };
+  //   fetchQuestions();
+  // }, [surveyId]);
 
   return (
     <Router>
@@ -108,8 +108,8 @@ const App = () => {
           </Route>
 
           {/* Survey Routes */}
-          <Route path="/survey/:surveyId" element={<SurveyForm surveyId={surveyId} questions={questions} />} />
-          <Route path="/survey-result/:surveyId" element={<SurveyResult surveyId={surveyId} />} />
+          <Route path="/survey/:surveyId" element={<SurveyForm />} />
+          
         </Route>
 
         {/* ❌ Invalid route handling */}
