@@ -22,6 +22,5 @@ public interface IRepositoryManager
     ICandidateRepository CandidateRepository {get; }
     IUserExamRepository UserExamRepository {get; }
     IQuestionRepository QuestionRepository {get; }
-    IUserAnswerRepository UserAnswerRepository {get; }
     Task Save();
 }
