@@ -51,19 +51,12 @@ namespace Project.Presentation.Controller
 
         // POST api/surveyanswers
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> CreateSurveyAnswer([FromBody] SurveyAnswerInsertDto surveyAnswerDto)
         {
             if (surveyAnswerDto == null)
                 return BadRequest("Survey answer data is null");
-            
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
-            if (userIdClaim == null){
-                return Unauthorized("User ID not found in token.");
-            }
-            int userId = int.Parse(userIdClaim.Value);
 
-            var createdSurveyAnswer = await serviceManager.SurveyAnswerService.CreateSurveyAnswer(userId,surveyAnswerDto);
+            var createdSurveyAnswer = await serviceManager.SurveyAnswerService.CreateSurveyAnswer(surveyAnswerDto);
             return CreatedAtAction(nameof(GetSurveyAnswerById), new { id = createdSurveyAnswer.SurveyAnswerId }, createdSurveyAnswer);
         }
 

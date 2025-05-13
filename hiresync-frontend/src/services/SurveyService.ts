@@ -1,52 +1,35 @@
-import axios from 'axios';
+export const getSurveysForUser = async () => {
+  const token = localStorage.getItem('token');
 
-const API_URL = 'http://localhost:5065/api'; // Backend URL
+  const response = await fetch('/api/satisfactionsurveys/user-department', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-// Define the type for surveyData (you should adjust this type based on the actual structure of your data)
-interface SurveyData {
-  answers: Array<{
-    questionId: number;
-    answer: string;
-  }>;
-}
-
-// Anketi gönderme
-export const submitSurveyAnswers = async (userId: number, surveyData: SurveyData): Promise<any> => {
-  try {
-    const response = await axios.post(`${API_URL}/surveyanswers/submit`, surveyData, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error submitting survey:", error);
-    throw error;
+  if (!response.ok) {
+    throw new Error(`Survey fetch failed with status ${response.status}`);
   }
+
+  return await response.json();
 };
 
-// Anket sonuçlarını getirme
-export const getSurveyResults = async (surveyId: number): Promise<any> => {
-  try {
-    const response = await axios.get(`${API_URL}/surveyanswers/results/${surveyId}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-      }
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error getting survey results:", error);
-    throw error;
-  }
-};
+export const getSurveyById = async (id: number) => {
+  const token = localStorage.getItem('token');
 
-// Anket sorularını almak
-export const getSurveyQuestions = async (surveyId: number): Promise<any> => {
-    try {
-      const response = await axios.get(`${API_URL}/surveyquestions/survey/${surveyId}`);
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching survey questions:', error);
-      throw error;
-    }
+  const response = await fetch(`/api/satisfactionsurveys/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Survey fetch by ID failed with status ${response.status}`);
+  }
+
+  return await response.json();
 };

@@ -19,10 +19,9 @@ namespace Project.Services.Concretes
             _mapper = mapper;
         }
 
-        public async Task<SurveyAnswerDto> CreateSurveyAnswer(int userId,SurveyAnswerInsertDto answerDto)
+        public async Task<SurveyAnswerDto> CreateSurveyAnswer(SurveyAnswerInsertDto answerDto)
         {
             var answerEntity = _mapper.Map<SurveyAnswer>(answerDto);
-            answerEntity.UserId = userId;
             _repositoryManager.SurveyAnswerRepository.CreateSurveyAnswer(answerEntity);
             await _repositoryManager.Save();
             return _mapper.Map<SurveyAnswerDto>(answerEntity);
@@ -63,7 +62,6 @@ namespace Project.Services.Concretes
                 var answer = new SurveyAnswer
                 {
                     SurveyQuestionId = answerDto.SurveyQuestionId,
-                    UserId = userId,
                     Answer = answerDto.Answer
                 };
 

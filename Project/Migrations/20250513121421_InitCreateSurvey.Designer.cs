@@ -12,8 +12,8 @@ using Project.Repository;
 namespace Project.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20250506110951_JobAppInitial")]
-    partial class JobAppInitial
+    [Migration("20250513121421_InitCreateSurvey")]
+    partial class InitCreateSurvey
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -250,6 +250,12 @@ namespace Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PasswordResetToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ResetTokenExpires")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -340,15 +346,57 @@ namespace Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SurveyType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("SatisfactionSurveyId");
 
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("SatisfactionSurveys");
+                });
+
+            modelBuilder.Entity("Project.Entities.SurveyAnswer", b =>
+                {
+                    b.Property<int>("SurveyAnswerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SurveyAnswerId"));
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SurveyQuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SurveyAnswerId");
+
+                    b.HasIndex("SurveyQuestionId");
+
+                    b.ToTable("SurveyAnswers");
+                });
+
+            modelBuilder.Entity("Project.Entities.SurveyQuestion", b =>
+                {
+                    b.Property<int>("SurveyQuestionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SurveyQuestionId"));
+
+                    b.Property<string>("QuestionText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("QuestionType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SatisfactionSurveyId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SurveyQuestionId");
+
+                    b.ToTable("SurveyQuestions");
                 });
 
             modelBuilder.Entity("Project.Entities.User", b =>
@@ -513,6 +561,17 @@ namespace Project.Migrations
                     b.Navigation("Department");
                 });
 
+            modelBuilder.Entity("Project.Entities.SurveyAnswer", b =>
+                {
+                    b.HasOne("Project.Entities.SurveyQuestion", "SurveyQuestion")
+                        .WithMany("SurveyAnswers")
+                        .HasForeignKey("SurveyQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SurveyQuestion");
+                });
+
             modelBuilder.Entity("Project.Entities.User", b =>
                 {
                     b.HasOne("Project.Entities.Job", "Job")
@@ -556,6 +615,11 @@ namespace Project.Migrations
             modelBuilder.Entity("Project.Entities.Job", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Project.Entities.SurveyQuestion", b =>
+                {
+                    b.Navigation("SurveyAnswers");
                 });
 
             modelBuilder.Entity("Project.Entities.User", b =>

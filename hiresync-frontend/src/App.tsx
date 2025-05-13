@@ -28,9 +28,9 @@ import LandingPage from './pages/LandingPage';
 import JobDetails from './pages/JobDetails';
 import CandidateRegisterPage from './pages/CandidateRegisterPage';
 
-import SurveyForm from './pages/SurveyForm';
-import SurveyResult from './pages/SurveyResult';
-import { getSurveyQuestions } from './services/SurveyService';
+import SurveyList from "./pages/SurveyList";
+import SurveyDetail from "./pages/SurveyDetail";
+import SurveyResults from "./pages/SurveyResults"; // varsa geçmiş yanıtlar için
 
 // ✅ Login sonrası yönlendirme component'ı
 const LoginPageWrapper = () => {
@@ -93,10 +93,13 @@ const App = () => {
 
           {/* Worker Routes */}
           <Route path="/worker-dashboard" element={<WorkerDashboard />}>
-            <Route index element={<WorkerHome />} />
-            <Route path="leave" element={<WorkerLeaveRequest />} />
-            <Route path="training" element={<WorkerTraining />} />
-            <Route path="surveys" element={<WorkerSurveys />} />
+             <Route index element={<WorkerHome />} />
+             <Route path="leave" element={<WorkerLeaveRequest />} />
+             <Route path="training" element={<WorkerTraining />} />
+             <Route index element={<div>Çalışan Ana Sayfası</div>} />
+             <Route path="surveys" element={<SurveyList />} />
+             <Route path="surveys/:id" element={<SurveyDetail />} />
+             <Route path="surveys/results" element={<SurveyResults />} />
             <Route path="announcements" element={<WorkerAnnouncements />} />
           </Route>
 
@@ -108,7 +111,7 @@ const App = () => {
           </Route>
 
           {/* Survey Routes */}
-          <Route path="/survey/:surveyId" element={<SurveyForm />} />
+          
           
         </Route>
 

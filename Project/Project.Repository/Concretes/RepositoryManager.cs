@@ -23,7 +23,6 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<IExamRepository> _examRepository;
     private readonly Lazy<IUserExamRepository> _userExamRepository;
     private readonly Lazy<IQuestionRepository> _questionRepository;
-    private readonly Lazy<IUserAnswerRepository> _userAnswerRepository;
 
     public RepositoryManager(RepositoryContext repositoryContext){
         _repositoryContext = repositoryContext;
@@ -42,7 +41,6 @@ public class RepositoryManager : IRepositoryManager
         _questionRepository = new Lazy<IQuestionRepository>(() => new QuestionRepository(_repositoryContext));
         _surveyAnswerRepository = new Lazy<ISurveyAnswerRepository>(() => new SurveyAnswerRepository(_repositoryContext));
         _surveyQuestionRepository = new Lazy<ISurveyQuestionRepository>(() => new SurveyQuestionRepository(_repositoryContext));
-        _userAnswerRepository = new Lazy<IUserAnswerRepository>(() => new UserAnswerRepository(_repositoryContext));
     }
 
     public IUserRepository UserRepository => _userRepository.Value;
@@ -60,7 +58,6 @@ public class RepositoryManager : IRepositoryManager
     public IQuestionRepository QuestionRepository => _questionRepository.Value;
     public ISurveyAnswerRepository SurveyAnswerRepository => _surveyAnswerRepository.Value;
     public ISurveyQuestionRepository SurveyQuestionRepository => _surveyQuestionRepository.Value;
-    public IUserAnswerRepository UserAnswerRepository => _userAnswerRepository.Value;
 
     public async Task Save()
     {

@@ -5,7 +5,7 @@ namespace Project.Services.Contracts;
 
 public interface ISurveyAnswerService
 {
-     public Task<SurveyAnswerDto> CreateSurveyAnswer(int userId,SurveyAnswerInsertDto answerDto);
+     public Task<SurveyAnswerDto> CreateSurveyAnswer(SurveyAnswerInsertDto answerDto);
      public Task<IEnumerable<SurveyAnswerDto>> GetAllSurveyAnswers(bool trackChanges);
       public Task<SurveyAnswerDto> GetSurveyAnswerById(int id, bool trackChanges);
       public Task<IEnumerable<SurveyAnswerDto>> GetSurveyAnswersByQuestionId(int questionId, bool trackChanges);
