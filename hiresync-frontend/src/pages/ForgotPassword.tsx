@@ -1,73 +1,61 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Import axios
-import '../css/ForgotPassword.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // For showing loading state
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Validate email input
+
     if (!email) {
       setError("Lütfen geçerli bir e-posta adresi girin.");
       return;
     }
 
-    setLoading(true); // Start loading indicator
-    setError(''); // Clear previous errors
+    setLoading(true);
+    setError('');
 
     try {
-      // Make API call to the back-end
-      const response = await axios.post('/api/forgot-password', { email });
-
-      // Handle successful response
-      if (response.status === 200) {
-        setSent(true); // Set success state to show success message
-      } else {
-        setError("Beklenmedik bir hata oluştu. Lütfen tekrar deneyin.");
-      }
-    } catch (err) {
-      // Handle error response
+      await axios.post('/api/login/forgot-password', { email });
+      
+      // ✅ 2 saniye sonra login ekranına yönlendir
+      setTimeout(() => {
+        navigate('/login');
+      }, 2000);
+    } catch {
       setError("Bir hata oluştu. Lütfen tekrar deneyin.");
     } finally {
-      setLoading(false); // Stop loading indicator
+      setLoading(false);
     }
   };
 
   return (
-    <div className="forgot-password-container">
-      <div className="forgot-password-card">
-        <h2>🔐 Şifre Sıfırlama</h2>
-        {sent ? (
-          <p className="success-message">Sıfırlama bağlantısı e-postanıza gönderildi.</p>
-        ) : (
-          <form onSubmit={handleSubmit}>
-            <div className="input-group">
-              <label htmlFor="email">E-Posta</label>
-              <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setError(''); // Clear error message when user types
-                }}
-                required
-                className="input-field"
-                placeholder="E-posta adresinizi girin"
-              />
-              {error && <p className="error-message">{error}</p>}
-            </div>
-            <button type="submit" className="submit-button" disabled={loading}>
-              {loading ? 'Gönderiliyor...' : 'Bağlantı Gönder'}
-            </button>
-          </form>
-        )}
-      </div>
+    <div>
+      <h2>🔐 Şifre Sıfırlama</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="email"
+          placeholder="E-posta adresiniz"
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError('');
+          }}
+        />
+        {error && <p>{error}</p>}
+        <button type="submit" disabled={loading}>
+          {loading ? "Gönderiliyor..." : "Sıfırlama Linki Gönder"}
+        </button>
+      </form>
+
+      {/* ✅ Gönderildikten sonra bilgilendirme */}
+      {!loading && error === '' && email !== '' && (
+        <p>Mail gönderildi. Giriş ekranına yönlendiriliyorsunuz...</p>
+      )}
     </div>
   );
 };

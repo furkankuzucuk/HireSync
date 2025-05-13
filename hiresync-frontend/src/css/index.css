@@ -1,7 +1,7 @@
-.index-main{
-    width: 100vw;
+.index-main {
+    width: 100%;
     margin: 0;
     padding: 0;
-    height: 100vh;
-
+    height: 100%;
+    box-sizing: border-box;
 }

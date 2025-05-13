@@ -1,6 +1,7 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import "../css/CandidateDashboard.css";
+import useLogout from "./useLogout";
 
 const CandidateDashboard = () => {
   return (
