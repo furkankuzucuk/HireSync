@@ -17,6 +17,7 @@ import WorkerTraining from './pages/WorkerTraining';
 import CandidateDashboard from './pages/CandidateDashboard';
 import ApplicationStatus from './pages/ApplicationStatus';
 import JobListings from './pages/JobListings';
+import UploadResume from './pages/UploadResume'; // ✅ YENİ: CV yükleme bileşeni
 
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
@@ -28,7 +29,6 @@ import LandingPage from './pages/LandingPage';
 import JobDetails from './pages/JobDetails';
 import CandidateRegisterPage from './pages/CandidateRegisterPage';
 
-// ✅ Login sonrası yönlendirme component'ı
 const LoginPageWrapper = () => {
   const navigate = useNavigate();
 
@@ -39,8 +39,7 @@ const LoginPageWrapper = () => {
       navigate('/worker-dashboard');
     } else if (role === "Candidate") {
       navigate('/candidate-dashboard');
-    }
-    else {
+    } else {
       alert("Yetkisiz kullanıcı rolü.");
     }
   };
@@ -57,7 +56,7 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPageWrapper />} />
         <Route path="/job-details/:id" element={<JobDetails />} />
-        <Route path="/register" element={<CandidateRegisterPage />} /> {/* ✅ Başvuru (Kayıt) sayfası */}
+        <Route path="/register" element={<CandidateRegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
@@ -87,6 +86,7 @@ const App = () => {
             <Route index element={<CandidateHome />} />
             <Route path="jobs" element={<JobListings />} />
             <Route path="status" element={<ApplicationStatus />} />
+            <Route path="upload-resume" element={<UploadResume />} /> {/* ✅ EKLENDİ */}
           </Route>
 
         </Route>

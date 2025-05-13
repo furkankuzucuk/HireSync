@@ -1,7 +1,6 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import "../css/CandidateDashboard.css";
-import useLogout from "./useLogout";
 
 const CandidateDashboard = () => {
   return (
@@ -15,10 +14,13 @@ const CandidateDashboard = () => {
           <li>
             <Link to="/candidate-dashboard/status">📄 Başvuru Durumu</Link>
           </li>
+          <li>
+            <Link to="/candidate-dashboard/upload-resume">📤 CV Yükle</Link>
+          </li>
         </ul>
       </aside>
       <main className="content">
-        <Outlet /> {/* Alt route componentlerini burada göstereceğiz */}
+        <Outlet />
       </main>
     </div>
   );
