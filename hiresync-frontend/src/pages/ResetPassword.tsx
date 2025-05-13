@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import zxcvbn from 'zxcvbn'; // Şifre gücünü ölçmek için kullanılır
-import '../css/ResetPassword.css'; // CSS dosyasını unutma
+import axios from 'axios';
+import zxcvbn from 'zxcvbn';
 
 const ResetPassword = () => {
   const [params] = useSearchParams();
@@ -10,80 +10,61 @@ const ResetPassword = () => {
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [done, setDone] = useState(false);
-  const [strength, setStrength] = useState(0); // Şifre gücü
   const [error, setError] = useState('');
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    const result = zxcvbn(newPassword); // Şifreyi değerlendir
-    setStrength(result.score); // Skoru güncelle
-    setError('');
-  };
-
-  const handleConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setConfirm(e.target.value);
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (password !== confirm) {
-      setError('Şifreler eşleşmiyor.');
+    if (!token) {
+      setError("Bağlantı geçersiz.");
       return;
     }
 
-    if (strength < 3) {
-      setError('Şifreniz yeterince güçlü değil. Lütfen daha karmaşık bir şifre girin.');
+    if (password !== confirm) {
+      setError("Şifreler uyuşmuyor.");
+      return;
+    }
+
+    if (zxcvbn(password).score < 3) {
+      setError("Şifre çok zayıf.");
       return;
     }
 
     try {
-      // Burada API'ye reset şifresi gönderilecek
-      console.log('Yeni şifre:', password, 'Token:', token);
-      // Şifre sıfırlama işlemi başarılıysa
+      await axios.post('/api/login/reset-password', {
+        token,
+        newPassword: password,
+        confirmPassword: confirm
+      });
       setDone(true);
-    } catch (err) {
-      setError('Bir hata oluştu. Lütfen tekrar deneyin.');
+    } catch {
+      setError("Token geçersiz veya süresi dolmuş.");
     }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '80px auto' }}>
+    <div>
       <h2>🔑 Yeni Şifre Belirle</h2>
       {done ? (
-        <p>Şifreniz başarıyla sıfırlandı! Artık giriş yapabilirsiniz.</p>
+        <p>Şifreniz başarıyla güncellendi. Giriş yapabilirsiniz.</p>
       ) : (
         <form onSubmit={handleSubmit}>
-          <label>Yeni Şifre:</label>
           <input
             type="password"
+            placeholder="Yeni şifre"
             value={password}
-            onChange={handlePasswordChange}
-            required
-            style={{ width: "100%", padding: "10px", marginBottom: "12px" }}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError('');
+            }}
           />
-
-          {/* Şifre Güçlü Zayıf Barı */}
-          <div className="password-strength-bar">
-            <div
-              className="password-strength"
-              style={{ width: `${(strength + 1) * 20}%` }}
-            ></div>
-          </div>
-
-          <label>Şifreyi Tekrar Girin:</label>
           <input
             type="password"
+            placeholder="Tekrar girin"
             value={confirm}
-            onChange={handleConfirmChange}
-            required
-            style={{ width: "100%", padding: "10px", marginBottom: "16px" }}
+            onChange={(e) => setConfirm(e.target.value)}
           />
-
-          {/* Hata Mesajları */}
-          {error && <p className="error-message">{error}</p>}
-
+          {error && <p>{error}</p>}
           <button type="submit">Şifreyi Sıfırla</button>
         </form>
       )}
