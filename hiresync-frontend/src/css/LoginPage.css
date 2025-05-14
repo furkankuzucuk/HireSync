@@ -1,103 +1,18 @@
-/* Genel sayfa arka planı */
-body, html, .login-page {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: #2c3e50; /* Lacivert arka plan */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: 'Arial', sans-serif;
+.login-background {
+  background: linear-gradient(-45deg, #1e3c72, #2a5298, #00c9ff, #92fe9d);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  font-family: 'Segoe UI', sans-serif;
 }
 
-/* Login kutusu */
-.login-container {
-  background-color: #ffffff;
-  padding: 40px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  width: 100%;
-  max-width: 400px;
-}
-
-/* Başlık */
-h2 {
-  text-align: center;
-  color: #2c3e50;
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-/* Etiketler */
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #555;
-}
-
-/* Inputlar */
-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-/* Buton */
-button {
-  width: 100%;
-  padding: 12px;
-  background-color: #34495e;
-  color: #ffffff;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #2c3e50;
-}
-
-/* Hata mesajı */
-.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-
-/* Başarı mesajı */
-.success {
-  background-color: #d4edda;
-  color: #155724;
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  text-align: center;
-  font-weight: bold;
-}
-
-/* Footer Linkleri */
-.footer-links {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.footer-links a {
-  color: #3498db;
-  text-decoration: none;
-  font-size: 14px;
-  margin: 0 5px;
-}
-
-.footer-links a:hover {
-  text-decoration: underline;
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

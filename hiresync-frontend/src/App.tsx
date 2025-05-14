@@ -17,6 +17,7 @@ import WorkerTraining from './pages/WorkerTraining';
 import CandidateDashboard from './pages/CandidateDashboard';
 import ApplicationStatus from './pages/ApplicationStatus';
 import JobListings from './pages/JobListings';
+import UploadResume from './pages/UploadResume'; // ✅ YENİ: CV yükleme bileşeni
 
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
@@ -77,6 +78,7 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPageWrapper />} />
         <Route path="/job-details/:id" element={<JobDetails />} />
+        <Route path="/register" element={<CandidateRegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
@@ -113,6 +115,7 @@ const App = () => {
             <Route index element={<CandidateHome />} />
             <Route path="jobs" element={<JobListings />} />
             <Route path="status" element={<ApplicationStatus />} />
+            <Route path="upload-resume" element={<UploadResume />} /> {/* ✅ EKLENDİ */}
           </Route>
 
           {/* Survey Routes */}

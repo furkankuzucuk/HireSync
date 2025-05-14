@@ -1,24 +1,59 @@
 import React from "react";
-import { Outlet, Link } from "react-router-dom";
-import "../css/CandidateDashboard.css";
+import { NavLink, Outlet } from "react-router-dom";
 import useLogout from "./useLogout";
+import "../css/CandidateDashboard.css";
 
 const CandidateDashboard = () => {
+  const logout = useLogout();
+  const username = localStorage.getItem("username");
+
   return (
-    <div className="candidate-dashboard">
-      <aside className="sidebar">
-        <h2>Aday Paneli</h2>
-        <ul>
-          <li>
-            <Link to="/candidate-dashboard">📌 İş İlanları</Link>
-          </li>
-          <li>
-            <Link to="/candidate-dashboard/status">📄 Başvuru Durumu</Link>
-          </li>
-        </ul>
+    <div className="d-flex min-vh-100">
+      {/* Sidebar */}
+      <aside className="sidebar bg-dark text-white p-4 d-flex flex-column">
+        <div className="mb-4 text-center">
+          <h4>Aday Paneli</h4>
+          <p className="small">👤 {username}</p>
+        </div>
+
+        <nav className="nav flex-column gap-2 flex-grow-1">
+          <NavLink
+            to="/candidate-dashboard"
+            end
+            className={({ isActive }) =>
+              `nav-link sidebar-link ${isActive ? "active" : ""}`
+            }
+          >
+            📌 İş İlanları
+          </NavLink>
+
+          <NavLink
+            to="/candidate-dashboard/status"
+            className={({ isActive }) =>
+              `nav-link sidebar-link ${isActive ? "active" : ""}`
+            }
+          >
+            📄 Başvuru Durumu
+          </NavLink>
+
+          <NavLink
+            to="/candidate-dashboard/upload-resume"
+            className={({ isActive }) =>
+              `nav-link sidebar-link ${isActive ? "active" : ""}`
+            }
+          >
+            📤 CV Yükle
+          </NavLink>
+        </nav>
+
+        <button onClick={logout} className="btn btn-danger mt-4 w-100">
+          🚪 Çıkış Yap
+        </button>
       </aside>
-      <main className="content">
-        <Outlet /> {/* Alt route componentlerini burada göstereceğiz */}
+
+      {/* Main content */}
+      <main className="flex-grow-1 bg-light p-5">
+        <Outlet />
       </main>
     </div>
   );
