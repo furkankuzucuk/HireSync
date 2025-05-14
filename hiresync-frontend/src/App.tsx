@@ -26,14 +26,12 @@ import CandidateHome from './pages/CandidateHome';
 import ProtectedRoute from './pages/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
 import JobDetails from './pages/JobDetails';
-import CandidateRegisterPage from './pages/CandidateRegisterPage';
 
 import SurveyList from "./pages/SurveyList";
 import SurveyDetail from "./pages/SurveyDetail";
 import SurveyResults from "./pages/SurveyResults"; // varsa geçmiş yanıtlar için
 import SurveyAdminList from './pages/SurveyAdminList';
 
-// ✅ Login sonrası yönlendirme component'ı
 const LoginPageWrapper = () => {
   const navigate = useNavigate();
 
@@ -44,8 +42,7 @@ const LoginPageWrapper = () => {
       navigate('/worker-dashboard');
     } else if (role === "Candidate") {
       navigate('/candidate-dashboard');
-    }
-    else {
+    } else {
       alert("Yetkisiz kullanıcı rolü.");
     }
   };
@@ -77,7 +74,6 @@ const App = () => {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPageWrapper />} />
         <Route path="/job-details/:id" element={<JobDetails />} />
-        <Route path="/register" element={<CandidateRegisterPage />} /> {/* ✅ Candidate Register page */}
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
