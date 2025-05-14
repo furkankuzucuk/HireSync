@@ -12,3 +12,9 @@ export interface SurveyAnswerSummary {
   satisfactionSurveyId: number;
   surveyTitle: string;
 }
+
+export interface SurveyQuestion {
+  surveyQuestionId: number;
+  questionText: string;
+  questionType: string;
+}

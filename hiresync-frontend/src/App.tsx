@@ -32,6 +32,9 @@ import SurveyList from "./pages/SurveyList";
 import SurveyDetail from "./pages/SurveyDetail";
 import SurveyResults from "./pages/SurveyResults"; // varsa geçmiş yanıtlar için
 import SurveyAdminList from './pages/SurveyAdminList';
+import SurveyCreate from './pages/SurveyCreate';
+import SurveyAddQuestion from './pages/SurveyAddQuestion';
+import SurveyEdit from './pages/SurveyEdit';
 
 const LoginPageWrapper = () => {
   const navigate = useNavigate();
@@ -89,6 +92,9 @@ const App = () => {
             <Route path="performance" element={<PerformanceAnalysis />} />
             <Route path="/admin-dashboard/survey-results" element={<SurveyAdminList />} />
             <Route path="/admin-dashboard/survey-results/:id" element={<SurveyResults />} />
+            <Route path="/admin-dashboard/survey-create" element={<SurveyCreate />} />
+            <Route path="/admin-dashboard/survey-add-question/:id" element={<SurveyAddQuestion />} />
+            <Route path="/admin-dashboard/survey-edit/:id" element={<SurveyEdit />} />
             <Route path="leaves" element={<LeaveRequests />} />
           </Route>
 

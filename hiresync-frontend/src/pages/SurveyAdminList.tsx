@@ -20,9 +20,30 @@ const SurveyAdminList = () => {
                         <button onClick={() => navigate(`/admin-dashboard/survey-results/${survey.satisfactionSurveyId}`)}>
                             Sonuçları Göster
                             </button>
+                             <button
+                            onClick={() =>
+                            navigate(`/admin-dashboard/survey-edit/${survey.satisfactionSurveyId}`)
+                            }
+                            style={{ marginLeft: '10px', backgroundColor: '#f39c12', color: 'white' }}
+                        >
+                            Güncelle
+                        </button>
                     </li>
                 ))}
             </ul>
+             <button
+                onClick={() => navigate('/admin-dashboard/survey-create')}
+                style={{
+                marginTop: '20px',
+                padding: '10px 20px',
+                backgroundColor: '#2c3e50',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '5px',
+                }}
+            >
+                ➕ Yeni Anket Oluştur
+            </button>
         </div>
     );
 };
