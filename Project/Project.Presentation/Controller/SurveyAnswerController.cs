@@ -33,18 +33,12 @@ namespace Project.Presentation.Controller
         }
 
         [HttpPost("submit")]
-        [Authorize]
         public async Task<IActionResult> SubmitSurveyAnswers([FromBody] SurveySubmissionDto submission)
         {
             if (submission == null || submission.Answers == null || !submission.Answers.Any())
                 return BadRequest("Invalid submission data");
 
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
-            if (userIdClaim == null)
-                return Unauthorized("User ID not found in token");
-
-            int userId = int.Parse(userIdClaim.Value);
-            await serviceManager.SurveyAnswerService.SubmitSurveyAnswers(userId, submission);
+            await serviceManager.SurveyAnswerService.SubmitSurveyAnswers(submission);
             return Ok("Survey submitted successfully");
         }
 

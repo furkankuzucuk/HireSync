@@ -24,14 +24,14 @@ const SurveyDetail = () => {
     const handleSubmit = async () => {
         const submission = {
             satisfactionSurveyId: parseInt(id!),
-            answers: Object.entries(answers).map(([questionId, answerText]) => ({
+            answers: Object.entries(answers).map(([questionId, answer]) => ({
                 surveyQuestionId: parseInt(questionId),
-                answerText,
+                answer,
             }))
         };
-
+        console.log("Gönderilen veri:", submission);
         try {
-            console.log("Gönderilen veri:", submission);
+            
             await submitSurveyAnswers(submission);
             alert("✅ Anket başarıyla gönderildi!");
             navigate('/worker-dashboard/surveys'); // Anket listesine dön

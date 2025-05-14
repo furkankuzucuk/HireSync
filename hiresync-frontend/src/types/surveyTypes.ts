@@ -1,6 +1,14 @@
+export interface SurveyAnswerInsertDto {
+  surveyQuestionId: number;
+  answer: string; // ✅ Doğru alan adı
+}
+
 export interface SurveySubmissionDto {
-    answers: {
-        surveyQuestionId: number;
-        answerText: string;
-    }[];
+  satisfactionSurveyId: number;
+  answers: SurveyAnswerInsertDto[];
+}
+
+export interface SurveyAnswerSummary {
+  satisfactionSurveyId: number;
+  surveyTitle: string;
 }

@@ -16,7 +16,7 @@ export const submitSurveyAnswers = async (submission: SurveySubmissionDto) => {
     throw new Error(`Answer submission failed with status ${response.status}`);
   }
 
-  return await response.json();
+  return await response.text();
 };
 
 export const getSubmittedSurveys = async () => {

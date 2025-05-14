@@ -31,6 +31,7 @@ import CandidateRegisterPage from './pages/CandidateRegisterPage';
 import SurveyList from "./pages/SurveyList";
 import SurveyDetail from "./pages/SurveyDetail";
 import SurveyResults from "./pages/SurveyResults"; // varsa geçmiş yanıtlar için
+import SurveyAdminList from './pages/SurveyAdminList';
 
 // ✅ Login sonrası yönlendirme component'ı
 const LoginPageWrapper = () => {
@@ -88,6 +89,8 @@ const App = () => {
             <Route path="jobs" element={<JobPostingManagement />} />
             <Route path="exams" element={<OnlineExam />} />
             <Route path="performance" element={<PerformanceAnalysis />} />
+            <Route path="/admin-dashboard/survey-results" element={<SurveyAdminList />} />
+            <Route path="/admin-dashboard/survey-results/:id" element={<SurveyResults />} />
             <Route path="leaves" element={<LeaveRequests />} />
           </Route>
 

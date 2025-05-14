@@ -55,7 +55,7 @@ namespace Project.Services.Concretes
             return _mapper.Map<IEnumerable<SurveyAnswerDto>>(answers);
         }
 
-        public async Task SubmitSurveyAnswers(int userId, SurveySubmissionDto submission)
+        public async Task SubmitSurveyAnswers(SurveySubmissionDto submission)
         {
             foreach (var answerDto in submission.Answers)
             {
