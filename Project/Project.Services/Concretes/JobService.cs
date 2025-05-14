@@ -18,6 +18,14 @@ namespace Project.Services.Concretes
             this.repositoryManager = repositoryManager;
             this.mapper = mapper;
         }
+public async Task<IEnumerable<JobDto>> GetJobsByDepartmentId(int departmentId, bool trackChanges)
+{
+    var jobs = await repositoryManager.JobRepository
+        .FindByCondition(j => j.DepartmentId == departmentId, trackChanges)
+        .ToListAsync();
+
+    return mapper.Map<IEnumerable<JobDto>>(jobs);
+}
 
         public async Task<JobDto> CreateJob(JobInsertDto jobDto)
         {

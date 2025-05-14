@@ -20,47 +20,52 @@ namespace Project.Services.Mapper
     {
         public MappingProfile()
         {
-            // User
+            // USER
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<UserDtoInsertion, User>().ReverseMap();
             CreateMap<UserDtoCandidateInsert, User>().ReverseMap();
             CreateMap<UserDtoUpdate, User>().ReverseMap();
 
-            // Login
+            // LOGIN
             CreateMap<Login, LoginDto>().ReverseMap();
             CreateMap<LoginDtoInsertion, Login>().ReverseMap();
             CreateMap<LoginDtoUpdate, Login>().ReverseMap();
 
-            // Job
+            // JOB
             CreateMap<Job, JobDto>().ReverseMap();
             CreateMap<JobInsertDto, Job>().ReverseMap();
             CreateMap<JobUpdateDto, Job>().ReverseMap();
 
-            // Department
+            // DEPARTMENT
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<DepartmentInsertDto, Department>().ReverseMap();
             CreateMap<DepartmentUpdateDto, Department>().ReverseMap();
 
-            // Job Application
+            // JOB APPLICATION
             CreateMap<JobApplication, JobApplicationDto>().ReverseMap();
             CreateMap<JobApplicationInsertDto, JobApplication>().ReverseMap();
             CreateMap<JobApplicationUpdateDto, JobApplication>().ReverseMap();
 
-            // JobList (sadece Insert ve Update için)
+            // JOB LIST
+            CreateMap<JobList, JobListDto>()
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.DepartmentName))
+                .ForMember(dest => dest.JobName, opt => opt.MapFrom(src => src.Job.JobName)) // Job entity bağlıysa JobName al
+                .ReverseMap();
+
             CreateMap<JobListInsertDto, JobList>().ReverseMap();
             CreateMap<JobListUpdateDto, JobList>().ReverseMap();
 
-            // Leave Request
+            // LEAVE REQUEST
             CreateMap<LeaveRequest, LeaveRequestDto>().ReverseMap();
             CreateMap<LeaveRequestInsertDto, LeaveRequest>().ReverseMap();
             CreateMap<LeaveRequestUpdateDto, LeaveRequest>().ReverseMap();
 
-            // Performance Review
+            // PERFORMANCE REVIEW
             CreateMap<PerformanceReview, PerformanceReviewDto>().ReverseMap();
             CreateMap<PerformanceReviewInsertDto, PerformanceReview>().ReverseMap();
             CreateMap<PerformanceReviewUpdateDto, PerformanceReview>().ReverseMap();
 
-            // Satisfaction Survey
+            // SATISFACTION SURVEY
             CreateMap<SatisfactionSurvey, SatisfactionSurveyDto>().ReverseMap();
             CreateMap<SatisfactionSurveyInsertDto, SatisfactionSurvey>().ReverseMap();
             CreateMap<SatisfactionSurveyUpdateDto, SatisfactionSurvey>().ReverseMap();
@@ -74,23 +79,25 @@ namespace Project.Services.Mapper
             CreateMap<SurveyQuestionUpdateDto, SurveyQuestion>().ReverseMap();
 
             // Exam
+            // EXAM
             CreateMap<Exam, ExamDto>().ReverseMap();
             CreateMap<ExamInsertDto, Exam>().ReverseMap();
             CreateMap<ExamUpdateDto, Exam>().ReverseMap();
 
-            // Candidate
+            // QUESTION
+            CreateMap<Question, QuestionDto>().ReverseMap();
+            CreateMap<QuestionInsertDto, Question>().ReverseMap();
+            CreateMap<QuestionUpdateDto, Question>().ReverseMap();
+
+            // CANDIDATE
             CreateMap<Candidate, CandidateDto>().ReverseMap();
             CreateMap<CandidateDtoInsertion, Candidate>().ReverseMap();
             CreateMap<CandidateDtoUpdate, Candidate>().ReverseMap();
 
-            // User Exam
+            // USER EXAM
             CreateMap<UserExam, UserExamDto>().ReverseMap();
             CreateMap<UserExamInsertDto, UserExam>().ReverseMap();
             CreateMap<UserExamUpdateDto, UserExam>().ReverseMap();
-
-            CreateMap<Question,QuestionDto>().ReverseMap();
-            CreateMap<QuestionInsertDto,Question>().ReverseMap();
-            CreateMap<QuestionUpdateDto,Question>().ReverseMap();
         }
     }
 }

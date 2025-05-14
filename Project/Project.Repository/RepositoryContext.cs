@@ -24,9 +24,16 @@ public class RepositoryContext : DbContext
     public DbSet<Question> Questions {get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-       // modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-   
-    }
+{
+    base.OnModelCreating(modelBuilder);
+
+    modelBuilder.Entity<JobList>()
+        .HasOne(jl => jl.Job)
+        .WithMany()
+        .HasForeignKey(jl => jl.JobId)
+        .OnDelete(DeleteBehavior.Restrict); // 👈 Kritik satır
+
+    // Eğer başka ilişkilerde de problem çıkarsa buraya benzer şekilde eklenebilir.
+}
+
 }

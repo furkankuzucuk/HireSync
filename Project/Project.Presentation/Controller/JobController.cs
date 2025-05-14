@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Project.Entities.DataTransferObjects.Job;
 using Project.Services.Contracts;
@@ -27,8 +26,15 @@ namespace Project.Presentation.Controller
         public async Task<IActionResult> GetJobById([FromRoute] int id)
         {
             var job = await serviceManager.JobService.GetJobById(id, trackChanges: false);
-            return Ok(job); // NotFound exception globalde zaten handle ediliyor
+            return Ok(job);
         }
+
+        [HttpGet("department/{departmentId}")]
+public async Task<IActionResult> GetJobsByDepartmentId(int departmentId)
+{
+    var jobs = await serviceManager.JobService.GetJobsByDepartmentId(departmentId, false);
+    return Ok(jobs);
+}
 
         [HttpPost]
         public async Task<IActionResult> CreateJob([FromBody] JobInsertDto jobDto)

@@ -8,3 +8,4 @@ public record JobDto
 
     public string JobName { get; set; }
 }
+

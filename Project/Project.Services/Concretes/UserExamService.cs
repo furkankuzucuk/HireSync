@@ -2,7 +2,6 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Project.Entities;
 using Project.Entities.DataTransferObjects;
-using Project.Entities.DataTransferObjects;
 using Project.Entities.Exceptions;
 using Project.Repository.Contracts;
 using Project.Services.Contracts;
