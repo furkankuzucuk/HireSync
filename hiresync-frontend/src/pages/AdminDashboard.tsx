@@ -29,6 +29,11 @@ const AdminDashboard = () => {
             <Link className="nav-link text-white" to="/admin-dashboard/performance">📊 Performans Analizi</Link>
           </li>
           <li className="nav-item">
+            <Link className="nav-link text-white" to="/admin-dashboard/survey-results">
+              📋 Anket Sonuçları
+            </Link>
+          </li>
+          <li className="nav-item">
             <Link className="nav-link text-white" to="/admin-dashboard/leaves">📅 İzin Talepleri</Link>
           </li>
         </ul>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
@@ -27,7 +27,11 @@ import CandidateHome from './pages/CandidateHome';
 import ProtectedRoute from './pages/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
 import JobDetails from './pages/JobDetails';
-import CandidateRegisterPage from './pages/CandidateRegisterPage';
+
+import SurveyList from "./pages/SurveyList";
+import SurveyDetail from "./pages/SurveyDetail";
+import SurveyResults from "./pages/SurveyResults"; // varsa geçmiş yanıtlar için
+import SurveyAdminList from './pages/SurveyAdminList';
 
 const LoginPageWrapper = () => {
   const navigate = useNavigate();
@@ -48,11 +52,26 @@ const LoginPageWrapper = () => {
 };
 
 const App = () => {
+ // const [surveyId, setSurveyId] = useState(1); // Example survey ID
+  //const [questions, setQuestions] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchQuestions = async () => {
+  //     try {
+  //       const response = await getSurveyQuestions(surveyId); // Fetch survey questions
+  //       setQuestions(response);
+  //     } catch (error) {
+  //       alert('Error fetching survey questions.');
+  //     }
+  //   };
+  //   fetchQuestions();
+  // }, [surveyId]);
+
   return (
     <Router>
       <Routes>
 
-        {/* 🔓 Genel erişilebilir sayfalar */}
+        {/* 🔓 General public pages */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPageWrapper />} />
         <Route path="/job-details/:id" element={<JobDetails />} />
@@ -60,24 +79,28 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* 🔒 Giriş gerektiren alanlar */}
+        {/* 🔒 Protected routes */}
         <Route element={<ProtectedRoute />}>
-
           {/* Admin Routes */}
           <Route path="/admin-dashboard" element={<AdminDashboard />}>
             <Route index element={<AdminHome />} />
             <Route path="jobs" element={<JobPostingManagement />} />
             <Route path="exams" element={<OnlineExam />} />
             <Route path="performance" element={<PerformanceAnalysis />} />
+            <Route path="/admin-dashboard/survey-results" element={<SurveyAdminList />} />
+            <Route path="/admin-dashboard/survey-results/:id" element={<SurveyResults />} />
             <Route path="leaves" element={<LeaveRequests />} />
           </Route>
 
           {/* Worker Routes */}
           <Route path="/worker-dashboard" element={<WorkerDashboard />}>
-            <Route index element={<WorkerHome />} />
-            <Route path="leave" element={<WorkerLeaveRequest />} />
-            <Route path="training" element={<WorkerTraining />} />
-            <Route path="surveys" element={<WorkerSurveys />} />
+             <Route index element={<WorkerHome />} />
+             <Route path="leave" element={<WorkerLeaveRequest />} />
+             <Route path="training" element={<WorkerTraining />} />
+             <Route index element={<div>Çalışan Ana Sayfası</div>} />
+             <Route path="surveys" element={<SurveyList />} />
+             <Route path="surveys/:id" element={<SurveyDetail />} />
+             <Route path="surveys/results" element={<SurveyResults />} />
             <Route path="announcements" element={<WorkerAnnouncements />} />
           </Route>
 
@@ -89,11 +112,13 @@ const App = () => {
             <Route path="upload-resume" element={<UploadResume />} /> {/* ✅ EKLENDİ */}
           </Route>
 
+          {/* Survey Routes */}
+          
+          
         </Route>
 
-        {/* ❌ Hatalı yol yönlendirmesi */}
+        {/* ❌ Invalid route handling */}
         <Route path="*" element={<Navigate to="/" replace />} />
-
       </Routes>
     </Router>
   );

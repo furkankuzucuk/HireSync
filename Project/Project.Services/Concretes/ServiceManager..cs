@@ -18,6 +18,8 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<ILeaveRequestService> leaveRequestService;
     private readonly Lazy<IPerformanceReviewService> performanceReviewService;
     private readonly Lazy<ISatisfactionSurveyService> satisfactionSurveyService;
+    private readonly Lazy<ISurveyAnswerService> surveyAnswerService;
+    private readonly Lazy<ISurveyQuestionService> surveyQuestionService;
     private readonly Lazy<IExamService> examService;
     private readonly Lazy<ICandidateService> candidateService;
     private readonly Lazy<IUserExamService> userExamService;
@@ -40,6 +42,8 @@ public class ServiceManager : IServiceManager
         leaveRequestService = new Lazy<ILeaveRequestService> (() => new LeaveRequestService(repositoryManager,mapper));
         performanceReviewService = new Lazy<IPerformanceReviewService> (() => new PerformanceReviewService(repositoryManager,mapper));
         satisfactionSurveyService = new Lazy<ISatisfactionSurveyService>(() => new SatisfactionSurveyService(repositoryManager,mapper));
+        surveyAnswerService = new Lazy<ISurveyAnswerService>(() => new SurveyAnswerService(repositoryManager,mapper));
+        surveyQuestionService = new Lazy<ISurveyQuestionService>(() => new SurveyQuestionService(repositoryManager,mapper));
         examService = new Lazy<IExamService>(() => new ExamService(repositoryManager,mapper));
         candidateService = new Lazy<ICandidateService>(() => new CandidateService(repositoryManager,mapper));
         userExamService = new Lazy<IUserExamService>(() => new UserExamService(repositoryManager,mapper));
@@ -55,6 +59,8 @@ public class ServiceManager : IServiceManager
     public ILeaveRequestService LeaveRequestService => leaveRequestService.Value;
     public IPerformanceReviewService PerformanceReviewService => performanceReviewService.Value;
     public ISatisfactionSurveyService SatisfactionSurveyService => satisfactionSurveyService.Value;
+    public ISurveyAnswerService SurveyAnswerService => surveyAnswerService.Value;
+    public ISurveyQuestionService SurveyQuestionService => surveyQuestionService.Value;
     public IExamService ExamService => examService.Value;
     public ICandidateService CandidateService => candidateService.Value;
     public IUserExamService UserExamService => userExamService.Value;

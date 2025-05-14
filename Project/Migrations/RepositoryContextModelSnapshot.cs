@@ -365,14 +365,9 @@ namespace Project.Migrations
                     b.Property<int>("SurveyQuestionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("SurveyAnswerId");
 
                     b.HasIndex("SurveyQuestionId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("SurveyAnswers");
                 });
@@ -571,15 +566,7 @@ namespace Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("SurveyQuestion");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project.Entities.User", b =>

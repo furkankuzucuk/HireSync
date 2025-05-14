@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project.Entities.DataTransferObjects.SatisfactionSurvey;
 using Project.Services.Contracts;
@@ -28,6 +29,20 @@ namespace Project.Presentation.Controller
             var survey = await serviceManager.SatisfactionSurveyService.GetSatisfactionSurveyById(id, false);
             return Ok(survey);
         }
+
+        [HttpGet("user-department")]
+        [Authorize]
+        public async Task<IActionResult> GetSurveysForLoggedInUser()
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null)
+                return Unauthorized("UserId not found in token.");
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            var surveys = await serviceManager.SatisfactionSurveyService.GetSurveysByUserDepartment(userId);
+            return Ok(surveys);
+        }       
 
         [HttpPost]
         public async Task<IActionResult> CreateSatisfactionSurvey([FromBody] SatisfactionSurveyInsertDto satisfactionSurveyDto)

@@ -17,6 +17,11 @@ namespace Project.Repository.Concretes
             return FindByCondition(q => q.SurveyQuestionId == id, trackChanges);
         }
 
+        public IQueryable<SurveyQuestion> GetSurveyQuestionsBySurveyId(int surveyId, bool trackChanges)
+        {
+            return FindByCondition(q => q.SatisfactionSurveyId == surveyId, trackChanges);
+        }
+
         public void DeleteSurveyQuestion(SurveyQuestion question)
         {
             Delete(question);
