@@ -35,6 +35,7 @@ import SurveyAdminList from './pages/SurveyAdminList';
 import SurveyCreate from './pages/SurveyCreate';
 import SurveyAddQuestion from './pages/SurveyAddQuestion';
 import SurveyEdit from './pages/SurveyEdit';
+import CandidateRegisterPage from './pages/CandidateRegisterPage';
 
 const LoginPageWrapper = () => {
   const navigate = useNavigate();
