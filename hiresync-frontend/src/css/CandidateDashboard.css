@@ -1,41 +1,17 @@
-.candidate-dashboard {
-    display: flex;
-    height: 100vh;
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f8;
-  }
-  
-  .sidebar {
-    width: 240px;
-    background-color: #263238;
-    color: white;
-    padding: 20px;
-  }
-  
-  .sidebar h2 {
-    font-size: 18px;
-    margin-bottom: 20px;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidebar li {
-    padding: 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    transition: background 0.3s ease;
-  }
-  
-  .sidebar li:hover {
-    background-color: #37474f;
-  }
-  
-  .content {
-    flex: 1;
-    padding: 30px;
-  }
-  
+.sidebar-link {
+  color: #ffffff;
+  padding: 10px 15px;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.sidebar-link:hover {
+  background-color: #374151;
+  text-decoration: none;
+}
+
+.sidebar-link.active {
+  background-color: #0d6efd;
+  color: #fff;
+  font-weight: 500;
+}

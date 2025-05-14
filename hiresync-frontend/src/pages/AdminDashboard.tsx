@@ -32,7 +32,6 @@ const AdminDashboard = () => {
             <Link className="nav-link text-white" to="/admin-dashboard/leaves">📅 İzin Talepleri</Link>
           </li>
         </ul>
-
         <button onClick={logout} className="btn btn-danger w-100 mt-4">
           🚪 Çıkış Yap
         </button>

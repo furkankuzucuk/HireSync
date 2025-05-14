@@ -1,16 +1,21 @@
-import React from 'react';
-import useLogout from "./useLogout";
-import CandidateDashboard from './CandidateDashboard';
+import React from "react";
+import { Card } from "react-bootstrap";
 
 const CandidateHome = () => {
-  const logout = useLogout();
-  const username = localStorage.getItem('username');
+  const username = localStorage.getItem("username");
+
   return (
-    <div className="tab-content">
-      <h2>📌 Hoş Geldiniz, {username}</h2>
-      <p>Bugün: {new Date().toLocaleDateString("tr-TR")}</p>
-      <p>Buradan açık pozisyonlara göz atabilir veya başvurularınızı takip edebilirsiniz.</p>
-    </div>
+    <Card>
+      <Card.Body>
+        <Card.Title>📌 Hoş Geldiniz, {username}</Card.Title>
+        <Card.Text>
+          <strong>Bugün:</strong> {new Date().toLocaleDateString("tr-TR")}
+        </Card.Text>
+        <Card.Text>
+          Buradan açık pozisyonlara göz atabilir veya başvurularınızı takip edebilirsiniz.
+        </Card.Text>
+      </Card.Body>
+    </Card>
   );
 };
 
