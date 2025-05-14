@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { submitSurveyAnswers } from '../services/surveyAnswerService';
 
@@ -7,6 +7,7 @@ const options = ["Kesinlikle Katılıyorum", "Katılıyorum", "Kararsızım", "K
 
 const SurveyDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [questions, setQuestions] = useState([]);
     const [answers, setAnswers] = useState<{ [key: number]: string }>({});
 
@@ -20,16 +21,24 @@ const SurveyDetail = () => {
         setAnswers(prev => ({ ...prev, [questionId]: value }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const submission = {
+            satisfactionSurveyId: parseInt(id!),
             answers: Object.entries(answers).map(([questionId, answerText]) => ({
                 surveyQuestionId: parseInt(questionId),
                 answerText,
             }))
         };
-        submitSurveyAnswers(submission).then(() => {
-            alert("Anket gönderildi!");
-        });
+
+        try {
+            console.log("Gönderilen veri:", submission);
+            await submitSurveyAnswers(submission);
+            alert("✅ Anket başarıyla gönderildi!");
+            navigate('/worker-dashboard/surveys'); // Anket listesine dön
+        } catch (error) {
+            console.error("Gönderim hatası:", error);
+            alert("❌ Anket gönderilemedi. Lütfen tekrar deneyin.");
+        }
     };
 
     return (
@@ -39,7 +48,7 @@ const SurveyDetail = () => {
                 <div key={q.surveyQuestionId}>
                     <p>{q.questionText}</p>
                     {options.map(opt => (
-                        <label key={opt}>
+                        <label key={opt} style={{ display: 'block', marginLeft: '20px' }}>
                             <input
                                 type="radio"
                                 name={`q-${q.surveyQuestionId}`}
