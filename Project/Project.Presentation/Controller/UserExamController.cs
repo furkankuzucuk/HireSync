@@ -68,5 +68,55 @@ namespace Project.Presentation.Controller
             await _serviceManager.UserExamService.DeleteOneUser(id, false);
             return NoContent();
         }
+
+        [HttpPost("submit")]
+        public async Task<IActionResult> SubmitExamAnswers([FromBody] UserExamAnswerDto answerDto)
+        {
+            if (answerDto == null || answerDto.Answers == null || !answerDto.Answers.Any())
+                return BadRequest("Invalid answer data.");
+
+            var exam = await _serviceManager.ExamService.GetExamById(answerDto.ExamId, false);
+            if (exam == null)
+                return NotFound("Exam not found.");
+
+            int correctCount = 0;
+
+            foreach (var question in exam.Questions)
+            {
+                if (answerDto.Answers.TryGetValue(question.QuestionId, out string userAnswer))
+                {
+                    if (string.Equals(userAnswer.Trim(), question.CorrectAnswer.Trim(), StringComparison.OrdinalIgnoreCase))
+                    {
+                        correctCount++;
+                    }
+                }
+            }
+
+            int score = (int)((double)correctCount / exam.Questions.Count * 100);
+
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null)
+                return Unauthorized("User ID not found in token.");
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            // Save result to database
+            var userExamDto = new UserExamInsertDto
+            {
+                ExamId = answerDto.ExamId,
+                Score = score
+            };
+
+            var createdUserExam = await _serviceManager.UserExamService.CreateUser(userId, userExamDto);
+
+            return Ok(new
+            {
+                Score = score,
+                CorrectAnswers = correctCount,
+                TotalQuestions = exam.Questions.Count,
+                UserExamId = createdUserExam.UserExamId
+            });
+        }
+
     }
 }
