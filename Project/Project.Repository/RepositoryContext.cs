@@ -19,7 +19,7 @@ public class RepositoryContext : DbContext
     public DbSet<SurveyAnswer> SurveyAnswers {get; set;}
     public DbSet<SurveyQuestion> SurveyQuestions {get; set;}
     public DbSet<JobList> JobLists {get; set;}
-    public DbSet<Candidate> Candidates {get; set;}
+    
     public DbSet<UserExam> UserExams {get; set;}
     public DbSet<Question> Questions {get; set; }
 

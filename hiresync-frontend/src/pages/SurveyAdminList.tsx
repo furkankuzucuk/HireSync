@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getSurveysForUser } from '../services/surveyService';
+import { getSurveysForUser } from '../services/SurveyService';
 import { useNavigate } from 'react-router-dom';
 
 const SurveyAdminList = () => {

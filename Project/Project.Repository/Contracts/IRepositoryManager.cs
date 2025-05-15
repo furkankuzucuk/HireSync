@@ -19,7 +19,7 @@ public interface IRepositoryManager
     ISurveyAnswerRepository SurveyAnswerRepository {get; }
     ISurveyQuestionRepository SurveyQuestionRepository {get; }
     IExamRepository ExamRepository {get; }
-    ICandidateRepository CandidateRepository {get; }
+
     IUserExamRepository UserExamRepository {get; }
     IQuestionRepository QuestionRepository {get; }
     Task Save();

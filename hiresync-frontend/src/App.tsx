@@ -15,6 +15,7 @@ import WorkerSurveys from './pages/WorkerSurveys';
 import WorkerTraining from './pages/WorkerTraining';
 
 import CandidateDashboard from './pages/CandidateDashboard';
+import CandidateRegisterPage from './pages/CandidateRegisterPage';
 import ApplicationStatus from './pages/ApplicationStatus';
 import JobListings from './pages/JobListings';
 import UploadResume from './pages/UploadResume'; // ✅ YENİ: CV yükleme bileşeni
@@ -55,20 +56,6 @@ const LoginPageWrapper = () => {
 };
 
 const App = () => {
- // const [surveyId, setSurveyId] = useState(1); // Example survey ID
-  //const [questions, setQuestions] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchQuestions = async () => {
-  //     try {
-  //       const response = await getSurveyQuestions(surveyId); // Fetch survey questions
-  //       setQuestions(response);
-  //     } catch (error) {
-  //       alert('Error fetching survey questions.');
-  //     }
-  //   };
-  //   fetchQuestions();
-  // }, [surveyId]);
 
   return (
     <Router>

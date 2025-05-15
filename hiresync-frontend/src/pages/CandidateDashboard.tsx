@@ -8,9 +8,9 @@ const CandidateDashboard = () => {
   const username = localStorage.getItem("username");
 
   return (
-    <div className="d-flex min-vh-100">
+    <div className="dashboard-wrapper d-flex">
       {/* Sidebar */}
-      <aside className="sidebar bg-dark text-white p-4 d-flex flex-column">
+      <aside className="dashboard-sidebar bg-dark text-white p-4 d-flex flex-column">
         <div className="mb-4 text-center">
           <h4>Aday Paneli</h4>
           <p className="small">👤 {username}</p>
@@ -51,8 +51,8 @@ const CandidateDashboard = () => {
         </button>
       </aside>
 
-      {/* Main content */}
-      <main className="flex-grow-1 bg-light p-5">
+      {/* Content */}
+      <main className="dashboard-content bg-light p-4">
         <Outlet />
       </main>
     </div>

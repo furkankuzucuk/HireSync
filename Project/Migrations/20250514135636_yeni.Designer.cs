@@ -12,8 +12,8 @@ using Project.Repository;
 namespace Project.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20250513120549_InitNewCreate")]
-    partial class InitNewCreate
+    [Migration("20250514135636_yeni")]
+    partial class yeni
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,58 +24,6 @@ namespace Project.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("Project.Entities.Candidate", b =>
-                {
-                    b.Property<int>("CandidateId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CandidateId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Birthday")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Mail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResumePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SurName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CandidateId");
-
-                    b.ToTable("Candidates");
-                });
 
             modelBuilder.Entity("Project.Entities.Department", b =>
                 {
@@ -186,9 +134,14 @@ namespace Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("JobId")
+                        .HasColumnType("int");
+
                     b.HasKey("JobListId");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("JobId");
 
                     b.ToTable("JobLists");
                 });
@@ -368,14 +321,9 @@ namespace Project.Migrations
                     b.Property<int>("SurveyQuestionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("SurveyAnswerId");
 
                     b.HasIndex("SurveyQuestionId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("SurveyAnswers");
                 });
@@ -508,7 +456,15 @@ namespace Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Project.Entities.Job", "Job")
+                        .WithMany()
+                        .HasForeignKey("JobId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Department");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Project.Entities.LeaveRequest", b =>
@@ -574,15 +530,7 @@ namespace Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("SurveyQuestion");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project.Entities.User", b =>

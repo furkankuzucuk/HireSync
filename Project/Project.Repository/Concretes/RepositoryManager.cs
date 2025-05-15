@@ -19,7 +19,6 @@ public class RepositoryManager : IRepositoryManager
     private readonly Lazy<ISatisfactionSurveyRepository> _satisfactionSurveyRepository;
     private readonly Lazy<ISurveyAnswerRepository> _surveyAnswerRepository;
     private readonly Lazy<ISurveyQuestionRepository> _surveyQuestionRepository;
-    private readonly Lazy<ICandidateRepository> _candidateRepository;
     private readonly Lazy<IExamRepository> _examRepository;
     private readonly Lazy<IUserExamRepository> _userExamRepository;
     private readonly Lazy<IQuestionRepository> _questionRepository;
@@ -36,7 +35,6 @@ public class RepositoryManager : IRepositoryManager
         _performanceRepository = new Lazy<IPerformanceReviewRepository>(() => new PerformanceReviewRepository(_repositoryContext));
         _satisfactionSurveyRepository = new Lazy<ISatisfactionSurveyRepository>(() => new SatisfactionSurveyRepository(_repositoryContext));
         _examRepository = new Lazy<IExamRepository>(() => new ExamRepository(_repositoryContext));
-        _candidateRepository = new Lazy<ICandidateRepository>(() => new CandidateRepository(_repositoryContext));
         _userExamRepository = new Lazy<IUserExamRepository>(() => new UserExamRepository(_repositoryContext));
         _questionRepository = new Lazy<IQuestionRepository>(() => new QuestionRepository(_repositoryContext));
         _surveyAnswerRepository = new Lazy<ISurveyAnswerRepository>(() => new SurveyAnswerRepository(_repositoryContext));
@@ -53,7 +51,7 @@ public class RepositoryManager : IRepositoryManager
     public IPerformanceReviewRepository PerformanceReviewRepository => _performanceRepository.Value;
     public ISatisfactionSurveyRepository SatisfactionSurveyRepository => _satisfactionSurveyRepository.Value;
     public IExamRepository ExamRepository => _examRepository.Value;
-    public ICandidateRepository CandidateRepository => _candidateRepository.Value;
+    
     public IUserExamRepository UserExamRepository => _userExamRepository.Value;
     public IQuestionRepository QuestionRepository => _questionRepository.Value;
     public ISurveyAnswerRepository SurveyAnswerRepository => _surveyAnswerRepository.Value;

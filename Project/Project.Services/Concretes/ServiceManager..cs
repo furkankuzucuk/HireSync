@@ -21,7 +21,6 @@ public class ServiceManager : IServiceManager
     private readonly Lazy<ISurveyAnswerService> surveyAnswerService;
     private readonly Lazy<ISurveyQuestionService> surveyQuestionService;
     private readonly Lazy<IExamService> examService;
-    private readonly Lazy<ICandidateService> candidateService;
     private readonly Lazy<IUserExamService> userExamService;
     private readonly Lazy<IQuestionService> questionService;
     private readonly Lazy<IEmailService> emailService;
@@ -45,7 +44,6 @@ public class ServiceManager : IServiceManager
         surveyAnswerService = new Lazy<ISurveyAnswerService>(() => new SurveyAnswerService(repositoryManager,mapper));
         surveyQuestionService = new Lazy<ISurveyQuestionService>(() => new SurveyQuestionService(repositoryManager,mapper));
         examService = new Lazy<IExamService>(() => new ExamService(repositoryManager,mapper));
-        candidateService = new Lazy<ICandidateService>(() => new CandidateService(repositoryManager,mapper));
         userExamService = new Lazy<IUserExamService>(() => new UserExamService(repositoryManager,mapper));
         questionService = new Lazy<IQuestionService>(() => new QuestionService(repositoryManager,mapper));
     }
@@ -62,7 +60,6 @@ public class ServiceManager : IServiceManager
     public ISurveyAnswerService SurveyAnswerService => surveyAnswerService.Value;
     public ISurveyQuestionService SurveyQuestionService => surveyQuestionService.Value;
     public IExamService ExamService => examService.Value;
-    public ICandidateService CandidateService => candidateService.Value;
     public IUserExamService UserExamService => userExamService.Value;
     public IQuestionService QuestionService => questionService.Value;
     public IEmailService EmailService => emailService.Value;

@@ -89,10 +89,6 @@ namespace Project.Services.Mapper
             CreateMap<QuestionInsertDto, Question>().ReverseMap();
             CreateMap<QuestionUpdateDto, Question>().ReverseMap();
 
-            // CANDIDATE
-            CreateMap<Candidate, CandidateDto>().ReverseMap();
-            CreateMap<CandidateDtoInsertion, Candidate>().ReverseMap();
-            CreateMap<CandidateDtoUpdate, Candidate>().ReverseMap();
 
             // USER EXAM
             CreateMap<UserExam, UserExamDto>().ReverseMap();
