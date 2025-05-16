@@ -18,6 +18,10 @@ const WorkerDashboard = () => {
             <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard">🏠 Ana Sayfa</Link></li>
             <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard/leave">📅 İzin Talebi</Link></li>
             <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard/training">📚 Eğitimler ve Sınavlar</Link></li>
+            <li className="nav-item">
+            <Link className="nav-link text-white" to="/worker-dashboard/exam-results">
+              📊 Sınav Sonuçlarım
+            </Link> </li>
             <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard/surveys">📝 Memnuniyet Anketleri</Link></li>
             <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard/announcements">📢 Duyurular</Link></li>
             <li className="nav-item mt-4">

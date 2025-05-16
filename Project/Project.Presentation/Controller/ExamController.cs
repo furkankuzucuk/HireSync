@@ -29,6 +29,14 @@ namespace Project.Presentation.Controller
             return Ok(exam);
         }
 
+        [HttpGet("{examId}/questions")]
+        public async Task<IActionResult> GetQuestionsByExamId(int examId)
+        {
+            var questions = await serviceManager.QuestionService.GetQuestionsByExamId(examId, false);
+            return Ok(questions);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> CreateExam([FromBody] ExamInsertDto examDto)
         {

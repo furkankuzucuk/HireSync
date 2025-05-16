@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: '/', // Gerekirse API base adresini ayarla
+   baseURL: 'http://localhost:5065', // Gerekirse API base adresini ayarla
 });
 
 axiosInstance.interceptors.request.use((config) => {
