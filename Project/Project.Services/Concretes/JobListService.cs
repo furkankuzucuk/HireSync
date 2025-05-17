@@ -22,14 +22,7 @@ namespace Project.Services.Concretes
         public async Task<JobListDto> CreateJobList(JobListInsertDto jobListDto)
         {
             if (jobListDto == null)
-                throw new ArgumentNullException(nameof(jobListDto), "İlan bilgileri boş olamaz.");
-
-            var department = await repositoryManager.DepartmentRepository
-                .GetDepartmentById(jobListDto.DepartmentId, false)
-                .FirstOrDefaultAsync();
-
-            if (department == null)
-                throw new EntityNotFoundException<Department>(jobListDto.DepartmentId);
+                throw new ArgumentNullException(nameof(jobListDto));
 
             var entity = mapper.Map<JobList>(jobListDto);
             entity.CreateDate = DateTime.Now;
@@ -37,18 +30,20 @@ namespace Project.Services.Concretes
             repositoryManager.JobListRepository.CreateJobList(entity);
             await repositoryManager.Save();
 
-            // Entity'yi Department ile birlikte çekip DTO'ya dönüştür
-            var jobWithDepartment = await repositoryManager.JobListRepository
+            var jobList = await repositoryManager.JobListRepository
                 .GetJobListByIdWithDepartment(entity.JobListId, false)
                 .FirstOrDefaultAsync();
 
             return new JobListDto
             {
-                JobListId = jobWithDepartment.JobListId,
-                DepartmentId = jobWithDepartment.DepartmentId,
-                DepartmentName = jobWithDepartment.Department?.DepartmentName,
-                Description = jobWithDepartment.Description,
-                CreateDate = jobWithDepartment.CreateDate
+                JobListId = jobList.JobListId,
+                DepartmentId = jobList.DepartmentId,
+                DepartmentName = jobList.Department?.DepartmentName,
+                JobId = jobList.JobId,
+                JobName = jobList.Job?.JobName,
+                Title = jobList.Title,
+                Description = jobList.Description,
+                CreateDate = jobList.CreateDate
             };
         }
 
@@ -63,6 +58,9 @@ namespace Project.Services.Concretes
                 JobListId = j.JobListId,
                 DepartmentId = j.DepartmentId,
                 DepartmentName = j.Department?.DepartmentName,
+                JobId = j.JobId,
+                JobName = j.Job?.JobName,
+                Title = j.Title,
                 Description = j.Description,
                 CreateDate = j.CreateDate
             });
@@ -82,6 +80,9 @@ namespace Project.Services.Concretes
                 JobListId = jobList.JobListId,
                 DepartmentId = jobList.DepartmentId,
                 DepartmentName = jobList.Department?.DepartmentName,
+                JobId = jobList.JobId,
+                JobName = jobList.Job?.JobName,
+                Title = jobList.Title,
                 Description = jobList.Description,
                 CreateDate = jobList.CreateDate
             };

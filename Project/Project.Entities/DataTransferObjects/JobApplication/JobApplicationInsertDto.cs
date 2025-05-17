@@ -10,3 +10,5 @@ namespace Project.Entities.DataTransferObjects.JobApplication
         public string Status { get; set; }
     }
 }
+
+

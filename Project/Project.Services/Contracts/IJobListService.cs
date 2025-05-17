@@ -1,5 +1,3 @@
-using Project.Entities;
-using Project.Entities.DataTransferObjects.JobApplication;
 using Project.Entities.DataTransferObjects.JobList;
 
 namespace Project.Services.Contracts

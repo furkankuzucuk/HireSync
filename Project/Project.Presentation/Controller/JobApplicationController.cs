@@ -34,26 +34,28 @@ namespace Project.Presentation.Controller
             return Ok(jobApplication);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateJobApplication([FromBody] JobApplicationInsertDto jobApplicationDto)
-        {
-            if (jobApplicationDto == null)
-            {
-                return BadRequest("Job Application data or file is null.");
-            }
+       [HttpPost]
+public async Task<IActionResult> CreateJobApplication([FromBody] JobApplicationInsertDto jobApplicationDto)
+{
+    if (jobApplicationDto == null)
+        return BadRequest("Job Application data is null.");
 
-            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
-            if (userIdClaim == null)
-            {
-                return Unauthorized("User ID not found in token.");
-            }
+    var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+    var usernameClaim = User.Claims.FirstOrDefault(c => c.Type == "username" || c.Type == ClaimTypes.Name);
 
-            int userId = int.Parse(userIdClaim.Value);
+    if (userIdClaim == null || usernameClaim == null)
+        return Unauthorized("User ID or username not found in token.");
 
-            var createdJobApplication = await serviceManager.JobApplicationService.CreateJobApplication(userId, jobApplicationDto);
+    int userId = int.Parse(userIdClaim.Value);
+    string username = usernameClaim.Value;
 
-            return CreatedAtAction(nameof(GetJobApplicationById), new { id = createdJobApplication.JobApplicationId }, createdJobApplication);
-        }
+    // 👇 CV yolu kullanıcı adına göre otomatik atanıyor
+    jobApplicationDto.ResumePath = $"/uploads/{username}_cv.pdf";
+
+    var created = await serviceManager.JobApplicationService.CreateJobApplication(userId, jobApplicationDto);
+    return CreatedAtAction(nameof(GetJobApplicationById), new { id = created.JobApplicationId }, created);
+}
+
 
         [HttpGet("candidate/{candidateId}")]
         public async Task<IActionResult> GetApplicationsByCandidateId(int candidateId)

@@ -1,18 +1,17 @@
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Project.Entities;
-
-public class JobList
+namespace Project.Entities
 {
-    public int JobListId { get; set; } // Primary Key
-
-    public int DepartmentId { get; set; } // Foreign Key
-    public Department Department { get; set; } 
-    public int JobId { get; set; }
-
-    [ForeignKey("JobId")]
-    public Job Job { get; set; }
-
-    public string Description { get; set; }
-    public DateTime CreateDate { get; set; }
+    public class JobList
+    {
+        public int JobListId { get; set; }
+        public int DepartmentId { get; set; }
+        public Department Department { get; set; }
+        public int JobId { get; set; }
+        public Job Job { get; set; }
+        public string Title { get; set; } // <-- Yeni alan
+        public string Description { get; set; }
+        public DateTime CreateDate { get; set; }
+    }
 }

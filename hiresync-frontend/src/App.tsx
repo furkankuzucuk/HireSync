@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+// src/App.tsx
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 
 import LoginPage from './pages/LoginPage';
@@ -7,6 +8,7 @@ import JobPostingManagement from './pages/JobPostingManagement';
 import OnlineExam from './pages/OnlineExam';
 import PerformanceAnalysis from './pages/PerformanceAnalysis';
 import LeaveRequests from './pages/LeaveRequests';
+import JobListAdmin from './pages/JobListAdmin'; // ✅ yeni sayfa
 
 import WorkerDashboard from './pages/WorkerDashboard';
 import WorkerAnnouncements from './pages/WorkerAnnouncements';
@@ -18,7 +20,7 @@ import CandidateDashboard from './pages/CandidateDashboard';
 import CandidateRegisterPage from './pages/CandidateRegisterPage';
 import ApplicationStatus from './pages/ApplicationStatus';
 import JobListings from './pages/JobListings';
-import UploadResume from './pages/UploadResume'; // ✅ YENİ: CV yükleme bileşeni
+import UploadResume from './pages/UploadResume';
 
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
@@ -31,87 +33,67 @@ import JobDetails from './pages/JobDetails';
 
 import SurveyList from "./pages/SurveyList";
 import SurveyDetail from "./pages/SurveyDetail";
-import SurveyResults from "./pages/SurveyResults"; // varsa geçmiş yanıtlar için
+import SurveyResults from "./pages/SurveyResults";
 import SurveyAdminList from './pages/SurveyAdminList';
 import SurveyCreate from './pages/SurveyCreate';
 import SurveyAddQuestion from './pages/SurveyAddQuestion';
 import SurveyEdit from './pages/SurveyEdit';
-import CandidateRegisterPage from './pages/CandidateRegisterPage';
 
 const LoginPageWrapper = () => {
   const navigate = useNavigate();
-
   const handleLoginSuccess = (role: string) => {
-    if (role === "Admin") {
-      navigate('/admin-dashboard');
-    } else if (role === "Worker") {
-      navigate('/worker-dashboard');
-    } else if (role === "Candidate") {
-      navigate('/candidate-dashboard');
-    } else {
-      alert("Yetkisiz kullanıcı rolü.");
-    }
+    if (role === "Admin") navigate('/admin-dashboard');
+    else if (role === "Worker") navigate('/worker-dashboard');
+    else if (role === "Candidate") navigate('/candidate-dashboard');
+    else alert("Yetkisiz kullanıcı rolü.");
   };
-
   return <LoginPage onLoginSuccess={handleLoginSuccess} />;
 };
 
 const App = () => {
-
   return (
     <Router>
       <Routes>
-
-        {/* 🔓 General public pages */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPageWrapper />} />
-        <Route path="/job-details/:id" element={<JobDetails />} />
         <Route path="/register" element={<CandidateRegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/job-details/:id" element={<JobDetails />} />
 
-        {/* 🔒 Protected routes */}
         <Route element={<ProtectedRoute />}>
-          {/* Admin Routes */}
           <Route path="/admin-dashboard" element={<AdminDashboard />}>
             <Route index element={<AdminHome />} />
             <Route path="jobs" element={<JobPostingManagement />} />
+            <Route path="joblist" element={<JobListAdmin />} /> {/* ✅ yeni rota */}
             <Route path="exams" element={<OnlineExam />} />
             <Route path="performance" element={<PerformanceAnalysis />} />
-            <Route path="/admin-dashboard/survey-results" element={<SurveyAdminList />} />
-            <Route path="/admin-dashboard/survey-results/:id" element={<SurveyResults />} />
-            <Route path="/admin-dashboard/survey-create" element={<SurveyCreate />} />
-            <Route path="/admin-dashboard/survey-add-question/:id" element={<SurveyAddQuestion />} />
-            <Route path="/admin-dashboard/survey-edit/:id" element={<SurveyEdit />} />
+            <Route path="survey-results" element={<SurveyAdminList />} />
+            <Route path="survey-results/:id" element={<SurveyResults />} />
+            <Route path="survey-create" element={<SurveyCreate />} />
+            <Route path="survey-add-question/:id" element={<SurveyAddQuestion />} />
+            <Route path="survey-edit/:id" element={<SurveyEdit />} />
             <Route path="leaves" element={<LeaveRequests />} />
           </Route>
 
-          {/* Worker Routes */}
           <Route path="/worker-dashboard" element={<WorkerDashboard />}>
-             <Route index element={<WorkerHome />} />
-             <Route path="leave" element={<WorkerLeaveRequest />} />
-             <Route path="training" element={<WorkerTraining />} />
-             <Route index element={<div>Çalışan Ana Sayfası</div>} />
-             <Route path="surveys" element={<SurveyList />} />
-             <Route path="surveys/:id" element={<SurveyDetail />} />
-             <Route path="surveys/results" element={<SurveyResults />} />
+            <Route index element={<WorkerHome />} />
+            <Route path="leave" element={<WorkerLeaveRequest />} />
+            <Route path="training" element={<WorkerTraining />} />
+            <Route path="surveys" element={<SurveyList />} />
+            <Route path="surveys/:id" element={<SurveyDetail />} />
+            <Route path="surveys/results" element={<SurveyResults />} />
             <Route path="announcements" element={<WorkerAnnouncements />} />
           </Route>
 
-          {/* Candidate Routes */}
           <Route path="/candidate-dashboard" element={<CandidateDashboard />}>
-            <Route index element={<CandidateHome />} />
+            <Route index element={<JobListings />} />
             <Route path="jobs" element={<JobListings />} />
             <Route path="status" element={<ApplicationStatus />} />
-            <Route path="upload-resume" element={<UploadResume />} /> {/* ✅ EKLENDİ */}
+            <Route path="upload-resume" element={<UploadResume />} />
           </Route>
-
-          {/* Survey Routes */}
-          
-          
         </Route>
 
-        {/* ❌ Invalid route handling */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
