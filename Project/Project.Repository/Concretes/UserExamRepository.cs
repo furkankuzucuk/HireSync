@@ -31,6 +31,11 @@ public class UserExamRepository : RepositoryBase<UserExam>, IUserExamRepository
         return FindByCondition(m=> m.UserExamId == id, trackChanges);
     }
 
+    public IQueryable<UserExam> GetUserExamByExamId(int examId, bool trackChanges)
+    {
+        return FindByCondition(e => e.ExamId == examId, trackChanges);
+    }
+
     public async Task<IEnumerable<UserExam>> GetUserExamsByUserIdAsync(int userId, bool trackChanges)
     {
         return await FindByCondition(u => u.UserId == userId, trackChanges)

@@ -1,11 +1,6 @@
-<<<<<<< HEAD
 // src/App.tsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-=======
-import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useParams } from 'react-router-dom';
->>>>>>> f2b3fba09a15b087ddc5f4e0fd83a122e7a00206
 
 import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/AdminDashboard';
@@ -43,12 +38,9 @@ import SurveyAdminList from './pages/SurveyAdminList';
 import SurveyCreate from './pages/SurveyCreate';
 import SurveyAddQuestion from './pages/SurveyAddQuestion';
 import SurveyEdit from './pages/SurveyEdit';
-<<<<<<< HEAD
-=======
 import ExamList from './pages/ExamList';
 import SubmitExam from './pages/SubmitExam';
 import UserExamResults from './pages/UserExamResult';
->>>>>>> f2b3fba09a15b087ddc5f4e0fd83a122e7a00206
 
 // Login yönlendirme işlemi
 const LoginPageWrapper = () => {
@@ -62,24 +54,18 @@ const LoginPageWrapper = () => {
   return <LoginPage onLoginSuccess={handleLoginSuccess} />;
 };
 
-<<<<<<< HEAD
-=======
 // sınav çözüm sayfası (useParams ile id alıyor)
 const SubmitExamWrapper = () => {
   const { id } = useParams();
   return <SubmitExam examId={parseInt(id || '0')} />;
 };
 
->>>>>>> f2b3fba09a15b087ddc5f4e0fd83a122e7a00206
 const App = () => {
   return (
     <Router>
       <Routes>
-<<<<<<< HEAD
-=======
 
         {/* 🔓 Public Routes */}
->>>>>>> f2b3fba09a15b087ddc5f4e0fd83a122e7a00206
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPageWrapper />} />
         <Route path="/register" element={<CandidateRegisterPage />} />
@@ -87,14 +73,10 @@ const App = () => {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/job-details/:id" element={<JobDetails />} />
 
-<<<<<<< HEAD
-        <Route element={<ProtectedRoute />}>
-=======
         {/* 🔒 Protected Routes */}
         <Route element={<ProtectedRoute />}>
 
           {/* Admin Routes */}
->>>>>>> f2b3fba09a15b087ddc5f4e0fd83a122e7a00206
           <Route path="/admin-dashboard" element={<AdminDashboard />}>
             <Route index element={<AdminHome />} />
             <Route path="jobs" element={<JobPostingManagement />} />
@@ -112,13 +94,9 @@ const App = () => {
           <Route path="/worker-dashboard" element={<WorkerDashboard />}>
             <Route index element={<WorkerHome />} />
             <Route path="leave" element={<WorkerLeaveRequest />} />
-<<<<<<< HEAD
-            <Route path="training" element={<WorkerTraining />} />
-=======
             <Route path="training" element={<ExamList />} />
             <Route path="exam/:id" element={<SubmitExamWrapper />} />
             <Route path="exam-results" element={<UserExamResults />} />
->>>>>>> f2b3fba09a15b087ddc5f4e0fd83a122e7a00206
             <Route path="surveys" element={<SurveyList />} />
             <Route path="surveys/:id" element={<SurveyDetail />} />
             <Route path="surveys/results" element={<SurveyResults />} />
@@ -131,15 +109,10 @@ const App = () => {
             <Route path="status" element={<ApplicationStatus />} />
             <Route path="upload-resume" element={<UploadResume />} />
           </Route>
-<<<<<<< HEAD
-        </Route>
-
-=======
 
         </Route>
 
         {/* ❌ Fallback */}
->>>>>>> f2b3fba09a15b087ddc5f4e0fd83a122e7a00206
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

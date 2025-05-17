@@ -50,6 +50,24 @@ namespace Project.Services.Concretes
             return _mapper.Map<IEnumerable<UserExamDto>>(userExams);
         }
 
+        public async Task<IEnumerable<UserExamDto>> GetFilteredUserExams(int? userId, int? examId, bool trackChanges)
+        {
+                var all = await _repositoryManager.UserExamRepository.FindAll(trackChanges)
+                .Include(ue => ue.Exam)
+                .Include(ue => ue.User)
+                .ToListAsync();
+
+            var filtered = all.AsQueryable();
+
+            if (userId.HasValue)
+                filtered = filtered.Where(x => x.UserId == userId);
+
+            if (examId.HasValue)
+                filtered = filtered.Where(x => x.ExamId == examId);
+
+            return _mapper.Map<IEnumerable<UserExamDto>>(filtered.ToList());
+        }
+
         public async Task<UserExamDto> GetUserById(int id, bool trackChanges)
         {
             var userExam = await _repositoryManager.UserExamRepository
@@ -60,6 +78,12 @@ namespace Project.Services.Concretes
                 throw new EntityNotFoundException<UserExam>(id);
 
             return _mapper.Map<UserExamDto>(userExam);
+        }
+
+        public async Task<IEnumerable<UserExamDto>> GetUserExamByExamId(int examId, bool trackChanges)
+        {
+            var userExams = await _repositoryManager.UserExamRepository.GetUserExamByExamId(examId, trackChanges).ToListAsync();
+            return _mapper.Map<IEnumerable<UserExamDto>>(userExams);
         }
 
         public async Task<IEnumerable<UserExamDto>> GetUserExamsByUserId(int userId, bool trackChanges)

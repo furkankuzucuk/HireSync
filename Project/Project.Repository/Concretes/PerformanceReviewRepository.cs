@@ -24,7 +24,7 @@ namespace Project.Repository.Concretes
 
         public IQueryable<PerformanceReview> GetReviewByUserId(int userId, bool trackChanges)
         {
-            return FindByCondition(r => r.UserId == userId, trackChanges);
+            return FindByCondition(r => r.UserExamId == userId, trackChanges);
         }
     }
 }
