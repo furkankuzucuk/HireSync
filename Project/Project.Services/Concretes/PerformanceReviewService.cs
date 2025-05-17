@@ -66,6 +66,7 @@ namespace Project.Services.Concretes
                 PerformanceRate = performanceRate,
                 ReviewSummary = $"User has an average score of {averageScore:F2}",
                 ReviewDate = DateTime.UtcNow,
+                AverageScore = averageScore
                 //ExamId = userExams.OrderByDescending(e => e.ExamDate).First().ExamId // Son girdiği sınavı referans alıyoruz
             };
 

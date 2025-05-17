@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../services/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 const PerformanceAnalysis = () => {
   const [users, setUsers] = useState([]);
@@ -7,6 +8,7 @@ const PerformanceAnalysis = () => {
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [selectedExam, setSelectedExam] = useState<number | null>(null);
   const [results, setResults] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('/api/users').then(res => setUsers(res.data));
@@ -18,7 +20,8 @@ const PerformanceAnalysis = () => {
     if (selectedUser) params.userId = selectedUser;
     if (selectedExam) params.examId = selectedExam;
 
-    axios.get('/api/userexams/filter', { params })
+    axios
+      .get('/api/userexams/filter', { params })
       .then(res => setResults(res.data))
       .catch(err => console.error('Filter error', err));
   }, [selectedUser, selectedExam]);
@@ -31,14 +34,18 @@ const PerformanceAnalysis = () => {
         <select onChange={e => setSelectedUser(Number(e.target.value) || null)}>
           <option value="">Tüm Kullanıcılar</option>
           {users.map((u: any) => (
-            <option key={u.userId} value={u.userId}>{u.name} {u.lastName}</option>
+            <option key={u.userId} value={u.userId}>
+              {u.name} {u.lastName}
+            </option>
           ))}
         </select>
 
         <select onChange={e => setSelectedExam(Number(e.target.value) || null)}>
           <option value="">Tüm Sınavlar</option>
           {exams.map((e: any) => (
-            <option key={e.examId} value={e.examId}>{e.examName}</option>
+            <option key={e.examId} value={e.examId}>
+              {e.examName}
+            </option>
           ))}
         </select>
       </div>
@@ -61,6 +68,24 @@ const PerformanceAnalysis = () => {
           ))}
         </tbody>
       </table>
+
+      <button
+        disabled={!selectedUser}
+        onClick={async () => {
+          try {
+            // önce performans oluştur
+            await axios.post(`/api/performancereviews/generate-review/${selectedUser}`);
+            // ardından yönlendir
+            navigate(`/admin-dashboard/performance-review?userId=${selectedUser}`);
+          } catch (error) {
+            console.error("Performans oluşturulamadı", error);
+            alert("Performans değerlendirmesi oluşturulamadı.");
+          }
+        }}
+      >
+        Değerlendirmeyi Gör
+    </button>
+
     </div>
   );
 };

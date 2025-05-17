@@ -54,6 +54,19 @@ namespace Project.Presentation.Controller
             return Ok(review);
         }
 
+        [HttpGet("filter")]
+        public async Task<IActionResult> FilterReviews([FromQuery] int? userId, [FromQuery] int? examId)
+        {
+            var all = await serviceManager.PerformanceReviewService.GetAllPerformanceReviews(false);
+            var filtered = all;
+
+            if (userId.HasValue)
+                filtered = filtered.Where(r => r.UserExamId == userId).ToList(); // bu sadece örnek
+
+            return Ok(filtered);
+        }
+
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdatePerformanceReview(int id, [FromBody] PerformanceReviewUpdateDto performanceReviewDto)

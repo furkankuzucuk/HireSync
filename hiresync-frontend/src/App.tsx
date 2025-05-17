@@ -41,6 +41,7 @@ import SurveyEdit from './pages/SurveyEdit';
 import ExamList from './pages/ExamList';
 import SubmitExam from './pages/SubmitExam';
 import UserExamResults from './pages/UserExamResult';
+import PerformanceReviewPage from './pages/PerformanceReview';
 
 // Login yönlendirme işlemi
 const LoginPageWrapper = () => {
@@ -83,6 +84,7 @@ const App = () => {
             <Route path="joblist" element={<JobListAdmin />} /> {/* ✅ yeni rota */}
             <Route path="exams" element={<OnlineExam />} />
             <Route path="performance" element={<PerformanceAnalysis />} />
+            <Route path="/admin-dashboard/performance-review" element={<PerformanceReviewPage />} />
             <Route path="survey-results" element={<SurveyAdminList />} />
             <Route path="survey-results/:id" element={<SurveyResults />} />
             <Route path="survey-create" element={<SurveyCreate />} />
