@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import axios from "axios";
 
-const CandidateFullRegister = () => {
+const CandidateRegisterPage = () => {
   const [form, setForm] = useState({
     name: "",
     lastName: "",
@@ -128,4 +128,4 @@ const CandidateFullRegister = () => {
   );
 };
 
-export default CandidateFullRegister;
+export default CandidateRegisterPage;

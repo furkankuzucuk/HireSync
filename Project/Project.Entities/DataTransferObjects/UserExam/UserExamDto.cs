@@ -8,6 +8,6 @@ public record UserExamDto
         public int UserId { get; set; }
        
         public int ExamId { get; set; }
-
+        public string ExamName {get; set;}
         public int Score { get; set; }
 }

@@ -1,4 +1,5 @@
 
+using Microsoft.EntityFrameworkCore;
 using Project.Entities;
 using Project.Repository.Contracts;
 
@@ -29,6 +30,14 @@ public class UserExamRepository : RepositoryBase<UserExam>, IUserExamRepository
     {
         return FindByCondition(m=> m.UserExamId == id, trackChanges);
     }
+
+    public async Task<IEnumerable<UserExam>> GetUserExamsByUserIdAsync(int userId, bool trackChanges)
+    {
+        return await FindByCondition(u => u.UserId == userId, trackChanges)
+            .Include(u => u.Exam) // ✅ sınavı dahil et
+            .ToListAsync();
+    }
+
 
     public void UpdateUser(UserExam userExam)
     {

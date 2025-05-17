@@ -60,6 +60,12 @@ namespace Project.Services.Concretes
             return mapper.Map<IEnumerable<QuestionDto>>(questions);
         }
 
+        public async Task<IEnumerable<QuestionDto>> GetQuestionsByExamId(int examId, bool trackChanges)
+        {
+            var questions = await repositoryManager.QuestionRepository.GetQuestionByExamId(examId,trackChanges).ToListAsync();
+            return mapper.Map<IEnumerable<QuestionDto>>(questions);
+        }
+
         // ID ile soru getirme
         public async Task<QuestionDto> GetQuestionById(int id, bool trackChanges)
         {

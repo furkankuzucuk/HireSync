@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Project.Entities.DataTransferObjects;
 using Project.Services.Contracts;
@@ -36,6 +37,20 @@ namespace Project.Presentation.Controller
             return Ok(exams);
         }
 
+        [HttpGet("me")]
+        public async Task<IActionResult> GetCurrentUserExams()
+        {
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
+            if (userIdClaim == null)
+                return Unauthorized("User ID not found in token.");
+
+            int userId = int.Parse(userIdClaim.Value);
+
+            var userExams = await _serviceManager.UserExamService.GetUserExamsByUserId(userId, false);
+            return Ok(userExams);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> CreateUserExam([FromBody] UserExamInsertDto userExamDto)
         {
@@ -70,18 +85,20 @@ namespace Project.Presentation.Controller
         }
 
         [HttpPost("submit")]
+        [Authorize]
         public async Task<IActionResult> SubmitExamAnswers([FromBody] UserExamAnswerDto answerDto)
         {
             if (answerDto == null || answerDto.Answers == null || !answerDto.Answers.Any())
                 return BadRequest("Invalid answer data.");
 
-            var exam = await _serviceManager.ExamService.GetExamById(answerDto.ExamId, false);
-            if (exam == null)
-                return NotFound("Exam not found.");
+            // Soruları examId ile çekiyoruz
+            var questions = await _serviceManager.QuestionService.GetQuestionsByExamId(answerDto.ExamId, false);
+            if (questions == null || !questions.Any())
+                return NotFound("Questions not found for the given exam.");
 
             int correctCount = 0;
 
-            foreach (var question in exam.Questions)
+            foreach (var question in questions)
             {
                 if (answerDto.Answers.TryGetValue(question.QuestionId, out string userAnswer))
                 {
@@ -92,18 +109,20 @@ namespace Project.Presentation.Controller
                 }
             }
 
-            int score = (int)((double)correctCount / exam.Questions.Count * 100);
+            int score = (int)((double)correctCount / questions.Count() * 100);
 
+            // Kullanıcı bilgisi token’dan alınır
             var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
             if (userIdClaim == null)
                 return Unauthorized("User ID not found in token.");
 
             int userId = int.Parse(userIdClaim.Value);
 
-            // Save result to database
+            // Veritabanına sonucu kaydet
             var userExamDto = new UserExamInsertDto
             {
                 ExamId = answerDto.ExamId,
+                //UserId = userId,
                 Score = score
             };
 
@@ -113,10 +132,11 @@ namespace Project.Presentation.Controller
             {
                 Score = score,
                 CorrectAnswers = correctCount,
-                TotalQuestions = exam.Questions.Count,
+                TotalQuestions = questions.Count(),
                 UserExamId = createdUserExam.UserExamId
             });
         }
+
 
     }
 }

@@ -64,10 +64,7 @@ namespace Project.Services.Concretes
 
         public async Task<IEnumerable<UserExamDto>> GetUserExamsByUserId(int userId, bool trackChanges)
         {
-            var userExams = await _repositoryManager.UserExamRepository
-                .FindByCondition(ue => ue.UserId == userId, trackChanges)
-                .ToListAsync();
-
+            var userExams = await _repositoryManager.UserExamRepository.GetUserExamsByUserIdAsync(userId, trackChanges);
             return _mapper.Map<IEnumerable<UserExamDto>>(userExams);
         }
 

@@ -5,6 +5,5 @@ namespace Project.Entities.DataTransferObjects.Exam
         public int ExamId { get; init; }
         public string ExamName { get; init; }
         public DateTime ExamDate { get; init; }
-        public List<QuestionDto> Questions { get; init; }
     }
 }
