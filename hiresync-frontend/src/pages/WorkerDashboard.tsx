@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
 import useLogout from "./useLogout";
-import "../css/WorkerDashboard.css"; // CSS'e sadece özel tanımlar kalacak
+import "../css/WorkerDashboard.css";
 
 const WorkerDashboard = () => {
   const logout = useLogout();
@@ -15,15 +15,28 @@ const WorkerDashboard = () => {
           <h4 className="text-white">Çalışan Paneli</h4>
           <p className="mt-3">Hoş Geldin, {username} 👋</p>
           <ul className="nav flex-column mt-4">
-            <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard">🏠 Ana Sayfa</Link></li>
-            <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard/leave">📅 İzin Talebi</Link></li>
-            <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard/training">📚 Eğitimler ve Sınavlar</Link></li>
             <li className="nav-item">
-            <Link className="nav-link text-white" to="/worker-dashboard/exam-results">
-              📊 Sınav Sonuçlarım
-            </Link> </li>
-            <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard/surveys">📝 Memnuniyet Anketleri</Link></li>
-            <li className="nav-item"><Link className="nav-link text-white" to="/worker-dashboard/announcements">📢 Duyurular</Link></li>
+              <Link className="nav-link text-white" to="/worker-dashboard">🏠 Ana Sayfa</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/worker-dashboard/leave">📅 İzin Talebi</Link>
+            </li>
+            <li className="nav-item">
+            <Link className="nav-link text-white" to="/worker-dashboard/leave-history">📄 İzin Geçmişim</Link>
+            </li>
+
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/worker-dashboard/training">📚 Eğitimler ve Sınavlar</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/worker-dashboard/exam-results">📊 Sınav Sonuçlarım</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/worker-dashboard/surveys">📝 Memnuniyet Anketleri</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link text-white" to="/worker-dashboard/announcements">📢 Duyurular</Link>
+            </li>
             <li className="nav-item mt-4">
               <button onClick={logout} className="btn btn-danger w-100">🚪 Çıkış Yap</button>
             </li>

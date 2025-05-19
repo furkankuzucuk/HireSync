@@ -19,14 +19,12 @@ namespace Project.Services.Concretes
             this.mapper = mapper;
         }
 
-        public async Task<LeaveRequestDto> CreateLeaveRequest(int userId,LeaveRequestInsertDto leaveRequest)
+        public async Task<LeaveRequestDto> CreateLeaveRequest(int userId, LeaveRequestInsertDto leaveRequest)
         {
-            
             var entity = mapper.Map<LeaveRequest>(leaveRequest);
-
-            entity.UserId = userId; // Burada userId Controller'dan gelmiş olacak
-            entity.Status = "Pending"; // İstersen otomatik status
-            entity.RequestDate = DateTime.UtcNow; // İstersen otomatik zaman
+            entity.UserId = userId;
+            entity.Status = "Pending";
+            entity.RequestDate = DateTime.UtcNow;
 
             repositoryManager.LeaveRequestRepository.CreateLeaveRequest(entity);
             await repositoryManager.Save();
@@ -35,7 +33,10 @@ namespace Project.Services.Concretes
 
         public async Task DeleteLeaveRequest(int id, bool trackChanges)
         {
-            var entity = await repositoryManager.LeaveRequestRepository.GetLeaveRequestById(id, trackChanges).FirstOrDefaultAsync();
+            var entity = await repositoryManager.LeaveRequestRepository
+                .GetLeaveRequestById(id, trackChanges)
+                .FirstOrDefaultAsync();
+
             if (entity == null)
                 throw new EntityNotFoundException<LeaveRequest>(id);
 
@@ -44,14 +45,35 @@ namespace Project.Services.Concretes
         }
 
         public async Task<IEnumerable<LeaveRequestDto>> GetAllLeaveRequests(bool trackChanges)
-        {
-            var leaveRequests = await repositoryManager.LeaveRequestRepository.GetAllLeaveRequests(trackChanges).ToListAsync();
-            return mapper.Map<IEnumerable<LeaveRequestDto>>(leaveRequests);
-        }
+{
+    var leaveRequests = await repositoryManager.LeaveRequestRepository
+        .GetAllLeaveRequests(trackChanges)
+        .Include(lr => lr.User) // ⬅ User join
+        .ToListAsync();
+
+    var result = leaveRequests.Select(lr => new LeaveRequestDto
+    {
+        LeaveRequestId = lr.LeaveRequestId,
+        UserId = lr.UserId,
+        UserName = $"{lr.User.Name} {lr.User.LastName}", // ⬅ Ad Soyad
+        StartDate = lr.StartDate,
+        EndDate = lr.EndDate,
+        LeaveType = lr.LeaveType,
+        Status = lr.Status,
+        RequestDate = lr.RequestDate
+    });
+
+    return result;
+}
+
+
 
         public async Task<LeaveRequestDto> GetLeaveRequestById(int id, bool trackChanges)
         {
-            var entity = await repositoryManager.LeaveRequestRepository.GetLeaveRequestById(id, trackChanges).FirstOrDefaultAsync();
+            var entity = await repositoryManager.LeaveRequestRepository
+                .GetLeaveRequestById(id, trackChanges)
+                .FirstOrDefaultAsync();
+
             if (entity == null)
                 throw new EntityNotFoundException<LeaveRequest>(id);
 
@@ -60,12 +82,25 @@ namespace Project.Services.Concretes
 
         public async Task UpdateLeaveRequest(int id, LeaveRequestUpdateDto leaveRequest, bool trackChanges)
         {
-            var entity = await repositoryManager.LeaveRequestRepository.GetLeaveRequestById(id, trackChanges).FirstOrDefaultAsync();
+            var entity = await repositoryManager.LeaveRequestRepository
+                .GetLeaveRequestById(id, trackChanges)
+                .FirstOrDefaultAsync();
+
             if (entity == null)
                 throw new EntityNotFoundException<LeaveRequest>(id);
 
             mapper.Map(leaveRequest, entity);
             await repositoryManager.Save();
+        }
+
+        // ✅ Çalışanın kendi izin başvurularını getirme
+        public async Task<IEnumerable<LeaveRequestDto>> GetRequestsByUserId(int userId)
+        {
+            var requests = await repositoryManager.LeaveRequestRepository
+                .GetLeaveRequestsByUserId(userId)
+                .ToListAsync();
+
+            return mapper.Map<IEnumerable<LeaveRequestDto>>(requests);
         }
     }
 }

@@ -13,6 +13,9 @@ namespace Project.Repository.Concretes
         public IQueryable<LeaveRequest> GetLeaveRequestById(int id, bool trackChanges) =>
             FindByCondition(lr => lr.LeaveRequestId == id, trackChanges);
 
+        public IQueryable<LeaveRequest> GetLeaveRequestsByUserId(int userId) => // ✅ yeni
+            FindByCondition(lr => lr.UserId == userId, trackChanges: false);
+
         public void CreateLeaveRequest(LeaveRequest leaveRequest) =>
             Create(leaveRequest);
 
