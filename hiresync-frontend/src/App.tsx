@@ -38,10 +38,12 @@ import SurveyAdminList from './pages/SurveyAdminList';
 import SurveyCreate from './pages/SurveyCreate';
 import SurveyAddQuestion from './pages/SurveyAddQuestion';
 import SurveyEdit from './pages/SurveyEdit';
-
+<<<<<<< HEAD
+=======
 import ExamList from './pages/ExamList';
 import SubmitExam from './pages/SubmitExam';
 import UserExamResults from './pages/UserExamResult';
+>>>>>>> f2b3fba09a15b087ddc5f4e0fd83a122e7a00206
 
 const LoginPageWrapper = () => {
   const navigate = useNavigate();
@@ -54,6 +56,9 @@ const LoginPageWrapper = () => {
   return <LoginPage onLoginSuccess={handleLoginSuccess} />;
 };
 
+<<<<<<< HEAD
+=======
+// sınav çözüm sayfası (useParams ile id alıyor)
 const SubmitExamWrapper = () => {
   const { id } = useParams();
   return <SubmitExam examId={parseInt(id || '0')} />;
@@ -63,6 +68,9 @@ const App = () => {
   return (
     <Router>
       <Routes>
+<<<<<<< HEAD
+=======
+
         {/* 🔓 Public Routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPageWrapper />} />
@@ -80,6 +88,7 @@ const App = () => {
             <Route path="joblist" element={<JobListAdmin />} />
             <Route path="exams" element={<OnlineExam />} />
             <Route path="performance" element={<PerformanceAnalysis />} />
+            <Route path="/admin-dashboard/performance-review" element={<PerformanceReviewPage />} />
             <Route path="survey-results" element={<SurveyAdminList />} />
             <Route path="survey-results/:id" element={<SurveyResults />} />
             <Route path="survey-create" element={<SurveyCreate />} />
@@ -108,6 +117,11 @@ const App = () => {
             <Route path="status" element={<ApplicationStatus />} />
             <Route path="upload-resume" element={<UploadResume />} />
           </Route>
+<<<<<<< HEAD
+        </Route>
+
+=======
+
         </Route>
 
         {/* ❌ Fallback */}

@@ -62,10 +62,11 @@ namespace Project.Services.Concretes
     // 4. Yeni PerformanceReview oluştur
             var performanceReview = new PerformanceReview
             {
-                UserId = userId,
+                UserExamId = userId,
                 PerformanceRate = performanceRate,
                 ReviewSummary = $"User has an average score of {averageScore:F2}",
                 ReviewDate = DateTime.UtcNow,
+                AverageScore = averageScore
                 //ExamId = userExams.OrderByDescending(e => e.ExamDate).First().ExamId // Son girdiği sınavı referans alıyoruz
             };
 

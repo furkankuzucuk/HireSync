@@ -37,6 +37,20 @@ namespace Project.Presentation.Controller
             return Ok(exams);
         }
 
+        [HttpGet("user/{examId}")]
+        public async Task<IActionResult> GetUserExamByExamId(int examId)
+        {
+            var exams = await _serviceManager.UserExamService.GetUserExamByExamId(examId, false);
+            return Ok(exams);
+        }
+
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetFilteredUserExams([FromQuery] int? userId, [FromQuery] int? examId)
+        {
+            var results = await _serviceManager.UserExamService.GetFilteredUserExams(userId, examId, false);
+            return Ok(results);
+        }
+
         [HttpGet("me")]
         public async Task<IActionResult> GetCurrentUserExams()
         {

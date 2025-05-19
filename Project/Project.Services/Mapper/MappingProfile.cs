@@ -1,7 +1,6 @@
 using AutoMapper;
 using Project.Entities;
 using Project.Entities.DataTransferObjects;
-using Project.Entities.DataTransferObjects.Candidate;
 using Project.Entities.DataTransferObjects.Department;
 using Project.Entities.DataTransferObjects.Exam;
 using Project.Entities.DataTransferObjects.Job;
@@ -42,14 +41,12 @@ namespace Project.Services.Mapper
             CreateMap<DepartmentUpdateDto, Department>().ReverseMap();
 
             // JOB APPLICATION
-          CreateMap<JobApplication, JobApplicationDto>()
-    .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.JobList.Title))
-    .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.JobList.Department.DepartmentName))
-    .ForMember(dest => dest.JobName, opt => opt.MapFrom(src => src.JobList.Job.JobName))
-    .ForMember(dest => dest.JobList, opt => opt.MapFrom(src => src.JobList)) // full nesneyi de al
-    .ReverseMap();
-
-
+            CreateMap<JobApplication, JobApplicationDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.JobList.Title))
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.JobList.Department.DepartmentName))
+                .ForMember(dest => dest.JobName, opt => opt.MapFrom(src => src.JobList.Job.JobName))
+                .ForMember(dest => dest.JobList, opt => opt.MapFrom(src => src.JobList))
+                .ReverseMap();
 
             CreateMap<JobApplicationInsertDto, JobApplication>().ReverseMap();
             CreateMap<JobApplicationUpdateDto, JobApplication>().ReverseMap();
@@ -78,10 +75,12 @@ namespace Project.Services.Mapper
             CreateMap<SatisfactionSurveyInsertDto, SatisfactionSurvey>().ReverseMap();
             CreateMap<SatisfactionSurveyUpdateDto, SatisfactionSurvey>().ReverseMap();
 
+            // SURVEY ANSWER
             CreateMap<SurveyAnswer, SurveyAnswerDto>().ReverseMap();
             CreateMap<SurveyAnswerInsertDto, SurveyAnswer>().ReverseMap();
             CreateMap<SurveyAnswerUpdateDto, SurveyAnswer>().ReverseMap();
 
+            // SURVEY QUESTION
             CreateMap<SurveyQuestion, SurveyQuestionDto>().ReverseMap();
             CreateMap<SurveyQuestionInsertDto, SurveyQuestion>().ReverseMap();
             CreateMap<SurveyQuestionUpdateDto, SurveyQuestion>().ReverseMap();
@@ -99,7 +98,9 @@ namespace Project.Services.Mapper
             // USER EXAM
             CreateMap<UserExam, UserExamDto>()
                 .ForMember(dest => dest.ExamName, opt => opt.MapFrom(src => src.Exam.ExamName))
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
                 .ReverseMap();
+
             CreateMap<UserExamInsertDto, UserExam>().ReverseMap();
             CreateMap<UserExamUpdateDto, UserExam>().ReverseMap();
         }
