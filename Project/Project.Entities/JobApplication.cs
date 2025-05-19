@@ -1,11 +1,20 @@
-namespace Project.Entities;
-public class JobApplication
+using System;
+
+namespace Project.Entities
 {
-    public int JobApplicationId { get; set; }  // Primary Key
-    public int UserId {get; set;}
-    public int JobListId { get; set; }  // Foreign Key
-    public JobList JobList { get; set; }  // Navigation property to Job
-    public DateTime AppDate { get; set; }  // Date
-    public string ResumePath {get; set;}
-    public string Status { get; set; }     // Nvarchar(20)
+    public class JobApplication
+    {
+        public int JobApplicationId { get; set; }
+
+        public int UserId { get; set; }
+        public int JobListId { get; set; }
+
+        public DateTime AppDate { get; set; }    // Başvuru tarihi
+
+        public string ResumePath { get; set; }   // CV dosya yolu
+        public string Status { get; set; }       // Başvuru durumu
+
+        // Navigation property
+        public JobList JobList { get; set; }
+    }
 }

@@ -8,6 +8,7 @@ const useLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('username');
+    localStorage.removeItem('userId'); // ✅ userId temizlendi
     localStorage.removeItem('tokenExpiration');
     navigate('/', { replace: true });
   };

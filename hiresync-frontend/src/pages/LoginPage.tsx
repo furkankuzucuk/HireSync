@@ -33,10 +33,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
         password: password,
       });
 
-      const { token, role } = response.data;
+      const { token, role, userId } = response.data; // ✅ userId burada alınıyor
 
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
+      localStorage.setItem("userId", userId.toString()); // ✅ EKLENDİ
       localStorage.setItem("username", username);
       localStorage.setItem("tokenExpiration", (Date.now() + 3600 * 1000).toString());
 

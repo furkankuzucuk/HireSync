@@ -4,16 +4,21 @@ import axios from "axios";
 const UploadResume = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [statusMessage, setStatusMessage] = useState("");
-
   const handleUpload = async () => {
     if (!selectedFile) {
       setStatusMessage("Lütfen bir dosya seçin.");
       return;
     }
-
+  
+    // ❗ Dosya tipi kontrolü
+    if (selectedFile.type !== "application/pdf") {
+      setStatusMessage("Yalnızca PDF dosyası yükleyebilirsiniz.");
+      return;
+    }
+  
     const formData = new FormData();
     formData.append("file", selectedFile);
-
+  
     try {
       const response = await axios.post("/api/jobapplications/upload", formData, {
         headers: {
@@ -27,6 +32,7 @@ const UploadResume = () => {
       setStatusMessage("Yükleme sırasında hata oluştu: " + errMsg);
     }
   };
+  
 
   return (
     <div style={{ padding: "20px" }}>
@@ -34,7 +40,7 @@ const UploadResume = () => {
 
       <input
         type="file"
-        accept=".pdf,.doc,.docx"
+        accept=".pdf"
         onChange={(e) => {
           if (e.target.files?.length) setSelectedFile(e.target.files[0]);
         }}

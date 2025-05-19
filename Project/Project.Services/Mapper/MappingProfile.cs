@@ -42,14 +42,22 @@ namespace Project.Services.Mapper
             CreateMap<DepartmentUpdateDto, Department>().ReverseMap();
 
             // JOB APPLICATION
-            CreateMap<JobApplication, JobApplicationDto>().ReverseMap();
+          CreateMap<JobApplication, JobApplicationDto>()
+    .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.JobList.Title))
+    .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.JobList.Department.DepartmentName))
+    .ForMember(dest => dest.JobName, opt => opt.MapFrom(src => src.JobList.Job.JobName))
+    .ForMember(dest => dest.JobList, opt => opt.MapFrom(src => src.JobList)) // full nesneyi de al
+    .ReverseMap();
+
+
+
             CreateMap<JobApplicationInsertDto, JobApplication>().ReverseMap();
             CreateMap<JobApplicationUpdateDto, JobApplication>().ReverseMap();
 
             // JOB LIST
             CreateMap<JobList, JobListDto>()
                 .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.DepartmentName))
-                .ForMember(dest => dest.JobName, opt => opt.MapFrom(src => src.Job.JobName)) // Job entity bağlıysa JobName al
+                .ForMember(dest => dest.JobName, opt => opt.MapFrom(src => src.Job.JobName))
                 .ReverseMap();
 
             CreateMap<JobListInsertDto, JobList>().ReverseMap();
@@ -78,7 +86,6 @@ namespace Project.Services.Mapper
             CreateMap<SurveyQuestionInsertDto, SurveyQuestion>().ReverseMap();
             CreateMap<SurveyQuestionUpdateDto, SurveyQuestion>().ReverseMap();
 
-            // Exam
             // EXAM
             CreateMap<Exam, ExamDto>().ReverseMap();
             CreateMap<ExamInsertDto, Exam>().ReverseMap();
@@ -89,11 +96,10 @@ namespace Project.Services.Mapper
             CreateMap<QuestionInsertDto, Question>().ReverseMap();
             CreateMap<QuestionUpdateDto, Question>().ReverseMap();
 
-
             // USER EXAM
-           CreateMap<UserExam, UserExamDto>()
-               .ForMember(dest => dest.ExamName,
-               opt => opt.MapFrom(src => src.Exam.ExamName)).ReverseMap();
+            CreateMap<UserExam, UserExamDto>()
+                .ForMember(dest => dest.ExamName, opt => opt.MapFrom(src => src.Exam.ExamName))
+                .ReverseMap();
             CreateMap<UserExamInsertDto, UserExam>().ReverseMap();
             CreateMap<UserExamUpdateDto, UserExam>().ReverseMap();
         }

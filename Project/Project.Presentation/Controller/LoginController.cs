@@ -59,22 +59,24 @@ namespace Project.Presentation.Controller
 
         // POST api/login/authenticate (Kullanıcı giriş yapacak)
         [HttpPost("authenticate")]
-        public async Task<IActionResult> AuthenticateUser([FromBody] LoginAuthenticationDto loginDto)
-        {
-            if (loginDto == null)
-            {
-                return BadRequest("Invalid login credentials.");
-            }
+public async Task<IActionResult> AuthenticateUser([FromBody] LoginAuthenticationDto loginDto)
+{
+    if (loginDto == null)
+        return BadRequest("Invalid login credentials.");
 
-            var loginResponse = await _serviceManager.LoginService.AuthenticateUser(loginDto);
+    var loginResponse = await _serviceManager.LoginService.AuthenticateUser(loginDto);
 
-            if (loginResponse == null)
-            {
-                return Unauthorized("Invalid username or password.");
-            }
+    if (loginResponse == null)
+        return Unauthorized("Invalid username or password.");
 
-            return Ok(loginResponse); // Token ve role ile birlikte başarılı giriş
-        }
+    return Ok(new
+    {
+        token = loginResponse.Token,
+        role = loginResponse.Role,
+        userId = loginResponse.UserId // ✅ ekleniyor
+    });
+}
+
 
         [HttpPost("forgot-password")] //emaili giren kullanıcı bu isteği göndermeli
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)

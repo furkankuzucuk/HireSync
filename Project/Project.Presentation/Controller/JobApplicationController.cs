@@ -41,7 +41,8 @@ public async Task<IActionResult> CreateJobApplication([FromBody] JobApplicationI
         return BadRequest("Job Application data is null.");
 
     var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "UserId");
-    var usernameClaim = User.Claims.FirstOrDefault(c => c.Type == "username" || c.Type == ClaimTypes.Name);
+    var usernameClaim = User.Claims.FirstOrDefault(c => 
+        c.Type == "username" || c.Type == ClaimTypes.Name);
 
     if (userIdClaim == null || usernameClaim == null)
         return Unauthorized("User ID or username not found in token.");
@@ -49,12 +50,23 @@ public async Task<IActionResult> CreateJobApplication([FromBody] JobApplicationI
     int userId = int.Parse(userIdClaim.Value);
     string username = usernameClaim.Value;
 
-    // 👇 CV yolu kullanıcı adına göre otomatik atanıyor
+    // 📁 wwwroot/uploads klasöründe kullanıcı adına özel CV dosyası kontrolü
+    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+    string expectedFilePath = Path.Combine(uploadsFolder, $"{username}_cv.pdf");
+
+    if (!System.IO.File.Exists(expectedFilePath))
+    {
+        return BadRequest("Başvuru yapabilmek için lütfen önce CV’nizi yükleyiniz.");
+    }
+
+    // ✅ CV yolu DTO'ya yazılıyor
     jobApplicationDto.ResumePath = $"/uploads/{username}_cv.pdf";
 
     var created = await serviceManager.JobApplicationService.CreateJobApplication(userId, jobApplicationDto);
     return CreatedAtAction(nameof(GetJobApplicationById), new { id = created.JobApplicationId }, created);
 }
+
+
 
 
         [HttpGet("candidate/{candidateId}")]
@@ -74,11 +86,16 @@ public async Task<IActionResult> CreateJobApplication([FromBody] JobApplicationI
             return NoContent();
         }
 
-        [HttpPost("upload")]
+      [HttpPost("upload")]
 public async Task<IActionResult> UploadResume([FromForm] IFormFile file)
 {
     if (file == null || file.Length == 0)
         return BadRequest("No file uploaded.");
+
+    // ❗ Dosya uzantısı kontrolü (PDF değilse reddet)
+    var extension = Path.GetExtension(file.FileName).ToLowerInvariant();
+    if (extension != ".pdf")
+        return BadRequest("Yalnızca PDF dosyaları kabul edilmektedir.");
 
     var userNameClaim = User.Claims.FirstOrDefault(c =>
         c.Type == "username" || c.Type == ClaimTypes.Name || c.Type == "preferred_username");
@@ -87,8 +104,7 @@ public async Task<IActionResult> UploadResume([FromForm] IFormFile file)
         return Unauthorized("Username not found in token.");
 
     var username = userNameClaim.Value;
-    var fileExtension = Path.GetExtension(file.FileName);
-    var uniqueFileName = $"{username}_cv{fileExtension}";
+    var uniqueFileName = $"{username}_cv{extension}";
     var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
 
     if (!Directory.Exists(uploadsFolder))
@@ -103,6 +119,7 @@ public async Task<IActionResult> UploadResume([FromForm] IFormFile file)
 
     return Ok(new { FilePath = "/uploads/" + uniqueFileName });
 }
+
 
 
         [HttpGet("download/{id}")]
