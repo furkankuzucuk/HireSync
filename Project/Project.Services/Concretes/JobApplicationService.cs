@@ -71,6 +71,7 @@ namespace Project.Services.Concretes
                     .ThenInclude(jl => jl.Department)
                 .Include(j => j.JobList)
                     .ThenInclude(jl => jl.Job)
+                .Include(j => j.User)
                 .ToListAsync();
 
             return jobApplications.Select(j => new JobApplicationDto
@@ -83,7 +84,8 @@ namespace Project.Services.Concretes
                 Status = j.Status,
                 Title = j.JobList?.Title,
                 DepartmentName = j.JobList?.Department?.DepartmentName,
-                JobName = j.JobList?.Job?.JobName
+                JobName = j.JobList?.Job?.JobName,
+                UserFullName = (j.User?.Name ?? "") + " " + (j.User?.LastName ?? "")
             });
         }
 
@@ -137,16 +139,19 @@ namespace Project.Services.Concretes
 
 
         public async Task UpdateJobApplication(int id, JobApplicationUpdateDto jobApplication, bool trackChanges)
-        {
-            var jobApplicationEntity = await repositoryManager.JobApplicationRepository
-                .GetJobApplicationById(id, trackChanges)
-                .FirstOrDefaultAsync();
+{
+    var jobApplicationEntity = await repositoryManager.JobApplicationRepository
+        .GetJobApplicationById(id, trackChanges)
+        .FirstOrDefaultAsync();
 
-            if (jobApplicationEntity == null)
-                throw new EntityNotFoundException<JobApplication>(id);
+    if (jobApplicationEntity == null)
+        throw new EntityNotFoundException<JobApplication>(id);
 
-            mapper.Map(jobApplication, jobApplicationEntity);
-            await repositoryManager.Save();
-        }
+    // Sadece durumu güncelle
+    jobApplicationEntity.Status = jobApplication.Status;
+
+    await repositoryManager.Save();
+}
+
     }
 }

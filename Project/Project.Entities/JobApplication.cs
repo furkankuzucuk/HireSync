@@ -16,5 +16,6 @@ namespace Project.Entities
 
         // Navigation property
         public JobList JobList { get; set; }
+        public User User { get; set; }
     }
 }

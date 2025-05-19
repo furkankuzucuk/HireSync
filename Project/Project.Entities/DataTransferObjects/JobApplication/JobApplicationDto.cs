@@ -12,6 +12,8 @@ namespace Project.Entities.DataTransferObjects.JobApplication
         public DateTime AppDate { get; set; }
         public string ResumePath { get; set; }
         public string Status { get; set; }
+        public string UserFullName { get; set; }
+
 
         // Ek görsel alanlar (UI için)
         public string Title { get; set; }              // İlan başlığı

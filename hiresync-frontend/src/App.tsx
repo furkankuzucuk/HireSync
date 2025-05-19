@@ -9,6 +9,8 @@ import OnlineExam from './pages/OnlineExam';
 import PerformanceAnalysis from './pages/PerformanceAnalysis';
 import LeaveRequests from './pages/LeaveRequests';
 import JobListAdmin from './pages/JobListAdmin';
+import JobApplications from './pages/JobApplications';
+
 
 import WorkerDashboard from './pages/WorkerDashboard';
 import WorkerAnnouncements from './pages/WorkerAnnouncements';
@@ -75,20 +77,23 @@ const App = () => {
         {/* 🔒 Protected Routes */}
         <Route element={<ProtectedRoute />}>
           {/* Admin Routes */}
-          <Route path="/admin-dashboard" element={<AdminDashboard />}>
-            <Route index element={<AdminHome />} />
-            <Route path="jobs" element={<JobPostingManagement />} />
-            <Route path="joblist" element={<JobListAdmin />} />
-            <Route path="exams" element={<OnlineExam />} />
-            <Route path="performance" element={<PerformanceAnalysis />} />
-            <Route path="performance-review" element={<PerformanceReviewPage />} />
-            <Route path="survey-results" element={<SurveyAdminList />} />
-            <Route path="survey-results/:id" element={<SurveyResults />} />
-            <Route path="survey-create" element={<SurveyCreate />} />
-            <Route path="survey-add-question/:id" element={<SurveyAddQuestion />} />
-            <Route path="survey-edit/:id" element={<SurveyEdit />} />
-            <Route path="leaves" element={<LeaveRequests />} />
-          </Route>
+          {/* Admin Routes */}
+<Route path="/admin-dashboard" element={<AdminDashboard />}>
+  <Route index element={<AdminHome />} />
+  <Route path="jobs" element={<JobPostingManagement />} />
+  <Route path="joblist" element={<JobListAdmin />} />
+  <Route path="exams" element={<OnlineExam />} />
+  <Route path="performance" element={<PerformanceAnalysis />} />
+  <Route path="performance-review" element={<PerformanceReviewPage />} />
+  <Route path="survey-results" element={<SurveyAdminList />} />
+  <Route path="survey-results/:id" element={<SurveyResults />} />
+  <Route path="survey-create" element={<SurveyCreate />} />
+  <Route path="survey-add-question/:id" element={<SurveyAddQuestion />} />
+  <Route path="survey-edit/:id" element={<SurveyEdit />} />
+  <Route path="leaves" element={<LeaveRequests />} />
+  <Route path="jobapplications" element={<JobApplications />} /> {/* 🆕 EKLENDİ */}
+</Route>
+
 
           {/* Worker Routes */}
           <Route path="/worker-dashboard" element={<WorkerDashboard />}>
