@@ -120,6 +120,10 @@ namespace Project.Services.Concretes
 {
     var applications = await repositoryManager.JobApplicationRepository
         .FindByCondition(a => a.UserId == candidateId, false)
+        .Include(a => a.JobList)
+            .ThenInclude(jl => jl.Department)
+        .Include(a => a.JobList)
+            .ThenInclude(jl => jl.Job)
         .ToListAsync();
 
     return applications.Select(app => new JobApplicationDto
@@ -136,6 +140,7 @@ namespace Project.Services.Concretes
         JobList = mapper.Map<JobListDto>(app.JobList)
     });
 }
+
 
 
         public async Task UpdateJobApplication(int id, JobApplicationUpdateDto jobApplication, bool trackChanges)

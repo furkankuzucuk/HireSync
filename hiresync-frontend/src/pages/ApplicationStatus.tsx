@@ -29,6 +29,7 @@ interface JobApplication {
 
 const ApplicationStatus: React.FC = () => {
   const [applications, setApplications] = useState<JobApplication[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -36,8 +37,8 @@ const ApplicationStatus: React.FC = () => {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("userId");
 
-        if (!userId) {
-          console.error("Kullanıcı ID'si bulunamadı.");
+        if (!token || !userId) {
+          console.error("Token veya kullanıcı ID'si eksik.");
           return;
         }
 
@@ -46,9 +47,10 @@ const ApplicationStatus: React.FC = () => {
         });
 
         setApplications(response.data);
-        console.log("Gelen başvurular:", response.data);
       } catch (error) {
         console.error("Başvuru verileri alınamadı:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -59,7 +61,9 @@ const ApplicationStatus: React.FC = () => {
     <div className="application-status container mt-4">
       <h2 className="mb-4">📄 Başvuru Durumlarım</h2>
 
-      {applications.length === 0 ? (
+      {loading ? (
+        <p>Yükleniyor...</p>
+      ) : applications.length === 0 ? (
         <p>Hiç başvurunuz bulunmamaktadır.</p>
       ) : (
         <table className="table table-bordered table-striped">

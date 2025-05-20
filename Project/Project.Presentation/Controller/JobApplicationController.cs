@@ -21,21 +21,36 @@ namespace Project.Presentation.Controller
             this.serviceManager = serviceManager;
         }
 
+        // ✅ Admin tüm başvuruları görebilir
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllJobApplications()
         {
             var jobApplications = await serviceManager.JobApplicationService.GetAllJobApplications(false);
             return Ok(jobApplications);
         }
 
+        // ✅ Belirli bir başvuru
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetJobApplicationById(int id)
         {
             var jobApplication = await serviceManager.JobApplicationService.GetJobApplicationById(id, false);
             return Ok(jobApplication);
         }
 
+        // ✅ Aday kendi başvurularını görebilir
+        [HttpGet("candidate/{candidateId}")]
+        [Authorize(Roles = "Candidate")]
+        public async Task<IActionResult> GetApplicationsByCandidateId(int candidateId)
+        {
+            var apps = await serviceManager.JobApplicationService.GetApplicationsByCandidateId(candidateId);
+            return Ok(apps);
+        }
+
+        // ✅ Yeni başvuru oluştur
         [HttpPost]
+        [Authorize(Roles = "Candidate")]
         public async Task<IActionResult> CreateJobApplication([FromBody] JobApplicationInsertDto jobApplicationDto)
         {
             if (jobApplicationDto == null)
@@ -63,7 +78,9 @@ namespace Project.Presentation.Controller
             return CreatedAtAction(nameof(GetJobApplicationById), new { id = created.JobApplicationId }, created);
         }
 
+        // ✅ CV yükleme endpointi
         [HttpPost("upload")]
+        [Authorize(Roles = "Candidate")]
         public async Task<IActionResult> UploadResume([FromForm] IFormFile file)
         {
             if (file == null || file.Length == 0)
@@ -96,7 +113,7 @@ namespace Project.Presentation.Controller
             return Ok(new { FilePath = "/uploads/" + uniqueFileName });
         }
 
-        // ✅ iframe ile PDF preview
+        // ✅ PDF önizleme (iframe içinde gösterilir)
         [HttpGet("view-pdf/{filename}")]
         [AllowAnonymous]
         public IActionResult ViewPdf(string filename)
@@ -111,7 +128,9 @@ namespace Project.Presentation.Controller
             return File(stream, "application/pdf");
         }
 
+        // ✅ Admin başvuru durumu güncelleyebilir
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateJobApplication(int id, [FromBody] JobApplicationUpdateDto jobApplicationDto)
         {
             if (jobApplicationDto == null)
@@ -121,7 +140,9 @@ namespace Project.Presentation.Controller
             return NoContent();
         }
 
+        // ✅ Başvuru silme (Admin)
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteJobApplication(int id)
         {
             await serviceManager.JobApplicationService.DeleteJobApplication(id, false);
