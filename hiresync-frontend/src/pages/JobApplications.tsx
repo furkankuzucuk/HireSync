@@ -23,12 +23,24 @@ const JobApplications: React.FC = () => {
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [selectedPdfFilename, setSelectedPdfFilename] = useState<string | null>(null);
 
+  // ✅ Token'ı localStorage'dan alıyoruz
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
+    if (!token) {
+      console.error("Token bulunamadı. Giriş yapmış mısınız?");
+      return;
+    }
+
     axios
-      .get<JobApplication[]>("/api/jobapplications")
+      .get<JobApplication[]>("/api/jobapplications", {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       .then((res) => setApplications(res.data))
       .catch((err) => console.error("Veri alınamadı:", err));
-  }, []);
+  }, [token]);
 
   const handleStatusChange = (id: number, newStatus: string) => {
     setApplications((prev) =>
@@ -39,8 +51,21 @@ const JobApplications: React.FC = () => {
   };
 
   const updateStatus = async (id: number, newStatus: string) => {
+    if (!token) {
+      alert("Yetkisiz işlem. Giriş yapmanız gerekiyor.");
+      return;
+    }
+
     try {
-      await axios.put(`/api/jobapplications/${id}`, { status: newStatus });
+      await axios.put(
+        `/api/jobapplications/${id}`,
+        { status: newStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
       alert("Durum güncellendi.");
     } catch (error: any) {
       console.error("Durum güncelleme hatası:", error.response?.data || error);
