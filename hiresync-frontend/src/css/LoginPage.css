@@ -16,3 +16,14 @@
     background-position: 0% 50%;
   }
 }
+
+.forgot-link {
+  color: #4fc3f7;
+  cursor: pointer;
+}
+
+.forgot-link:hover {
+  color: #0288d1;
+  text-decoration: underline;
+}
+

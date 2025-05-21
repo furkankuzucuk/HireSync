@@ -114,7 +114,9 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
           </button>
         </form>
         <div className="text-center mt-3">
-          <a href="/forgot-password" className="text-light text-decoration-underline">Şifrenizi mi unuttunuz?</a>
+                  <a href="/forgot-password" className="forgot-link text-decoration-underline">
+                      Şifrenizi mi unuttunuz?
+                  </a>
         </div>
       </div>
     </div>
