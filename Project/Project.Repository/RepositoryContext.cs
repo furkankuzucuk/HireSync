@@ -28,11 +28,10 @@ public class RepositoryContext : DbContext
     base.OnModelCreating(modelBuilder);
 
     modelBuilder.Entity<JobList>()
-        .HasOne(jl => jl.Job)
-        .WithMany()
-        .HasForeignKey(jl => jl.JobId)
-        .OnDelete(DeleteBehavior.Restrict); // 👈 Kritik satır
-
+        .HasOne(j => j.Job)
+        .WithMany(j => j.JobLists)
+        .HasForeignKey(j => j.JobId)
+        .OnDelete(DeleteBehavior.Restrict); 
     // Eğer başka ilişkilerde de problem çıkarsa buraya benzer şekilde eklenebilir.
 }
 
