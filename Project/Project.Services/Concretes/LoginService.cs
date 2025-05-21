@@ -78,7 +78,6 @@ namespace Project.Services.Concretes
                 return null;
 
             var token = GenerateJwtToken(login);
-            
 
             return new LoginResponseDto
             {
@@ -131,7 +130,10 @@ namespace Project.Services.Concretes
             _repositoryManager.LoginRepository.UpdateLogin(login);
             await _repositoryManager.Save();
 
-            var resetLink = $"https://yourapp.com/reset-password?token={token}";
+            // Frontend reset-password URL'sini appsettings.json'dan al
+            var frontendResetUrl = _configuration["Frontend:ResetPasswordUrl"];
+            var resetLink = $"{frontendResetUrl}?token={token}";
+
             await _emailService.SendPasswordResetEmailAsync(email, resetLink);
 
             return true;

@@ -11,6 +11,7 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,11 +24,12 @@ const ForgotPassword = () => {
 
     setLoading(true);
     setError('');
+    setSuccess(false); // Form gönderiminde resetle
 
     try {
       await axios.post('/api/login/forgot-password', { email });
-      
-      // ✅ 2 saniye sonra login ekranına yönlendir
+      setSuccess(true);
+
       setTimeout(() => {
         navigate('/login');
       }, 2000);
@@ -54,6 +56,7 @@ const ForgotPassword = () => {
               onChange={(e) => {
                 setEmail(e.target.value);
                 setError('');
+                // setSuccess(false) kaldırıldı
               }}
             />
           </div>
@@ -63,10 +66,13 @@ const ForgotPassword = () => {
           </button>
         </form>
 
-        {!loading && error === '' && email !== '' && (
-          <p className="success-message">Mail gönderildi. Giriş ekranına yönlendiriliyorsunuz...</p>
+        {success && !loading && !error && (
+          <p className="success-message">
+            Mail gönderildi. Giriş ekranına yönlendiriliyorsunuz...
+          </p>
         )}
       </div>
+      <ToastContainer />
     </div>
   );
 };
