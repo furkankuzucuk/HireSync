@@ -18,7 +18,6 @@ const SurveyCreate = () => {
       body: JSON.stringify({
         surveyTitle,
         surveyType,
-        departmentId: 1, // İstersen dropdown ile dinamik yaparız
       }),
     });
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getSurveysForUser } from '../services/SurveyService';
+import { getAllSurveys } from '../services/SurveyService';
 import { useNavigate } from 'react-router-dom';
 
 const SurveyAdminList = () => {
@@ -7,7 +7,7 @@ const SurveyAdminList = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getSurveysForUser().then(setSurveys);
+        getAllSurveys().then(setSurveys);
     }, []);
 
     return (

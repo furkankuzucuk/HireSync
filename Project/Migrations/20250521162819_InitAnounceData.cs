@@ -5,7 +5,7 @@
 namespace Project.Migrations
 {
     /// <inheritdoc />
-    public partial class FixJobIdInJobLists : Migration
+    public partial class InitAnounceData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,8 +19,7 @@ namespace Project.Migrations
                 table: "JobLists",
                 column: "JobId",
                 principalTable: "Jobs",
-                principalColumn: "JobId",
-                onDelete: ReferentialAction.Restrict);
+                principalColumn: "JobId");
         }
 
         /// <inheritdoc />
@@ -36,7 +35,7 @@ namespace Project.Migrations
                 column: "JobId",
                 principalTable: "Jobs",
                 principalColumn: "JobId",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
     }
 }

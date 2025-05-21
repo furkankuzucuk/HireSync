@@ -12,8 +12,8 @@ using Project.Repository;
 namespace Project.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    [Migration("20250514094222_AddJobIdToJobListFixed")]
-    partial class AddJobIdToJobListFixed
+    [Migration("20250521170920_InitDataCreate")]
+    partial class InitDataCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,56 +25,31 @@ namespace Project.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Project.Entities.Candidate", b =>
+            modelBuilder.Entity("Project.Entities.Anouncement", b =>
                 {
-                    b.Property<int>("CandidateId")
+                    b.Property<int>("AnouncementId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CandidateId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnouncementId"));
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Birthday")
+                    b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Gender")
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Mail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("AnouncementId");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResumePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SurName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("CandidateId");
-
-                    b.ToTable("Candidates");
+                    b.ToTable("Anouncements");
                 });
 
             modelBuilder.Entity("Project.Entities.Department", b =>
@@ -165,6 +140,8 @@ namespace Project.Migrations
 
                     b.HasIndex("JobListId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("JobApplications");
                 });
 
@@ -188,6 +165,10 @@ namespace Project.Migrations
 
                     b.Property<int>("JobId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("JobListId");
 
@@ -296,12 +277,12 @@ namespace Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("UserExamId")
                         .HasColumnType("int");
 
                     b.HasKey("PerformanceReviewId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserExamId");
 
                     b.ToTable("PerformanceReviews");
                 });
@@ -344,16 +325,11 @@ namespace Project.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SatisfactionSurveyId"));
 
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SurveyTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SatisfactionSurveyId");
-
-                    b.HasIndex("DepartmentId");
 
                     b.ToTable("SatisfactionSurveys");
                 });
@@ -373,14 +349,9 @@ namespace Project.Migrations
                     b.Property<int>("SurveyQuestionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("SurveyAnswerId");
 
                     b.HasIndex("SurveyQuestionId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("SurveyAnswers");
                 });
@@ -502,7 +473,15 @@ namespace Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Project.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("JobList");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project.Entities.JobList", b =>
@@ -514,9 +493,9 @@ namespace Project.Migrations
                         .IsRequired();
 
                     b.HasOne("Project.Entities.Job", "Job")
-                        .WithMany()
+                        .WithMany("JobLists")
                         .HasForeignKey("JobId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Department");
@@ -548,13 +527,13 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Entities.PerformanceReview", b =>
                 {
-                    b.HasOne("Project.Entities.User", "User")
+                    b.HasOne("Project.Entities.UserExam", "UserExam")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("UserExamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("UserExam");
                 });
 
             modelBuilder.Entity("Project.Entities.Question", b =>
@@ -568,17 +547,6 @@ namespace Project.Migrations
                     b.Navigation("Exam");
                 });
 
-            modelBuilder.Entity("Project.Entities.SatisfactionSurvey", b =>
-                {
-                    b.HasOne("Project.Entities.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-                });
-
             modelBuilder.Entity("Project.Entities.SurveyAnswer", b =>
                 {
                     b.HasOne("Project.Entities.SurveyQuestion", "SurveyQuestion")
@@ -587,15 +555,7 @@ namespace Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("SurveyQuestion");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project.Entities.User", b =>
@@ -640,6 +600,8 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Entities.Job", b =>
                 {
+                    b.Navigation("JobLists");
+
                     b.Navigation("Users");
                 });
 

@@ -21,17 +21,16 @@ public class RepositoryContext : DbContext
     public DbSet<JobList> JobLists { get; set; }
     public DbSet<UserExam> UserExams { get; set; }
     public DbSet<Question> Questions { get; set; }
+    public DbSet<Anouncement> Anouncements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-
         modelBuilder.Entity<JobList>()
-            .HasOne(jl => jl.Job)
+            .HasOne(j => j.Job)
             .WithMany(j => j.JobLists)
-            .HasForeignKey(jl => jl.JobId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .HasForeignKey(j => j.JobId)
+            .OnDelete(DeleteBehavior.NoAction);
 
-       
     }
 }

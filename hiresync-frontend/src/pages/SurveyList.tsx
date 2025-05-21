@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getSurveysForUser } from '../services/SurveyService';
+import { getAllSurveys } from '../services/SurveyService'; // yeni fonksiyon import edildi
 import { useNavigate } from 'react-router-dom';
 
 const SurveyList = () => {
@@ -7,19 +7,22 @@ const SurveyList = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getSurveysForUser().then(setSurveys);
+        getAllSurveys().then(setSurveys).catch(err => {
+          console.error(err);
+          setSurveys([]);
+        });
     }, []);
 
     return (
         <div>
-            <h2>Departmanınıza Ait Anketler</h2>
+            <h2>Tüm Anketler</h2>
             <ul>
                 {surveys.map((survey: any) => (
                     <li key={survey.satisfactionSurveyId}>
                         {survey.surveyTitle}
                         <button onClick={() => navigate(`/worker-dashboard/surveys/${survey.satisfactionSurveyId}`)}>
                             Katıl
-                            </button>
+                        </button>
                     </li>
                 ))}
             </ul>

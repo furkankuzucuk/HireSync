@@ -52,29 +52,29 @@ namespace Project.Services.Concretes
             return mapper.Map<SatisfactionSurveyDto>(entity);
         }
 
-        public async Task<IEnumerable<SatisfactionSurveyDto>> GetSurveysByUserDepartment(int userId)
-        {
-            var user = await repositoryManager.UserRepository
-                .GetUserById(userId,false)
-                .FirstOrDefaultAsync();
+        // public async Task<IEnumerable<SatisfactionSurveyDto>> GetSurveysByUserDepartment(int userId)
+        // {
+        //     var user = await repositoryManager.UserRepository
+        //         .GetUserById(userId,false)
+        //         .FirstOrDefaultAsync();
 
-            if (user == null || user.JobId == null)
-                throw new UserNotFoundException(userId);
+        //     if (user == null || user.JobId == null)
+        //         throw new UserNotFoundException(userId);
 
-            var job = await repositoryManager.JobRepository
-                .GetJobById(user.JobId.Value,false)
-                .FirstOrDefaultAsync();
+        //     var job = await repositoryManager.JobRepository
+        //         .GetJobById(user.JobId.Value,false)
+        //         .FirstOrDefaultAsync();
 
-            if (job == null)
-                throw new EntityNotFoundException<Job>(user.JobId.Value);
+        //     if (job == null)
+        //         throw new EntityNotFoundException<Job>(user.JobId.Value);
 
-            var surveys = await repositoryManager.SatisfactionSurveyRepository
-                .GetAllSatisfactionSurveys(false)
-                .Where(s => s.DepartmentId == job.DepartmentId)
-                .ToListAsync();
+        //     var surveys = await repositoryManager.SatisfactionSurveyRepository
+        //         .GetAllSatisfactionSurveys(false)
+        //         .Where(s => s.DepartmentId == job.DepartmentId)
+        //         .ToListAsync();
 
-            return mapper.Map<IEnumerable<SatisfactionSurveyDto>>(surveys);
-        }
+        //     return mapper.Map<IEnumerable<SatisfactionSurveyDto>>(surveys);
+        // }
 
 
         public async Task UpdateSatisfactionSurvey(int id, SatisfactionSurveyUpdateDto satisfactionSurvey, bool trackChanges)

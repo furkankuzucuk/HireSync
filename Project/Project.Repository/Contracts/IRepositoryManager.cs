@@ -22,5 +22,6 @@ public interface IRepositoryManager
 
     IUserExamRepository UserExamRepository {get; }
     IQuestionRepository QuestionRepository {get; }
+    IAnnouncementRepository AnnouncementRepository { get; }
     Task Save();
 }

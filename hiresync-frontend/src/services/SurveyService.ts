@@ -1,7 +1,8 @@
-export const getSurveysForUser = async () => {
+// Tüm anketleri getiren fonksiyon
+export const getAllSurveys = async () => {
   const token = localStorage.getItem('token');
 
-  const response = await fetch('/api/satisfactionsurveys/user-department', {
+  const response = await fetch('/api/satisfactionsurveys', {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
