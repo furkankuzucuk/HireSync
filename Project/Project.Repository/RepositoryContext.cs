@@ -28,10 +28,18 @@ public class RepositoryContext : DbContext
     base.OnModelCreating(modelBuilder);
 
     modelBuilder.Entity<JobList>()
+<<<<<<< Updated upstream
         .HasOne(j => j.Job)
         .WithMany(j => j.JobLists)
         .HasForeignKey(j => j.JobId)
         .OnDelete(DeleteBehavior.Restrict); 
+=======
+        .HasOne(jl => jl.Job)
+        .WithMany()
+        .HasForeignKey(jl => jl.JobId)
+        .OnDelete(DeleteBehavior.Restrict); // 👈 Kritik satır
+
+>>>>>>> Stashed changes
     // Eğer başka ilişkilerde de problem çıkarsa buraya benzer şekilde eklenebilir.
 }
 

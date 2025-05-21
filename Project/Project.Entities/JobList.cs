@@ -9,6 +9,7 @@ namespace Project.Entities
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
 
+<<<<<<< Updated upstream
         [ForeignKey("Job")]
         public int JobId { get; set; }
         public Job Job { get; set; }
@@ -16,4 +17,13 @@ namespace Project.Entities
         public string Description { get; set; }
         public DateTime CreateDate { get; set; }
     }
+=======
+    public int DepartmentId { get; set; } // Foreign Key
+    public Department Department { get; set; } 
+
+    public int JobId { get; set; } 
+        public Job Job { get; set; }
+    public string Description { get; set; }
+    public DateTime CreateDate { get; set; }
+>>>>>>> Stashed changes
 }

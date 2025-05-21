@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project.Repository;
 
@@ -11,9 +12,11 @@ using Project.Repository;
 namespace Project.Migrations
 {
     [DbContext(typeof(RepositoryContext))]
-    partial class RepositoryContextModelSnapshot : ModelSnapshot
+    [Migration("20250514094222_AddJobIdToJobListFixed")]
+    partial class AddJobIdToJobListFixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,58 @@ namespace Project.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Project.Entities.Candidate", b =>
+                {
+                    b.Property<int>("CandidateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CandidateId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Birthday")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Mail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResumePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SurName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CandidateId");
+
+                    b.ToTable("Candidates");
+                });
 
             modelBuilder.Entity("Project.Entities.Department", b =>
                 {
@@ -110,8 +165,6 @@ namespace Project.Migrations
 
                     b.HasIndex("JobListId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("JobApplications");
                 });
 
@@ -136,13 +189,6 @@ namespace Project.Migrations
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
-<<<<<<< Updated upstream
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-=======
->>>>>>> Stashed changes
                     b.HasKey("JobListId");
 
                     b.HasIndex("DepartmentId");
@@ -250,12 +296,12 @@ namespace Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserExamId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("PerformanceReviewId");
 
-                    b.HasIndex("UserExamId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("PerformanceReviews");
                 });
@@ -327,9 +373,14 @@ namespace Project.Migrations
                     b.Property<int>("SurveyQuestionId")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("SurveyAnswerId");
 
                     b.HasIndex("SurveyQuestionId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("SurveyAnswers");
                 });
@@ -451,15 +502,7 @@ namespace Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("JobList");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project.Entities.JobList", b =>
@@ -471,11 +514,7 @@ namespace Project.Migrations
                         .IsRequired();
 
                     b.HasOne("Project.Entities.Job", "Job")
-<<<<<<< Updated upstream
-                        .WithMany("JobLists")
-=======
                         .WithMany()
->>>>>>> Stashed changes
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -509,13 +548,13 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Entities.PerformanceReview", b =>
                 {
-                    b.HasOne("Project.Entities.UserExam", "UserExam")
+                    b.HasOne("Project.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserExamId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UserExam");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project.Entities.Question", b =>
@@ -548,7 +587,15 @@ namespace Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Project.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("SurveyQuestion");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project.Entities.User", b =>
@@ -593,8 +640,6 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Entities.Job", b =>
                 {
-                    b.Navigation("JobLists");
-
                     b.Navigation("Users");
                 });
 
