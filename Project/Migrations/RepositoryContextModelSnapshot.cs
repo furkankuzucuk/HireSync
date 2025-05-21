@@ -136,13 +136,10 @@ namespace Project.Migrations
                     b.Property<int>("JobId")
                         .HasColumnType("int");
 
-<<<<<<< Updated upstream
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-=======
->>>>>>> Stashed changes
                     b.HasKey("JobListId");
 
                     b.HasIndex("DepartmentId");
@@ -471,11 +468,7 @@ namespace Project.Migrations
                         .IsRequired();
 
                     b.HasOne("Project.Entities.Job", "Job")
-<<<<<<< Updated upstream
                         .WithMany("JobLists")
-=======
-                        .WithMany()
->>>>>>> Stashed changes
                         .HasForeignKey("JobId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();

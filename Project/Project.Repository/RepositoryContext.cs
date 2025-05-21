@@ -14,33 +14,24 @@ public class RepositoryContext : DbContext
     public DbSet<LeaveRequest> LeaveRequests { get; set; }
     public DbSet<Exam> Exams { get; set; }
     public DbSet<PerformanceReview> PerformanceReviews { get; set; }
-    public DbSet<JobApplication> JobApplications { get; set; }  // JobApplication DbSet eklendi
-    public DbSet<SatisfactionSurvey> SatisfactionSurveys {get; set;}
-    public DbSet<SurveyAnswer> SurveyAnswers {get; set;}
-    public DbSet<SurveyQuestion> SurveyQuestions {get; set;}
-    public DbSet<JobList> JobLists {get; set;}
-    
-    public DbSet<UserExam> UserExams {get; set;}
-    public DbSet<Question> Questions {get; set; }
+    public DbSet<JobApplication> JobApplications { get; set; }
+    public DbSet<SatisfactionSurvey> SatisfactionSurveys { get; set; }
+    public DbSet<SurveyAnswer> SurveyAnswers { get; set; }
+    public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
+    public DbSet<JobList> JobLists { get; set; }
+    public DbSet<UserExam> UserExams { get; set; }
+    public DbSet<Question> Questions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    base.OnModelCreating(modelBuilder);
+    {
+        base.OnModelCreating(modelBuilder);
 
-    modelBuilder.Entity<JobList>()
-<<<<<<< Updated upstream
-        .HasOne(j => j.Job)
-        .WithMany(j => j.JobLists)
-        .HasForeignKey(j => j.JobId)
-        .OnDelete(DeleteBehavior.Restrict); 
-=======
-        .HasOne(jl => jl.Job)
-        .WithMany()
-        .HasForeignKey(jl => jl.JobId)
-        .OnDelete(DeleteBehavior.Restrict); // 👈 Kritik satır
+        modelBuilder.Entity<JobList>()
+            .HasOne(jl => jl.Job)
+            .WithMany(j => j.JobLists)
+            .HasForeignKey(jl => jl.JobId)
+            .OnDelete(DeleteBehavior.Restrict);
 
->>>>>>> Stashed changes
-    // Eğer başka ilişkilerde de problem çıkarsa buraya benzer şekilde eklenebilir.
-}
-
+       
+    }
 }
