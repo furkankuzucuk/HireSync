@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import useLogout from "./useLogout";
 import "../css/WorkerDashboard.css";
@@ -6,6 +6,36 @@ import "../css/WorkerDashboard.css";
 const WorkerDashboard = () => {
   const logout = useLogout();
   const username = localStorage.getItem('username');
+
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");
+
+  useEffect(() => {
+    const popupShown = localStorage.getItem("jobApprovalPopupShown");
+    if (popupShown === "true") return; // Daha önce gösterilmiş
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    fetch("/api/users/profile", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.onayMesaji) {
+          setPopupMessage(data.onayMesaji);
+          setShowPopup(true);
+          localStorage.setItem("jobApprovalPopupShown", "true");
+        }
+      })
+      .catch(console.error);
+  }, []);
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+  };
 
   return (
     <div className="container-fluid">
@@ -22,9 +52,8 @@ const WorkerDashboard = () => {
               <Link className="nav-link text-white" to="/worker-dashboard/leave">📅 İzin Talebi</Link>
             </li>
             <li className="nav-item">
-            <Link className="nav-link text-white" to="/worker-dashboard/leave-history">📄 İzin Geçmişim</Link>
+              <Link className="nav-link text-white" to="/worker-dashboard/leave-history">📄 İzin Geçmişim</Link>
             </li>
-
             <li className="nav-item">
               <Link className="nav-link text-white" to="/worker-dashboard/training">📚 Eğitimler ve Sınavlar</Link>
             </li>
@@ -46,6 +75,14 @@ const WorkerDashboard = () => {
         {/* Content */}
         <main className="col-md-9 ms-sm-auto col-lg-10 px-md-4 offset-md-3 offset-lg-2 py-4">
           <div className="tab-content bg-white p-4 rounded shadow-sm">
+            {showPopup && (
+              <div className="popup-overlay">
+                <div className="popup-content">
+                  <p>{popupMessage}</p>
+                  <button onClick={handleClosePopup} className="btn btn-primary mt-3">Kapat</button>
+                </div>
+              </div>
+            )}
             <Outlet />
           </div>
         </main>

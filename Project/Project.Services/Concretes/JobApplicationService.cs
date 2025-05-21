@@ -143,20 +143,50 @@ namespace Project.Services.Concretes
 
 
 
-        public async Task UpdateJobApplication(int id, JobApplicationUpdateDto jobApplication, bool trackChanges)
+       public async Task UpdateJobApplication(int id, JobApplicationUpdateDto jobApplication, bool trackChanges)
 {
     var jobApplicationEntity = await repositoryManager.JobApplicationRepository
         .GetJobApplicationById(id, trackChanges)
+        .Include(j => j.JobList)
+            .ThenInclude(jl => jl.Job)  // Job bilgisini çekiyoruz
         .FirstOrDefaultAsync();
 
     if (jobApplicationEntity == null)
         throw new EntityNotFoundException<JobApplication>(id);
 
-    // Sadece durumu güncelle
+    // Başvuru durumunu güncelle
     jobApplicationEntity.Status = jobApplication.Status;
 
     await repositoryManager.Save();
-}
 
+    if (jobApplication.Status.Equals("Approved", StringComparison.OrdinalIgnoreCase) ||
+        jobApplication.Status.Equals("Onaylandı", StringComparison.OrdinalIgnoreCase))
+    {
+        var userEntity = await repositoryManager.UserRepository
+            .GetUserById(jobApplicationEntity.UserId, trackChanges)
+            .FirstOrDefaultAsync();
+
+        if (userEntity != null)
+        {
+            userEntity.RoleName = "Worker";
+
+            // JobList içindeki Job bilgisi üzerinden doğru JobId atanıyor
+            if (jobApplicationEntity.JobList?.Job == null)
+            {
+                throw new Exception("Başvurunun bağlı olduğu iş ilanı bulunamadı.");
+            }
+
+            userEntity.JobId = jobApplicationEntity.JobList.Job.JobId;
+
+            await repositoryManager.Save();
+        }
     }
 }
+
+
+}
+
+}
+
+    
+

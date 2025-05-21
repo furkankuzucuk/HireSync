@@ -130,15 +130,17 @@ namespace Project.Presentation.Controller
 
         // ✅ Admin başvuru durumu güncelleyebilir
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateJobApplication(int id, [FromBody] JobApplicationUpdateDto jobApplicationDto)
-        {
-            if (jobApplicationDto == null)
-                return BadRequest("Job Application data is null");
+[Authorize(Roles = "Admin")]
+public async Task<IActionResult> UpdateJobApplication(int id, [FromBody] JobApplicationUpdateDto jobApplicationDto)
+{
+    if (jobApplicationDto == null)
+        return BadRequest("Job Application data is null");
 
-            await serviceManager.JobApplicationService.UpdateJobApplication(id, jobApplicationDto, true);
-            return NoContent();
-        }
+    await serviceManager.JobApplicationService.UpdateJobApplication(id, jobApplicationDto, true);
+
+    return NoContent();
+}
+
 
         // ✅ Başvuru silme (Admin)
         [HttpDelete("{id}")]
