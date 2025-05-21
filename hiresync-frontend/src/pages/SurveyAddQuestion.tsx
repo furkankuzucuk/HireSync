@@ -15,7 +15,7 @@ const SurveyAddQuestion = () => {
         Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
-        surveyId: parseInt(id!),
+        satisfactionSurveyId: parseInt(id!),
         questionText,
         questionType: "Çoktan Seçmeli" 
       }),
