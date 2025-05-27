@@ -3,15 +3,14 @@
   width: 100%;
 }
 
-/* Sidebar sabit genişlik */
 .dashboard-sidebar {
   width: 250px;
 }
 
-/* İçerik alanı sidebar'dan sonra kalan kısmı kaplar */
 .dashboard-content {
   flex-grow: 1;
   overflow-y: auto;
+  background-color: #f8f9fa;
 }
 
 /* Sidebar link stilleri */

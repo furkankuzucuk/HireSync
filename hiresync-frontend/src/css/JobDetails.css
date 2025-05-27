@@ -1,0 +1,10 @@
+.job-details {
+  padding: 1rem;
+}
+
+@media (min-width: 768px) {
+  .job-details .card {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+}

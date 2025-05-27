@@ -1,0 +1,58 @@
+.submit-exam-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .exam-card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 30px 25px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .exam-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .question-block {
+    margin-bottom: 25px;
+  }
+  
+  .question-text {
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  
+  .option-label {
+    display: block;
+    padding-left: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  
+  .option-label input[type="radio"] {
+    margin-right: 8px;
+  }
+  
+  .btn-submit {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-submit:hover {
+    background-color: #218838;
+  }
+  

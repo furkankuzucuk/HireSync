@@ -42,7 +42,7 @@ const WorkerDashboard = () => {
       <div className="row">
         {/* Sidebar */}
         <nav className="col-md-3 col-lg-2 d-md-block bg-primary sidebar position-fixed h-100 text-white p-3">
-          <h4 className="text-white">Çalışan Paneli</h4>
+          <h4 className="text-white"></h4>
           <p className="mt-3">Hoş Geldin, {username} 👋</p>
           <ul className="nav flex-column mt-4">
             <li className="nav-item">

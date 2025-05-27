@@ -1,0 +1,33 @@
+.survey-admin-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  
+  .survey-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .survey-card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    border-left: 5px solid #0d6efd;
+  }
+  
+  .btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  

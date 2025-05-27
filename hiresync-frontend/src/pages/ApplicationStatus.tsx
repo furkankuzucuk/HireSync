@@ -59,36 +59,40 @@ const ApplicationStatus: React.FC = () => {
 
   return (
     <div className="application-status container mt-4">
-      <h2 className="mb-4">📄 Başvuru Durumlarım</h2>
+      <div className="status-box shadow-sm">
+        <h2 className="mb-4">📄 Başvuru Durumlarım</h2>
 
-      {loading ? (
-        <p>Yükleniyor...</p>
-      ) : applications.length === 0 ? (
-        <p>Hiç başvurunuz bulunmamaktadır.</p>
-      ) : (
-        <table className="table table-bordered table-striped">
-          <thead className="table-dark">
-            <tr>
-              <th>İlan Başlığı</th>
-              <th>Departman</th>
-              <th>Pozisyon</th>
-              <th>Durum</th>
-              <th>Başvuru Tarihi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {applications.map((app) => (
-              <tr key={app.jobApplicationId}>
-                <td>{app.title || app.jobList?.title || "N/A"}</td>
-                <td>{app.departmentName || app.jobList?.department?.departmentName || "N/A"}</td>
-                <td>{app.jobName || app.jobList?.job?.jobName || "N/A"}</td>
-                <td>{app.status}</td>
-                <td>{new Date(app.appDate).toLocaleDateString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+        {loading ? (
+          <p>Yükleniyor...</p>
+        ) : applications.length === 0 ? (
+          <p>Hiç başvurunuz bulunmamaktadır.</p>
+        ) : (
+          <div className="table-responsive">
+            <table className="table table-bordered table-striped">
+              <thead className="table-dark">
+                <tr>
+                  <th>İlan Başlığı</th>
+                  <th>Departman</th>
+                  <th>Pozisyon</th>
+                  <th>Durum</th>
+                  <th>Başvuru Tarihi</th>
+                </tr>
+              </thead>
+              <tbody>
+                {applications.map((app) => (
+                  <tr key={app.jobApplicationId}>
+                    <td>{app.title || app.jobList?.title || "N/A"}</td>
+                    <td>{app.departmentName || app.jobList?.department?.departmentName || "N/A"}</td>
+                    <td>{app.jobName || app.jobList?.job?.jobName || "N/A"}</td>
+                    <td>{app.status}</td>
+                    <td>{new Date(app.appDate).toLocaleDateString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

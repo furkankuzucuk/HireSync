@@ -1,15 +1,12 @@
-using Project.Entities.DataTransferObjects.Anouncement;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using Project.Entities.DataTransferObjects.Announcement;
 
-namespace Project.Services.Contracts
+namespace Project.Services.Contracts;
+
+public interface IAnnouncementService
 {
-    public interface IAnnouncementService
-    {
-        Task<IEnumerable<AnouncementDto>> GetAllAnnouncements(bool trackChanges);
-        Task<AnouncementDto> GetAnnouncementById(int id, bool trackChanges);
-        Task<AnouncementDto> CreateAnnouncement(AnouncementInsertDto announcementDto);
-        Task UpdateAnnouncement(int id, AnouncementUpdateDto announcementDto, bool trackChanges);
-        Task DeleteAnnouncement(int id, bool trackChanges);
-    }
+    Task<IEnumerable<AnnouncementDto>> GetAllAnnouncements(bool trackChanges);
+    Task<AnnouncementDto> GetAnnouncementById(int id, bool trackChanges);
+    Task<AnnouncementDto> CreateAnnouncement(AnnouncementInsertDto dto);
+    Task UpdateAnnouncement(int id, AnnouncementUpdateDto dto, bool trackChanges);
+    Task DeleteAnnouncement(int id, bool trackChanges);
 }

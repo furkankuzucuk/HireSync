@@ -1,14 +1,39 @@
-import React from 'react';
-import '../css/WorkerAnnouncements.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "../css/WorkerAnnouncements.css";
+
+interface Announcement {
+  announcementId: number;
+  title: string;
+  content: string;
+  createdDate: string;
+}
 
 const WorkerAnnouncements = () => {
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+
+  useEffect(() => {
+    axios
+      .get("/api/announcements")
+      .then((res) => {
+        setAnnouncements(res.data);
+      })
+      .catch(() => {
+        console.error("Duyurular alınırken hata oluştu.");
+      });
+  }, []);
+
   return (
     <div className="worker-announcements">
-      <h2>📢 Duyurular</h2>
+      <h2>Duyurular</h2>
       <ul>
-        <li><strong>15 Mart 2024:</strong> Yeni çalışma saatleri güncellendi.</li>
-        <li><strong>10 Mart 2024:</strong> Şirket içi eğitim programı açıklandı.</li>
-        <li><strong>5 Mart 2024:</strong> Yeni performans değerlendirme sistemi duyuruldu.</li>
+        {announcements.map((a) => (
+          <li key={a.announcementId}>
+            <strong>{a.title}</strong>
+            <p>{a.content}</p>
+            <p>{new Date(a.createdDate).toLocaleString()}</p>
+          </li>
+        ))}
       </ul>
     </div>
   );

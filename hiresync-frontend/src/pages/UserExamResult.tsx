@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../services/axiosInstance';
+import '../css/UserExamResults.css';
 
 interface UserExamDto {
   userExamId: number;
@@ -18,24 +19,30 @@ const UserExamResults = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Geçmiş Sınav Sonuçlarınız</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Sınav Adı</th>
-            <th>Puan</th>
-          </tr>
-        </thead>
-        <tbody>
-          {results.map(r => (
-            <tr key={r.userExamId}>
-              <td>{r.examName}</td>
-              <td>{r.score}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="exam-results-container">
+      <div className="results-card shadow">
+        <h2 className="text-center mb-4">🧪 Geçmiş Sınav Sonuçlarınız</h2>
+        {results.length === 0 ? (
+          <p className="text-center">Henüz sınav sonuçlarınız bulunmamaktadır.</p>
+        ) : (
+          <table className="table table-bordered table-striped">
+            <thead className="table-dark">
+              <tr>
+                <th>Sınav Adı</th>
+                <th>Puan</th>
+              </tr>
+            </thead>
+            <tbody>
+              {results.map((r) => (
+                <tr key={r.userExamId}>
+                  <td>{r.examName}</td>
+                  <td>{r.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 };

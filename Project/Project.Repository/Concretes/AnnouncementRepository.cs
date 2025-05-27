@@ -1,26 +1,19 @@
 using Project.Entities;
 using Project.Repository.Contracts;
-using System.Linq;
 
-namespace Project.Repository.Concretes
+namespace Project.Repository.Concretes;
+
+public class AnnouncementRepository : RepositoryBase<Announcement>, IAnnouncementRepository
 {
-    public class AnnouncementRepository : RepositoryBase<Anouncement>, IAnnouncementRepository
-    {
-        public AnnouncementRepository(RepositoryContext context) : base(context) { }
+    public AnnouncementRepository(RepositoryContext context) : base(context) { }
 
-        public IQueryable<Anouncement> GetAllAnnouncements(bool trackChanges) =>
-            FindAll(trackChanges);
+    public IQueryable<Announcement> GetAllAnnouncements(bool trackChanges) =>
+        FindAll(trackChanges);
 
-        public IQueryable<Anouncement> GetAnnouncementById(int id, bool trackChanges) =>
-            FindByCondition(a => a.AnouncementId == id, trackChanges);
+    public IQueryable<Announcement> GetAnnouncementById(int id, bool trackChanges) =>
+        FindByCondition(a => a.AnnouncementId == id, trackChanges);
 
-        public void CreateAnnouncement(Anouncement anouncement) =>
-            Create(anouncement);
-
-        public void UpdateAnnouncement(Anouncement anouncement) =>
-            Update(anouncement);
-
-        public void DeleteAnnouncement(Anouncement anouncement) =>
-            Delete(anouncement);
-    }
+    public void CreateAnnouncement(Announcement announcement) => Create(announcement);
+    public void UpdateAnnouncement(Announcement announcement) => Update(announcement);
+    public void DeleteAnnouncement(Announcement announcement) => Delete(announcement);
 }

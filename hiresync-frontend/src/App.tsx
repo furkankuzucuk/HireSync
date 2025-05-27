@@ -1,3 +1,4 @@
+// src/App.tsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useParams } from 'react-router-dom';
 
@@ -9,13 +10,13 @@ import PerformanceAnalysis from './pages/PerformanceAnalysis';
 import LeaveRequests from './pages/LeaveRequests';
 import JobListAdmin from './pages/JobListAdmin';
 import JobApplications from './pages/JobApplications';
+import AdminAnnouncements from './pages/AdminAnnouncements'; // ✅ EKLENDİ
 
 import WorkerDashboard from './pages/WorkerDashboard';
 import WorkerAnnouncements from './pages/WorkerAnnouncements';
 import WorkerLeaveRequest from './pages/WorkerLeaveRequest';
 import WorkerSurveys from './pages/WorkerSurveys';
-import WorkerTraining from './pages/WorkerTraining';
-import MyLeaveRequests from './pages/MyLeaveRequests'; // ✅ EKLENDİ
+import MyLeaveRequests from './pages/MyLeaveRequests';
 
 import CandidateDashboard from './pages/CandidateDashboard';
 import CandidateRegisterPage from './pages/CandidateRegisterPage';
@@ -89,13 +90,14 @@ const App = () => {
             <Route path="survey-edit/:id" element={<SurveyEdit />} />
             <Route path="leaves" element={<LeaveRequests />} />
             <Route path="jobapplications" element={<JobApplications />} />
+            <Route path="announcements" element={<AdminAnnouncements />} /> {/* ✅ EKLENDİ */}
           </Route>
 
           {/* ✅ Worker Routes */}
           <Route path="/worker-dashboard" element={<WorkerDashboard />}>
             <Route index element={<WorkerHome />} />
             <Route path="leave" element={<WorkerLeaveRequest />} />
-            <Route path="leave-history" element={<MyLeaveRequests />} /> {/* ✅ EKLENDİ */}
+            <Route path="leave-history" element={<MyLeaveRequests />} />
             <Route path="training" element={<ExamList />} />
             <Route path="exam/:id" element={<SubmitExamWrapper />} />
             <Route path="exam-results" element={<UserExamResults />} />

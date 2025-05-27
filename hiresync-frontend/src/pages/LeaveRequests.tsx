@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "../css/LeaveRequests.css";
 
 interface LeaveRequest {
   leaveRequestId: number;
@@ -44,45 +45,49 @@ const LeaveRequests = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>📅 İzin Talepleri</h2>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th>Ad Soyad</th>
-            <th>İzin Türü</th>
-            <th>Başlangıç</th>
-            <th>Bitiş</th>
-            <th>Durum</th>
-            <th>İşlem</th>
-          </tr>
-        </thead>
-        <tbody>
-          {requests.map(req => (
-            <tr key={req.leaveRequestId}>
-              <td>{req.userName}</td>
-              <td>{req.leaveType}</td>
-              <td>{new Date(req.startDate).toLocaleDateString()}</td>
-              <td>{new Date(req.endDate).toLocaleDateString()}</td>
-              <td>{req.status}</td>
-              <td>
-                <button
-                  className="btn btn-success btn-sm me-1"
-                  onClick={() => updateStatus(req.leaveRequestId, "Onaylandı")}
-                >
-                  Onayla
-                </button>
-                <button
-                  className="btn btn-danger btn-sm"
-                  onClick={() => updateStatus(req.leaveRequestId, "Reddedildi")}
-                >
-                  Reddet
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="leave-requests container mt-4">
+      <div className="card p-4 shadow">
+        <h2 className="text-center mb-4 text-primary">📅 İzin Talepleri</h2>
+        <div className="table-responsive">
+          <table className="table table-striped align-middle">
+            <thead className="table-dark">
+              <tr>
+                <th>Ad Soyad</th>
+                <th>İzin Türü</th>
+                <th>Başlangıç</th>
+                <th>Bitiş</th>
+                <th>Durum</th>
+                <th>İşlem</th>
+              </tr>
+            </thead>
+            <tbody>
+              {requests.map(req => (
+                <tr key={req.leaveRequestId}>
+                  <td>{req.userName}</td>
+                  <td>{req.leaveType}</td>
+                  <td>{new Date(req.startDate).toLocaleDateString()}</td>
+                  <td>{new Date(req.endDate).toLocaleDateString()}</td>
+                  <td>{req.status}</td>
+                  <td>
+                    <button
+                      className="btn btn-success btn-sm me-2"
+                      onClick={() => updateStatus(req.leaveRequestId, "Onaylandı")}
+                    >
+                      Onayla
+                    </button>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => updateStatus(req.leaveRequestId, "Reddedildi")}
+                    >
+                      Reddet
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

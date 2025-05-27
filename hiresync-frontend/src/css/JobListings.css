@@ -1,31 +1,12 @@
-/* JobListings.css */
+.job-listings {
+  padding: 1rem;
+}
 
 .clamp-text {
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* sadece 2 satır göster */
+  -webkit-line-clamp: 3;
+  line-clamp: 3; /* ✅ Standart destek */
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-height: 3.2em;
-}
-
-.btn-link {
-  color: #007bff;
-  font-weight: 500;
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-.card {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-}
-
-.card-title {
-  color: #333;
-}
-
-.card-text {
-  font-size: 0.95rem;
-  color: #444;
 }

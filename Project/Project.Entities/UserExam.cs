@@ -12,6 +12,6 @@ namespace Project.Entities
         public Exam Exam { get; set; }
         public int Score { get; set; }
 
-        public ICollection<PerformanceReview> performanceReviews;
+        public ICollection<PerformanceReview> PerformanceReviews;
     }
 }

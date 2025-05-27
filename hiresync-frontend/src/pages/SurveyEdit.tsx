@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { SurveyQuestion } from '../types/surveyTypes'; 
-// export interface SurveyQuestion {
-//   surveyQuestionId: number;
-//   questionText: string;
-//   questionType: string;
-// }
+import { SurveyQuestion } from '../types/surveyTypes';
+import '../css/SurveyEdit.css';
 
 const SurveyEdit = () => {
   const { id } = useParams();
@@ -23,6 +19,8 @@ const SurveyEdit = () => {
   }, [id]);
 
   const handleAdd = async () => {
+    if (!newQuestion.trim()) return alert("Soru metni boş olamaz");
+
     const response = await fetch('/api/surveyquestions', {
       method: 'POST',
       headers: {
@@ -30,7 +28,7 @@ const SurveyEdit = () => {
         Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
-        satisfactionSurveyId: parseInt(id!), // ✅ doğru alan adı
+        satisfactionSurveyId: parseInt(id!),
         questionText: newQuestion,
         questionType: 'Memnuniyet Anketi',
       }),
@@ -44,7 +42,7 @@ const SurveyEdit = () => {
       const refreshed = await updated.json();
       setQuestions(refreshed);
     } else {
-      alert('Soru eklenemedi');
+      alert('❌ Soru eklenemedi.');
     }
   };
 
@@ -62,36 +60,41 @@ const SurveyEdit = () => {
     if (response.ok) {
       setQuestions(prev => prev.filter(q => q.surveyQuestionId !== questionId));
     } else {
-      alert('Silinemedi');
+      alert('❌ Soru silinemedi.');
     }
   };
 
   return (
-    <div>
-      <h2>Anket Sorularını Güncelle</h2>
+    <div className="survey-edit-container">
+      <h2 className="text-center mb-4">🛠️ Anket Sorularını Güncelle</h2>
 
-      <ul>
+      <ul className="question-list">
         {questions.map((q: SurveyQuestion) => (
-          <li key={q.surveyQuestionId}>
-            {q.questionText}
+          <li key={q.surveyQuestionId} className="question-item">
+            <span>{q.questionText}</span>
             <button
+              className="btn btn-sm btn-outline-danger"
               onClick={() => handleDelete(q.surveyQuestionId)}
-              style={{ marginLeft: '10px', color: 'red' }}
             >
-              Sil
+              ❌ Sil
             </button>
           </li>
         ))}
       </ul>
 
-      <h4>Yeni Soru Ekle</h4>
-      <textarea
-        value={newQuestion}
-        onChange={(e) => setNewQuestion(e.target.value)}
-        placeholder="Soru metnini yazın"
-      />
-      <br />
-      <button onClick={handleAdd}>Ekle</button>
+      <div className="add-question-form mt-4">
+        <h5>➕ Yeni Soru Ekle</h5>
+        <textarea
+          className="form-control"
+          rows={3}
+          value={newQuestion}
+          onChange={(e) => setNewQuestion(e.target.value)}
+          placeholder="Yeni soru metnini giriniz..."
+        />
+        <button className="btn btn-success mt-2" onClick={handleAdd}>
+          Soruyu Ekle
+        </button>
+      </div>
     </div>
   );
 };

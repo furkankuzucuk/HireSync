@@ -12,7 +12,7 @@ const CandidateDashboard: React.FC = () => {
       {/* Sidebar */}
       <aside className="dashboard-sidebar bg-dark text-white p-4 d-flex flex-column">
         <div className="text-center mb-4">
-          <h4>Aday Paneli</h4>
+          <h4></h4>
           <p className="small">👤 {username}</p>
         </div>
 
@@ -46,15 +46,12 @@ const CandidateDashboard: React.FC = () => {
           </NavLink>
         </nav>
 
-        <button
-          onClick={logout}
-          className="btn btn-danger mt-4 w-100"
-        >
+        <button onClick={logout} className="btn btn-danger mt-4 w-100">
           🚪 Çıkış Yap
         </button>
       </aside>
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <main className="dashboard-content bg-light p-4 flex-grow-1">
         <Outlet />
       </main>

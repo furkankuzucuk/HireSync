@@ -1,14 +1,13 @@
 import React from 'react';
 import useLogout from "./useLogout";
-import WorkerDashboard from './WorkerDashboard';
+import "../css/WorkerHome.css";
 
-
-
-const WorkerHome = () => {
+const WorkerHome: React.FC = () => {
   const logout = useLogout();
-  const username = localStorage.getItem('username');
+  const username = localStorage.getItem('username') || "Kullanıcı";
+
   return (
-    <div className="tab-content">
+    <div className="tab-content p-4">
       <h2>🏠 Hoş Geldiniz, {username}</h2>
       <p>Bugün: {new Date().toLocaleDateString("tr-TR")}</p>
       <p>Buradan izin talebi, eğitimler ve duyurulara erişebilirsiniz.</p>

@@ -1,41 +1,8 @@
 .leave-requests {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  
-  .leave-requests h2 {
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .leave-requests table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-  }
-  
-  .leave-requests th,
-  .leave-requests td {
-    padding: 12px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-  
-  .leave-requests button {
-    margin-right: 5px;
-    padding: 8px 14px;
-    border-radius: 4px;
-    border: none;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .leave-requests button:first-child {
-    background-color: #28a745;
-  }
-  
-  .leave-requests button:last-child {
-    background-color: #dc3545;
-  }
-  
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.leave-requests .table {
+  font-size: 0.95rem;
+}

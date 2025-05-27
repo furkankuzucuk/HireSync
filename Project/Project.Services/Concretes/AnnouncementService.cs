@@ -1,71 +1,67 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Project.Entities;
-using Project.Entities.DataTransferObjects.Anouncement;
+using Project.Entities.DataTransferObjects.Announcement;
 using Project.Entities.Exceptions;
 using Project.Repository.Contracts;
 using Project.Services.Contracts;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
 
-namespace Project.Services.Concretes
+namespace Project.Services.Concretes;
+
+public class AnnouncementService : IAnnouncementService
 {
-    public class AnnouncementService : IAnnouncementService
+    private readonly IRepositoryManager repositoryManager;
+    private readonly IMapper mapper;
+
+    public AnnouncementService(IRepositoryManager repositoryManager, IMapper mapper)
     {
-        private readonly IRepositoryManager repositoryManager;
-        private readonly IMapper mapper;
+        this.repositoryManager = repositoryManager;
+        this.mapper = mapper;
+    }
 
-        public AnnouncementService(IRepositoryManager repositoryManager, IMapper mapper)
-        {
-            this.repositoryManager = repositoryManager;
-            this.mapper = mapper;
-        }
+    public async Task<IEnumerable<AnnouncementDto>> GetAllAnnouncements(bool trackChanges)
+    {
+        var announcements = await repositoryManager.AnnouncementRepository.GetAllAnnouncements(trackChanges)
+            .OrderByDescending(a => a.CreatedDate)
+            .ToListAsync();
 
-        public async Task<IEnumerable<AnouncementDto>> GetAllAnnouncements(bool trackChanges)
-        {
-            var announcements = await repositoryManager.AnnouncementRepository.GetAllAnnouncements(trackChanges)
-                .Where(a => a.IsActive)  // Aktif duyuruları getir
-                .OrderByDescending(a => a.CreatedDate)
-                .ToListAsync();
-            return mapper.Map<IEnumerable<AnouncementDto>>(announcements);
-        }
+        return mapper.Map<IEnumerable<AnnouncementDto>>(announcements);
+    }
 
-        public async Task<AnouncementDto> GetAnnouncementById(int id, bool trackChanges)
-        {
-            var entity = await repositoryManager.AnnouncementRepository.GetAnnouncementById(id, trackChanges).FirstOrDefaultAsync();
-            if (entity == null)
-                throw new EntityNotFoundException<Anouncement>(id);
+    public async Task<AnnouncementDto> GetAnnouncementById(int id, bool trackChanges)
+    {
+        var entity = await repositoryManager.AnnouncementRepository.GetAnnouncementById(id, trackChanges).FirstOrDefaultAsync();
+        if (entity == null)
+            throw new EntityNotFoundException<Announcement>(id);
 
-            return mapper.Map<AnouncementDto>(entity);
-        }
+        return mapper.Map<AnnouncementDto>(entity);
+    }
 
-        public async Task<AnouncementDto> CreateAnnouncement(AnouncementInsertDto announcementDto)
-        {
-            var entity = mapper.Map<Anouncement>(announcementDto);
-            repositoryManager.AnnouncementRepository.CreateAnnouncement(entity);
-            await repositoryManager.Save();
-            return mapper.Map<AnouncementDto>(entity);
-        }
+    public async Task<AnnouncementDto> CreateAnnouncement(AnnouncementInsertDto dto)
+    {
+        var entity = mapper.Map<Announcement>(dto);
+        repositoryManager.AnnouncementRepository.CreateAnnouncement(entity);
+        await repositoryManager.Save();
+        return mapper.Map<AnnouncementDto>(entity);
+    }
 
-        public async Task UpdateAnnouncement(int id, AnouncementUpdateDto announcementDto, bool trackChanges)
-        {
-            var entity = await repositoryManager.AnnouncementRepository.GetAnnouncementById(id, trackChanges).FirstOrDefaultAsync();
-            if (entity == null)
-                throw new EntityNotFoundException<Anouncement>(id);
+    public async Task UpdateAnnouncement(int id, AnnouncementUpdateDto dto, bool trackChanges)
+    {
+        var entity = await repositoryManager.AnnouncementRepository.GetAnnouncementById(id, trackChanges).FirstOrDefaultAsync();
+        if (entity == null)
+            throw new EntityNotFoundException<Announcement>(id);
 
-            mapper.Map(announcementDto, entity);
-            await repositoryManager.Save();
-        }
+        mapper.Map(dto, entity);
+        await repositoryManager.Save();
+    }
 
-        public async Task DeleteAnnouncement(int id, bool trackChanges)
-        {
-            var entity = await repositoryManager.AnnouncementRepository.GetAnnouncementById(id, trackChanges).FirstOrDefaultAsync();
-            if (entity == null)
-                throw new EntityNotFoundException<Anouncement>(id);
+    public async Task DeleteAnnouncement(int id, bool trackChanges)
+    {
+        var entity = await repositoryManager.AnnouncementRepository.GetAnnouncementById(id, trackChanges).FirstOrDefaultAsync();
+        if (entity == null)
+            throw new EntityNotFoundException<Announcement>(id);
 
-            repositoryManager.AnnouncementRepository.DeleteAnnouncement(entity);
-            await repositoryManager.Save();
-        }
+        repositoryManager.AnnouncementRepository.DeleteAnnouncement(entity);
+        await repositoryManager.Save();
     }
 }

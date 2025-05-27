@@ -1,15 +1,60 @@
+/* Ana layout alanı: Sayfa yüksekliğini kaplar, dikey scroll yapılabilir */
 .admin-layout {
+  display: flex;
   height: 100vh;
   overflow: hidden;
 }
 
+/* Sidebar sabit ve dikey scroll destekli */
 .sidebar {
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+  height: 100vh;
   position: fixed;
-  left: 0;
   top: 0;
-  bottom: 0;
+  left: 0;
+  overflow-y: auto;
+  background-color: #343a40 !important;
+  padding: 1.5rem 1rem;
+  z-index: 1000;
 }
 
+/* Sidebar'daki linklerin görünümü */
+.sidebar .nav-link {
+  color: #ffffff;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #495057;
+  text-decoration: none;
+}
+
+/* İçerik alanı: Sidebar'dan boşluk bırakır ve sayfaya göre scroll yapılabilir */
 .content-area {
-  margin-left: 250px; /* Sidebar genişliği kadar boşluk bırak */
+  margin-left: 250px;
+  padding: 2rem;
+  flex: 1;
+  height: 100vh;
+  overflow-y: auto;
+  background-color: #f8f9fa;
+  box-sizing: border-box;
+}
+
+/* Responsive: küçük ekranlarda sidebar alta geçebilir istersen */
+@media (max-width: 768px) {
+  .sidebar {
+    position: relative;
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  .content-area {
+    margin-left: 0;
+    padding: 1rem;
+  }
 }

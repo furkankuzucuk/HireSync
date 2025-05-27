@@ -25,13 +25,13 @@ namespace Project.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Project.Entities.Anouncement", b =>
+            modelBuilder.Entity("Project.Entities.Announcement", b =>
                 {
-                    b.Property<int>("AnouncementId")
+                    b.Property<int>("AnnouncementId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnouncementId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnnouncementId"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -47,9 +47,9 @@ namespace Project.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AnouncementId");
+                    b.HasKey("AnnouncementId");
 
-                    b.ToTable("Anouncements");
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("Project.Entities.Department", b =>

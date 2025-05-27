@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import "../css/WorkerLeaveRequest.css";
 
 const WorkerLeaveRequest = () => {
   const [leaveType, setLeaveType] = useState("Yıllık İzin");
@@ -10,15 +11,19 @@ const WorkerLeaveRequest = () => {
     e.preventDefault();
 
     try {
-      await axios.post("/api/leaverequests", {
-        leaveType,
-        startDate,
-        endDate
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+      await axios.post(
+        "/api/leaverequests",
+        {
+          leaveType,
+          startDate,
+          endDate,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
-      });
+      );
 
       alert("İzin talebiniz gönderildi.");
       setStartDate("");
@@ -46,7 +51,9 @@ const WorkerLeaveRequest = () => {
         <label>Bitiş Tarihi:</label>
         <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} required />
 
-        <button type="submit" className="btn btn-success mt-2">Talep Gönder</button>
+        <button type="submit" className="btn btn-success mt-2">
+          Talep Gönder
+        </button>
       </form>
     </div>
   );

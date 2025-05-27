@@ -16,9 +16,10 @@ interface JobList {
   title: string;
   description: string;
   createDate: string;
-  department: Department;
-  job: Job;
+  departmentName: string;
+  jobName: string;
 }
+
 
 const JobListings = () => {
   const [jobs, setJobs] = useState<JobList[]>([]);
@@ -45,30 +46,29 @@ const JobListings = () => {
     try {
       const token = localStorage.getItem("token");
       const username = localStorage.getItem("username");
-  
+
       if (!username) {
         alert("Kullanıcı adı bulunamadı.");
         return;
       }
-  
+
       const resumePath = `/uploads/${username}_cv.pdf`;
-  
+
       const application = {
         jobListId,
         appDate: new Date().toISOString(),
         resumePath,
         status: "Başvuru Yapıldı",
       };
-  
+
       await axios.post("/api/jobapplications", application, {
         headers: { Authorization: `Bearer ${token}` },
       });
-  
+
       alert("Başvuru başarıyla yapıldı.");
     } catch (error: any) {
       console.error("Başvuru yapılamadı:", error);
-  
-      // Eğer backend'den gelen hata "CV yükleyiniz" ise özel mesaj ve yönlendirme yap
+
       if (error.response && error.response.status === 400) {
         const message = error.response.data;
         if (typeof message === "string" && message.includes("CV")) {
@@ -77,19 +77,18 @@ const JobListings = () => {
           return;
         }
       }
-  
+
       alert("Başvuru sırasında bir hata oluştu.");
     }
   };
-  
 
   const toggleExpand = (id: number) => {
     setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4 fw-bold">Açık Pozisyonlar</h2>
+    <div className="job-listings container py-4">
+      <h2 className="mb-4 text-primary fw-bold">📌 Açık Pozisyonlar</h2>
 
       {jobs.map((job) => (
         <div key={job.jobListId} className="card mb-4 shadow-sm">
@@ -106,10 +105,15 @@ const JobListings = () => {
                 {expanded[job.jobListId] ? "Gizle" : "Devamını Oku"}
               </button>
             )}
-            <p className="mt-3"><strong>Departman:</strong> {job.department?.departmentName ?? "Bilinmiyor"}</p>
-            <p><strong>Pozisyon:</strong> {job.job?.jobName ?? "Bilinmiyor"}</p>
+
+<p><strong>Departman:</strong> {job.departmentName ?? "Bilinmiyor"}</p>
+<p><strong>Pozisyon:</strong> {job.jobName ?? "Bilinmiyor"}</p>
+
+
             <p><strong>Yayın Tarihi:</strong> {new Date(job.createDate).toLocaleDateString()}</p>
-            <button className="btn btn-success" onClick={() => handleApply(job.jobListId)}>Başvur</button>
+            <button className="btn btn-success mt-2" onClick={() => handleApply(job.jobListId)}>
+              Başvur
+            </button>
           </div>
         </div>
       ))}

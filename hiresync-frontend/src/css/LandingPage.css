@@ -1,56 +1,24 @@
-/* src/css/LandingPage.css */
-.hero {
-
-  padding: 5rem 0;
-  text-align: center;
+@keyframes fadeScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.hero h1 {
-  color: #FFFF;  /* YAZI rengini mavi yapıyoruz */
+.job-card-animate {
+  animation-name: fadeScaleIn;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  opacity: 0;
 }
 
-.hero p {
-  color: #555;  /* Daha açık gri renkte alt yazı */
-}
-
-.job-listings .card {
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-}
-
-.job-listings .card:hover {
-  transform: translateY(-10px);
-}
-
-.job-listings .card-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-.job-listings .card-text {
-  font-size: 1rem;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
-}
-.hero {
-  background: linear-gradient(to right, #0d6efd, #3b82f6);
-}
-
-img[alt="HireSync Logo"] {
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
-}
-.lp-container{
-width: 100%;
-height: 100%;
-background-color: #f0f9ff;
+footer {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "../css/JobApplications.css";
 
 interface JobApplication {
   jobApplicationId: number;
@@ -22,8 +23,6 @@ const statusOptions = [
 const JobApplications: React.FC = () => {
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [selectedPdfFilename, setSelectedPdfFilename] = useState<string | null>(null);
-
-  // ✅ Token'ı localStorage'dan alıyoruz
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -34,9 +33,7 @@ const JobApplications: React.FC = () => {
 
     axios
       .get<JobApplication[]>("/api/jobapplications", {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       })
       .then((res) => setApplications(res.data))
       .catch((err) => console.error("Veri alınamadı:", err));
@@ -60,11 +57,7 @@ const JobApplications: React.FC = () => {
       await axios.put(
         `/api/jobapplications/${id}`,
         { status: newStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       alert("Durum güncellendi.");
     } catch (error: any) {
@@ -74,70 +67,71 @@ const JobApplications: React.FC = () => {
   };
 
   return (
-    <div className="container">
-      <h2 className="mb-4">İş Başvuruları</h2>
-
-      <table className="table table-bordered table-striped">
-        <thead className="table-dark">
-          <tr>
-            <th>#</th>
-            <th>Ad Soyad</th>
-            <th>Pozisyon</th>
-            <th>Başvuru Tarihi</th>
-            <th>Durum</th>
-            <th>Güncelle</th>
-            <th>CV</th>
-          </tr>
-        </thead>
-        <tbody>
-          {applications.map((app, index) => (
-            <tr key={app.jobApplicationId}>
-              <td>{index + 1}</td>
-              <td>{app.userFullName}</td>
-              <td>{app.jobName}</td>
-              <td>{new Date(app.appDate).toLocaleString()}</td>
-              <td>{app.status}</td>
-              <td>
-                <select
-                  value={app.status}
-                  onChange={(e) =>
-                    handleStatusChange(app.jobApplicationId, e.target.value)
-                  }
-                  className="form-select form-select-sm"
-                >
-                  {statusOptions.map((status) => (
-                    <option key={status} value={status}>
-                      {status}
-                    </option>
-                  ))}
-                </select>
-                <button
-                  className="btn btn-sm btn-success mt-1"
-                  onClick={() =>
-                    updateStatus(app.jobApplicationId, app.status)
-                  }
-                >
-                  Güncelle
-                </button>
-              </td>
-              <td>
-                <button
-                  className="btn btn-sm btn-outline-primary"
-                  onClick={() =>
-                    setSelectedPdfFilename(app.resumePath.split("/").pop() || "")
-                  }
-                  data-bs-toggle="modal"
-                  data-bs-target="#pdfModal"
-                >
-                  PDF Aç
-                </button>
-              </td>
+    <div className="job-applications container mt-4">
+      <h2 className="mb-4">📂 İş Başvuruları</h2>
+      <div className="table-responsive">
+        <table className="table table-bordered table-striped">
+          <thead className="table-dark">
+            <tr>
+              <th>#</th>
+              <th>Ad Soyad</th>
+              <th>Pozisyon</th>
+              <th>Başvuru Tarihi</th>
+              <th>Durum</th>
+              <th>Güncelle</th>
+              <th>CV</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {applications.map((app, index) => (
+              <tr key={app.jobApplicationId}>
+                <td>{index + 1}</td>
+                <td>{app.userFullName}</td>
+                <td>{app.jobName}</td>
+                <td>{new Date(app.appDate).toLocaleString()}</td>
+                <td>{app.status}</td>
+                <td>
+                  <select
+                    value={app.status}
+                    onChange={(e) =>
+                      handleStatusChange(app.jobApplicationId, e.target.value)
+                    }
+                    className="form-select form-select-sm"
+                  >
+                    {statusOptions.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    className="btn btn-sm btn-success mt-1"
+                    onClick={() =>
+                      updateStatus(app.jobApplicationId, app.status)
+                    }
+                  >
+                    Güncelle
+                  </button>
+                </td>
+                <td>
+                  <button
+                    className="btn btn-sm btn-outline-primary"
+                    onClick={() =>
+                      setSelectedPdfFilename(app.resumePath.split("/").pop() || "")
+                    }
+                    data-bs-toggle="modal"
+                    data-bs-target="#pdfModal"
+                  >
+                    PDF Aç
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-      {/* ✅ Modal: PDF Önizleme (iframe) */}
+      {/* Modal: PDF Önizleme */}
       <div
         className="modal fade"
         id="pdfModal"
@@ -166,7 +160,7 @@ const JobApplications: React.FC = () => {
                   style={{ border: "none" }}
                 />
               ) : (
-                <p>PDF yüklenemedi.</p>
+                <p className="text-center p-4">PDF yüklenemedi.</p>
               )}
             </div>
           </div>

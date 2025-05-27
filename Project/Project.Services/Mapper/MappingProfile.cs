@@ -1,8 +1,9 @@
 using AutoMapper;
 using Project.Entities;
 using Project.Entities.DataTransferObjects;
-using Project.Entities.DataTransferObjects.Department;
+using Project.Entities.DataTransferObjects.Announcement;
 using Project.Entities.DataTransferObjects.Candidate;
+using Project.Entities.DataTransferObjects.Department;
 using Project.Entities.DataTransferObjects.Exam;
 using Project.Entities.DataTransferObjects.Job;
 using Project.Entities.DataTransferObjects.JobApplication;
@@ -54,9 +55,8 @@ namespace Project.Services.Mapper
             // JOB LIST
             CreateMap<JobList, JobListDto>()
                 .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department.DepartmentName))
-                .ForMember(dest => dest.JobName, opt => opt.MapFrom(src => src.Job.JobName)) // Job entity bağlıysa JobName al
+                .ForMember(dest => dest.JobName, opt => opt.MapFrom(src => src.Job.JobName))
                 .ReverseMap();
-
             CreateMap<JobListInsertDto, JobList>().ReverseMap();
             CreateMap<JobListUpdateDto, JobList>().ReverseMap();
 
@@ -95,8 +95,6 @@ namespace Project.Services.Mapper
             CreateMap<QuestionInsertDto, Question>().ReverseMap();
             CreateMap<QuestionUpdateDto, Question>().ReverseMap();
 
-           
-
             // USER EXAM
             CreateMap<UserExam, UserExamDto>()
                 .ForMember(dest => dest.ExamName, opt => opt.MapFrom(src => src.Exam.ExamName))
@@ -104,6 +102,13 @@ namespace Project.Services.Mapper
                 .ReverseMap();
             CreateMap<UserExamInsertDto, UserExam>().ReverseMap();
             CreateMap<UserExamUpdateDto, UserExam>().ReverseMap();
+
+            CreateMap<Announcement, AnnouncementDto>().ReverseMap();
+            CreateMap<Announcement, AnnouncementInsertDto>().ReverseMap();
+            CreateMap<Announcement, AnnouncementUpdateDto>().ReverseMap();
+
+
+
         }
     }
 }

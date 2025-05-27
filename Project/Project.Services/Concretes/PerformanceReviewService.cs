@@ -29,7 +29,10 @@ namespace Project.Services.Concretes
 
         public async Task DeletePerformanceReview(int id, bool trackChanges)
         {
-            var entity = await _repositoryManager.PerformanceReviewRepository.GetPerformanceReviewById(id, trackChanges).FirstOrDefaultAsync();
+            var entity = await _repositoryManager.PerformanceReviewRepository
+                .GetPerformanceReviewById(id, trackChanges)
+                .FirstOrDefaultAsync();
+
             if (entity == null)
                 throw new EntityNotFoundException<PerformanceReview>(id);
 
@@ -39,53 +42,62 @@ namespace Project.Services.Concretes
 
         public async Task<PerformanceReviewDto> GeneratePerformanceReviewForUser(int userId)
         {
-             var userExams = await _repositoryManager.UserExamRepository
-            .FindByCondition(ue => ue.UserId == userId, trackChanges: false)
-            .ToListAsync();
+            var userExams = await _repositoryManager.UserExamRepository
+                .FindByCondition(ue => ue.UserId == userId, trackChanges: false)
+                .Include(ue => ue.Exam) // Exam.ExamDate için gerekli
+                .ToListAsync();
 
             if (userExams == null || !userExams.Any())
-            {
                 throw new Exception($"User with id {userId} has no exams to review.");
-            }
 
-    // 2. Ortalama puanı hesapla
             var averageScore = userExams.Average(ue => ue.Score);
 
-            // 3. Ortalama skora göre performans notu belirle (örnek basit bir mantıkla)
-            byte performanceRate;
-            if (averageScore >= 90) performanceRate = 5;
-            else if (averageScore >= 75) performanceRate = 4;
-            else if (averageScore >= 60) performanceRate = 3;
-            else if (averageScore >= 50) performanceRate = 2;
-            else performanceRate = 1;
+            byte performanceRate = averageScore switch
+            {
+                >= 90 => 5,
+                >= 75 => 4,
+                >= 60 => 3,
+                >= 50 => 2,
+                _ => 1
+            };
 
-    // 4. Yeni PerformanceReview oluştur
+            var latestUserExam = userExams
+                .OrderByDescending(e => e.Exam.ExamDate)
+                .FirstOrDefault();
+
+            if (latestUserExam == null)
+                throw new Exception("Could not determine the latest user exam.");
+
             var performanceReview = new PerformanceReview
             {
-                UserExamId = userId,
+                UserExamId = latestUserExam.UserExamId,
                 PerformanceRate = performanceRate,
                 ReviewSummary = $"User has an average score of {averageScore:F2}",
                 ReviewDate = DateTime.UtcNow,
                 AverageScore = averageScore
-                //ExamId = userExams.OrderByDescending(e => e.ExamDate).First().ExamId // Son girdiği sınavı referans alıyoruz
             };
 
             _repositoryManager.PerformanceReviewRepository.CreatePerformanceReview(performanceReview);
             await _repositoryManager.Save();
 
-    // 5. Dto'ya map'leyip dön
             return mapper.Map<PerformanceReviewDto>(performanceReview);
         }
 
         public async Task<IEnumerable<PerformanceReviewDto>> GetAllPerformanceReviews(bool trackChanges)
         {
-            var reviews = await _repositoryManager.PerformanceReviewRepository.GetAllPerformanceReviews(trackChanges).ToListAsync();
+            var reviews = await _repositoryManager.PerformanceReviewRepository
+                .GetAllPerformanceReviews(trackChanges)
+                .ToListAsync();
+
             return mapper.Map<IEnumerable<PerformanceReviewDto>>(reviews);
         }
 
         public async Task<PerformanceReviewDto> GetPerformanceReviewById(int id, bool trackChanges)
         {
-            var entity = await _repositoryManager.PerformanceReviewRepository.GetPerformanceReviewById(id, trackChanges).FirstOrDefaultAsync();
+            var entity = await _repositoryManager.PerformanceReviewRepository
+                .GetPerformanceReviewById(id, trackChanges)
+                .FirstOrDefaultAsync();
+
             if (entity == null)
                 throw new EntityNotFoundException<PerformanceReview>(id);
 
@@ -101,10 +113,12 @@ namespace Project.Services.Concretes
             return mapper.Map<IEnumerable<PerformanceReviewDto>>(reviews);
         }
 
-
         public async Task UpdatePerformanceReview(int id, PerformanceReviewUpdateDto performanceReview, bool trackChanges)
         {
-            var entity = await _repositoryManager.PerformanceReviewRepository.GetPerformanceReviewById(id, trackChanges).FirstOrDefaultAsync();
+            var entity = await _repositoryManager.PerformanceReviewRepository
+                .GetPerformanceReviewById(id, trackChanges)
+                .FirstOrDefaultAsync();
+
             if (entity == null)
                 throw new EntityNotFoundException<PerformanceReview>(id);
 

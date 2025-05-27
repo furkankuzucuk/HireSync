@@ -1,29 +1,19 @@
 .performance-analysis {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  
-  .performance-analysis h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .performance-analysis table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-  }
-  
-  .performance-analysis th,
-  .performance-analysis td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  .performance-analysis th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  
+  max-width: 900px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 10px;
+  border: 1px solid #e1e1e1;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filters select {
+  min-width: 200px;
+}

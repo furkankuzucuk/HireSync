@@ -10,50 +10,53 @@ const AdminDashboard = () => {
   return (
     <div className="admin-layout d-flex">
       {/* Sidebar */}
-      <div className="sidebar bg-dark text-white p-3 vh-100" style={{ width: "250px" }}>
-        <h4 className="text-center mb-4">Yönetici Paneli</h4>
+      <aside className="sidebar bg-dark text-white">
+        <h4 className="text-center mb-3"></h4>
         <p className="text-center">
           Hoş Geldin, <strong>{username}</strong> 👋
         </p>
         <ul className="nav flex-column mt-4">
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard">🏠 Ana Sayfa</Link>
+            <Link className="nav-link" to="/admin-dashboard">🏠 Ana Sayfa</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard/jobs">📌 İş İlanları Yönetimi</Link>
+            <Link className="nav-link" to="/admin-dashboard/jobs">📌 İş İlanları</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard/joblist">📋 Yayınlanan İlanlar</Link>
+            <Link className="nav-link" to="/admin-dashboard/joblist">📋 Yayınlanan İlanlar</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard/jobapplications">📂 Başvurular</Link>
+            <Link className="nav-link" to="/admin-dashboard/jobapplications">📂 Başvurular</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard/exams">📝 Online Sınavlar</Link>
+            <Link className="nav-link" to="/admin-dashboard/exams">📝 Sınavlar</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard/performance">📊 Performans Analizi</Link>
+            <Link className="nav-link" to="/admin-dashboard/performance">📊 Performans</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard/performance-review">📈 Performans Değerlendirme</Link>
+            <Link className="nav-link" to="/admin-dashboard/performance-review">📈 Değerlendirme</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard/survey-results">📋 Anket Sonuçları</Link>
+            <Link className="nav-link" to="/admin-dashboard/survey-results">📋 Anket Sonuçları</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard/survey-create">➕ Anket Oluştur</Link>
+            <Link className="nav-link" to="/admin-dashboard/survey-create">➕ Anket Oluştur</Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link text-white" to="/admin-dashboard/leaves">📅 İzin Talepleri</Link>
+            <Link className="nav-link" to="/admin-dashboard/leaves">📅 İzin Talepleri</Link>
+          </li>
+          <li className="nav-item">
+            <Link className="nav-link" to="/admin-dashboard/announcements">📢 Duyurular</Link>
           </li>
         </ul>
         <button onClick={logout} className="btn btn-danger w-100 mt-4">🚪 Çıkış Yap</button>
-      </div>
+      </aside>
 
-      {/* Content Area */}
-      <div className="content-area flex-grow-1 p-4" style={{ backgroundColor: "#f8f9fa", minHeight: "100vh" }}>
+      {/* Content */}
+      <main className="content-area">
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 };

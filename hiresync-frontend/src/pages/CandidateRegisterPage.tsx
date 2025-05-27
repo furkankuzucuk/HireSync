@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 import axios from "axios";
+import "../css/CandidateRegisterPage.css";
 
 const CandidateRegisterPage = () => {
   const [form, setForm] = useState({
@@ -47,7 +48,6 @@ const CandidateRegisterPage = () => {
     }
 
     try {
-      // USERS tablosuna kayıt
       const userResponse = await axios.post("http://localhost:5065/api/users/create-candidate", {
         name: form.name,
         lastName: form.lastName,
@@ -60,7 +60,6 @@ const CandidateRegisterPage = () => {
 
       const userId = userResponse.data.userId;
 
-      // LOGINS tablosuna kayıt
       await axios.post("http://localhost:5065/api/login/create", {
         userId: userId,
         userName: form.userName,
@@ -77,18 +76,16 @@ const CandidateRegisterPage = () => {
 
     } catch (error: any) {
       if (error.response) {
-        console.error("Sunucu hatası:", error.response.data);
         alert("Sunucudan gelen hata:\n" + JSON.stringify(error.response.data));
       } else {
         alert("İstek gönderilirken hata oluştu.");
-        console.error("İstek hatası:", error);
       }
     }
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center" style={{ minHeight: "90vh" }}>
-      <div className="card shadow w-100" style={{ maxWidth: "600px" }}>
+    <div className="register-container d-flex justify-content-center align-items-center">
+      <div className="register-card card shadow">
         <div className="card-header bg-success text-white text-center">
           <h4>Aday Kayıt</h4>
         </div>
@@ -104,18 +101,13 @@ const CandidateRegisterPage = () => {
             <option value="Erkek">Erkek</option>
             <option value="Belirtmek istemiyorum">Belirtmek istemiyorum</option>
           </select>
-
           <input name="email" type="email" className="form-control mb-2" placeholder="E-posta" onChange={handleChange} />
           <input name="userName" className="form-control mb-2" placeholder="Kullanıcı Adı" onChange={handleChange} />
           <input name="password" type="password" className="form-control mb-3" placeholder="Şifre" onChange={handleChange} />
-
-          <button className="btn btn-primary w-100" onClick={handleRegister}>
-            Kayıt Ol
-          </button>
+          <button className="btn btn-primary w-100" onClick={handleRegister}>Kayıt Ol</button>
         </div>
       </div>
 
-      {/* Modal */}
       <Modal show={showModal} backdrop="static" keyboard={false}>
         <Modal.Header>
           <Modal.Title>Kayıt Başarılı</Modal.Title>

@@ -1,54 +1,58 @@
 .worker-leave-request {
-    background: #f1f4f6;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  
-  .worker-leave-request h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .worker-leave-request form {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-  }
-  
-  .worker-leave-request label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-    color: #444;
-  }
-  
-  .worker-leave-request input,
-  .worker-leave-request select,
-  .worker-leave-request textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 6px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-  }
-  
-  .worker-leave-request textarea {
-    height: 100px;
-    resize: vertical;
-  }
-  
-  .btn.green {
-    margin-top: 20px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn.green:hover {
-    background-color: #218838;
-  }
-  
+  max-width: 500px;
+  margin: 2rem auto;
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.worker-leave-request h2 {
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.worker-leave-request label {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #34495e;
+}
+
+.worker-leave-request select,
+.worker-leave-request input[type="date"] {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.worker-leave-request select:focus,
+.worker-leave-request input[type="date"]:focus {
+  outline: none;
+  border-color: #27ae60;
+}
+
+.worker-leave-request button {
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 10px;
+  background-color: #27ae60;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.worker-leave-request button:hover {
+  background-color: #219150;
+}

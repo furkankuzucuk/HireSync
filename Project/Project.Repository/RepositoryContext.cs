@@ -21,16 +21,20 @@ public class RepositoryContext : DbContext
     public DbSet<JobList> JobLists { get; set; }
     public DbSet<UserExam> UserExams { get; set; }
     public DbSet<Question> Questions { get; set; }
-    public DbSet<Anouncement> Anouncements { get; set; }
+    public DbSet<Announcement> Announcements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<JobList>()
-            .HasOne(j => j.Job)
-            .WithMany(j => j.JobLists)
-            .HasForeignKey(j => j.JobId)
-            .OnDelete(DeleteBehavior.NoAction);
+{
+    base.OnModelCreating(modelBuilder);
 
-    }
+    // JobList -> Job ilişkisi (senin orijinal kodun)
+    modelBuilder.Entity<JobList>()
+        .HasOne(j => j.Job)
+        .WithMany(j => j.JobLists)
+        .HasForeignKey(j => j.JobId)
+        .OnDelete(DeleteBehavior.NoAction);
+
+    
+}
+
 }

@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+// src/pages/OnlineExam.tsx
+import React, { useState } from "react";
+import "../css/OnlineExam.css";
 
 const OnlineExam = () => {
   const [examName, setExamName] = useState("");
   const [examDate, setExamDate] = useState("");
   const [createdExamId, setCreatedExamId] = useState<number | null>(null);
-
-  // Soru alanları
   const [questionText, setQuestionText] = useState("");
   const [answerOptions, setAnswerOptions] = useState(["", "", "", ""]);
   const [correctAnswer, setCorrectAnswer] = useState("");
@@ -24,10 +24,7 @@ const OnlineExam = () => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify({
-        examName,
-        examDate,
-      }),
+      body: JSON.stringify({ examName, examDate }),
     });
 
     if (response.ok) {
@@ -40,14 +37,8 @@ const OnlineExam = () => {
   };
 
   const handleAddQuestion = async () => {
-    if (!createdExamId) {
-      alert("Önce sınav oluşturmalısınız.");
-      return;
-    }
-    if (!questionText || !correctAnswer) {
-      alert("Soru metni ve doğru cevap zorunlu.");
-      return;
-    }
+    if (!createdExamId) return alert("Önce sınav oluşturmalısınız.");
+    if (!questionText || !correctAnswer) return alert("Soru ve doğru cevap zorunludur.");
 
     const response = await fetch("/api/questions", {
       method: "POST",
@@ -80,58 +71,83 @@ const OnlineExam = () => {
   };
 
   return (
-    <div className="tab-content">
-      <h2>📝 Online Sınav Yönetimi</h2>
+    <div className="online-exam container mt-4">
+      <h2 className="mb-4">📝 Online Sınav Yönetimi</h2>
 
       {!createdExamId ? (
-        <form onSubmit={handleCreateExam}>
-          <label>Sınav Başlığı:</label>
-          <input
-            type="text"
-            placeholder="Sınav adı"
-            value={examName}
-            onChange={(e) => setExamName(e.target.value)}
-          />
-          <label>Sınav Tarihi:</label>
-          <input
-            type="date"
-            value={examDate}
-            onChange={(e) => setExamDate(e.target.value)}
-          />
-          <button className="btn green" type="submit">
-            Sınav Oluştur
+        <form onSubmit={handleCreateExam} className="form-box shadow-sm">
+          <div className="mb-3">
+            <label className="form-label">Sınav Başlığı:</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Sınav adı"
+              value={examName}
+              onChange={(e) => setExamName(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Sınav Tarihi:</label>
+            <input
+              type="date"
+              className="form-control"
+              value={examDate}
+              onChange={(e) => setExamDate(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="btn btn-primary w-100">
+            ➕ Sınav Oluştur
           </button>
         </form>
       ) : (
-        <>
-          <h3>Soru Ekle (Sınav ID: {createdExamId})</h3>
-          <label>Soru Metni:</label>
-          <textarea
-            placeholder="Soru metnini yazın"
-            value={questionText}
-            onChange={(e) => setQuestionText(e.target.value)}
-          />
-          <label>Cevap Seçenekleri:</label>
-          {answerOptions.map((option, i) => (
-            <input
-              key={i}
-              type="text"
-              placeholder={`Seçenek ${i + 1}`}
-              value={option}
-              onChange={(e) => updateOption(i, e.target.value)}
+        <div className="form-box shadow-sm">
+          <h4 className="mb-3">Soru Ekle (Sınav ID: {createdExamId})</h4>
+
+          <div className="mb-3">
+            <label className="form-label">Soru Metni:</label>
+            <textarea
+              className="form-control"
+              placeholder="Soru metnini yazın"
+              value={questionText}
+              onChange={(e) => setQuestionText(e.target.value)}
+              required
             />
-          ))}
-          <label>Doğru Cevap:</label>
-          <input
-            type="text"
-            placeholder="Doğru cevabı yazın"
-            value={correctAnswer}
-            onChange={(e) => setCorrectAnswer(e.target.value)}
-          />
-          <button onClick={handleAddQuestion} className="btn green">
-            Soruyu Ekle
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Cevap Seçenekleri:</label>
+            {answerOptions.map((opt, i) => (
+              <input
+                key={i}
+                type="text"
+                className="form-control mb-2"
+                placeholder={`Seçenek ${i + 1}`}
+                value={opt}
+                onChange={(e) => updateOption(i, e.target.value)}
+              />
+            ))}
+          </div>
+
+          <div className="mb-3">
+            <label className="form-label">Doğru Cevap:</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Doğru cevabı yazın"
+              value={correctAnswer}
+              onChange={(e) => setCorrectAnswer(e.target.value)}
+              required
+            />
+          </div>
+
+          <button onClick={handleAddQuestion} className="btn btn-success w-100">
+            ✅ Soruyu Ekle
           </button>
-        </>
+        </div>
       )}
     </div>
   );

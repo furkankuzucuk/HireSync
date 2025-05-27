@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'animate.css';
 import 'react-toastify/dist/ReactToastify.css';
 import "../css/ForgotPassword.css";
 
@@ -24,7 +22,7 @@ const ForgotPassword = () => {
 
     setLoading(true);
     setError('');
-    setSuccess(false); // Form gönderiminde resetle
+    setSuccess(false);
 
     try {
       await axios.post('/api/login/forgot-password', { email });
@@ -41,35 +39,34 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="forgot-password-container">
-      <div className="forgot-password-card">
-        <h2>🔐 Şifre Sıfırlama</h2>
+    <div className="forgot-password-container d-flex justify-content-center align-items-center">
+      <div className="forgot-password-card shadow">
+        <h2 className="text-center mb-4">🔐 Şifre Sıfırlama</h2>
         <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label htmlFor="email">E-posta adresiniz</label>
+          <div className="mb-3">
+            <label htmlFor="email" className="form-label">E-posta adresiniz</label>
             <input
               id="email"
-              className="input-field"
+              className="form-control"
               type="email"
               placeholder="E-posta adresiniz"
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
                 setError('');
-                // setSuccess(false) kaldırıldı
               }}
             />
           </div>
-          {error && <p className="error-message">{error}</p>}
-          <button className="submit-button" type="submit" disabled={loading}>
+          {error && <p className="text-danger">{error}</p>}
+          <button className="btn btn-primary w-100" type="submit" disabled={loading}>
             {loading ? "Gönderiliyor..." : "Sıfırlama Linki Gönder"}
           </button>
         </form>
 
         {success && !loading && !error && (
-          <p className="success-message">
+          <div className="alert alert-success mt-3" role="alert">
             Mail gönderildi. Giriş ekranına yönlendiriliyorsunuz...
-          </p>
+          </div>
         )}
       </div>
       <ToastContainer />

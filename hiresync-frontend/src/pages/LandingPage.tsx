@@ -23,7 +23,7 @@ const LandingPage = () => {
     <div className="container-fluid p-0 lp-container">
       <header className="bg-white border-bottom py-3">
         <div className="container d-flex align-items-center justify-content-between">
-          <img src={logo} alt="HireSync Logo" style={{ height: "100px" }} />
+          <img src={logo} alt="HireSync Logo" style={{ height: "70px" }} />
           <Link to="/login" className="btn btn-outline-primary">Giriş Yap</Link>
         </div>
       </header>
@@ -31,20 +31,25 @@ const LandingPage = () => {
       <section className="hero bg-primary text-white text-center py-5">
         <div className="container">
           <h1 className="display-5 fw-bold">HireSync - İnsan Kaynakları Platformu</h1>
+          {/* "Doğru yetenekleri, doğru işlerle buluşturun." yazısı kaldırıldı */}
         </div>
       </section>
 
       <section className="job-listings py-5 bg-light">
         <div className="container">
-          <h2 className="text-center mb-4">İş İlanları</h2>
+          <h2 className="text-center mb-4 text-dark">Açık Pozisyonlar</h2>
           <div className="row">
             {jobListings.length > 0 ? (
-              jobListings.map((job) => (
-                <div className="col-md-4 mb-4" key={job.jobListId}>
-                  <div className="card h-100 shadow-sm border-0 text-center">
-                    <div className="card-body d-flex flex-column justify-content-between">
+              jobListings.map((job, index) => (
+                <div
+                  className="col-md-6 col-lg-4 mb-4 job-card-animate"
+                  key={job.jobListId}
+                  style={{ animationDelay: `${index * 0.15}s` }}
+                >
+                  <div className="card h-100 shadow-sm border-0">
+                    <div className="card-body d-flex flex-column justify-content-between text-center">
                       <h5 className="card-title fw-bold">{job.title}</h5>
-                      <Link to={`/job-details/${job.jobListId}`} className="btn btn-sm btn-primary mt-3">
+                      <Link to={`/job-details/${job.jobListId}`} className="btn btn-sm btn-outline-primary mt-3">
                         Detayları Gör
                       </Link>
                     </div>
@@ -57,6 +62,13 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      <footer
+        className="text-white text-center py-3"
+        style={{ backgroundColor: "transparent", border: "none", boxShadow: "none" }}
+      >
+        {/* "HireSync saklıdır" yazısı kaldırıldı */}
+      </footer>
     </div>
   );
 };

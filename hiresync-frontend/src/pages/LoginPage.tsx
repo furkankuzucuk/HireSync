@@ -33,11 +33,11 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
         password: password,
       });
 
-      const { token, role, userId } = response.data; // ✅ userId burada alınıyor
+      const { token, role, userId } = response.data;
 
       localStorage.setItem("token", token);
       localStorage.setItem("role", role);
-      localStorage.setItem("userId", userId.toString()); // ✅ EKLENDİ
+      localStorage.setItem("userId", userId.toString());
       localStorage.setItem("username", username);
       localStorage.setItem("tokenExpiration", (Date.now() + 3600 * 1000).toString());
 
@@ -56,21 +56,27 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
 
   return (
     <div className="login-background d-flex justify-content-center align-items-center vh-100">
+      {/* Toast Container dışarıda ve yukarıda */}
+      <ToastContainer 
+        position="top-center" 
+        style={{ marginTop: "20px", zIndex: 1060 }} 
+        autoClose={3000}
+      />
+
       <div
-        className={`card shadow p-4 animate__animated ${
+        className={`card shadow-lg p-5 animate__animated ${
           shake ? "animate__shakeX" : "animate__fadeIn"
-        }`}
-        style={{ width: "100%", maxWidth: "400px", borderRadius: "12px" }}
+        } login-card`}
       >
-        <ToastContainer position="top-center" />
         <div className="text-center mb-3">
           <img
             src={hiresyncLogo}
             alt="Hiresync Logo"
-            style={{ width: "100px", height: "100px", borderRadius: "12px" }}
+            className="rounded-circle"
+            style={{ width: "100px", height: "100px" }}
           />
         </div>
-        <h4 className="text-center mb-4 text-primary fw-bold">Giriş Paneli</h4>
+        <h4 className="text-center mb-4 text-gradient fw-bold">Giriş Paneli</h4>
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="username" className="form-label">Kullanıcı Adı</label>
@@ -102,7 +108,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             </div>
           </div>
 
-          <button type="submit" className="btn btn-primary w-100" disabled={isLoading}>
+          <button type="submit" className="btn btn-gradient w-100" disabled={isLoading}>
             {isLoading ? (
               <>
                 <span className="spinner-border spinner-border-sm me-2" role="status" />
@@ -113,10 +119,12 @@ const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
             )}
           </button>
         </form>
-        <div className="text-center mt-3">
-                  <a href="/forgot-password" className="forgot-link text-decoration-underline">
-                      Şifrenizi mi unuttunuz?
-                  </a>
+
+        {/* Yeni tasarlanmış şifremi unuttum linki */}
+        <div className="text-center mt-4">
+          <a href="/forgot-password" className="btn-forgot">
+            🔐 Şifrenizi mi unuttunuz?
+          </a>
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@
   background-size: 400% 400%;
   animation: gradientBG 7s ease infinite;
   font-family: 'Segoe UI', sans-serif;
+  padding: 1rem;
 }
 
 @keyframes gradientBG {
@@ -17,13 +18,46 @@
   }
 }
 
-.forgot-link {
-  color: #4fc3f7;
-  cursor: pointer;
+.login-card {
+  width: 100%;
+  max-width: 520px;
+  min-height: 560px;
+  border-radius: 16px;
+  background: #ffffffdd;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-.forgot-link:hover {
-  color: #0288d1;
+.btn-gradient {
+  background: linear-gradient(45deg, #1e3c72, #00c9ff);
+  color: white;
+  border: none;
+  transition: 0.3s ease;
+}
+
+.btn-gradient:hover {
+  background: linear-gradient(45deg, #00c9ff, #1e3c72);
+  color: #fff;
+}
+
+.text-gradient {
+  background: linear-gradient(to right, #1e3c72, #00c9ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Yeni şık şifre linki */
+.btn-forgot {
+  display: inline-block;
+  margin-top: 8px;
+  color: #007bff;
+  font-weight: 500;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-forgot:hover {
+  color: #0056b3;
   text-decoration: underline;
 }
-

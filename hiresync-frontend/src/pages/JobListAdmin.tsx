@@ -1,6 +1,6 @@
-// src/pages/JobListAdmin.tsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import "../css/JobListAdmin.css";
 
 interface JobListDto {
   jobListId: number;
@@ -27,35 +27,41 @@ const JobListAdmin = () => {
   };
 
   return (
-    <div>
-      <h2>İş İlanları (Admin)</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Departman</th>
-            <th>İş</th>
-            <th>Başlık</th>
-            <th>Açıklama</th>
-            <th>Oluşturulma Tarihi</th>
-            <th>İşlemler</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jobs.map(job => (
-            <tr key={job.jobListId}>
-              <td>{job.departmentName}</td>
-              <td>{job.jobName}</td>
-              <td>{job.title}</td>
-              <td>{job.description}</td>
-              <td>{new Date(job.createDate).toLocaleDateString()}</td>
-              <td>
-                {/* Update için yönlendirme olabilir */}
-                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(job.jobListId)}>Sil</button>
-              </td>
+    <div className="job-list-admin container py-4">
+      <h2 className="text-center text-primary mb-4">📋 Yayınlanan İlanlar</h2>
+      <div className="table-responsive">
+        <table className="table table-striped table-bordered">
+          <thead className="table-dark">
+            <tr>
+              <th>Departman</th>
+              <th>Pozisyon</th>
+              <th>Başlık</th>
+              <th>Açıklama</th>
+              <th>Oluşturulma Tarihi</th>
+              <th>İşlem</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {jobs.map(job => (
+              <tr key={job.jobListId}>
+                <td>{job.departmentName}</td>
+                <td>{job.jobName}</td>
+                <td>{job.title}</td>
+                <td>{job.description}</td>
+                <td>{new Date(job.createDate).toLocaleDateString()}</td>
+                <td>
+                  <button
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDelete(job.jobListId)}
+                  >
+                    Sil
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

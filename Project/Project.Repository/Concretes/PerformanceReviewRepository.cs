@@ -1,6 +1,6 @@
 using Project.Entities;
 using Project.Repository.Contracts;
-
+using Microsoft.EntityFrameworkCore;
 namespace Project.Repository.Concretes
 {
     public class PerformanceReviewRepository : RepositoryBase<PerformanceReview>, IPerformanceReviewRepository
@@ -24,7 +24,10 @@ namespace Project.Repository.Concretes
 
         public IQueryable<PerformanceReview> GetReviewByUserId(int userId, bool trackChanges)
         {
-            return FindByCondition(r => r.UserExamId == userId, trackChanges);
+            return _context.PerformanceReviews
+                .Include(r => r.UserExam)
+                .Where(r => r.UserExam.UserId == userId);
         }
+
     }
 }

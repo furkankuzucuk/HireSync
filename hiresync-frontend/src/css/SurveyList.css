@@ -1,0 +1,35 @@
+.survey-list-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+  
+  .survey-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .survey-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f4f6f8;
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    transition: background-color 0.2s ease;
+  }
+  
+  .survey-item:hover {
+    background-color: #e9ecef;
+  }
+  
+  .survey-title {
+    font-weight: 500;
+    color: #333;
+  }
+  

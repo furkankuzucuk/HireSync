@@ -1,0 +1,17 @@
+.admin-home {
+    padding: 2rem 1rem;
+  }
+  
+  .welcome-box {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .welcome-title {
+    font-weight: 600;
+    color: #1d3557;
+    margin-bottom: 1rem;
+  }
+  

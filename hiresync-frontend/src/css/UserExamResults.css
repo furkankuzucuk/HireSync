@@ -1,0 +1,17 @@
+.exam-results-container {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #f1f3f5;
+    min-height: 80vh;
+  }
+  
+  .results-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 100%;
+    max-width: 700px;
+  }
+  

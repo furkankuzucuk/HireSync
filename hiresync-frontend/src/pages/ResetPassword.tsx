@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../css/ResetPassword.css';
 
 const ResetPassword: React.FC = () => {
   const [params] = useSearchParams();
@@ -27,8 +28,6 @@ const ResetPassword: React.FC = () => {
       return;
     }
 
-    // Şifre gücü kontrolü kaldırıldı, tüm şifreler kabul edilecek
-
     try {
       await axios.post('/api/login/reset-password', {
         token,
@@ -36,7 +35,7 @@ const ResetPassword: React.FC = () => {
         confirmPassword: confirm
       });
       setDone(true);
-      toast.success("Şifre başarıyla sıfırlandı. Giriş yapabilirsiniz.");
+      toast.success("Şifre başarıyla sıfırlandı.");
       setTimeout(() => {
         navigate('/login');
       }, 3000);
@@ -47,40 +46,40 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
+    <div className="reset-container">
       <ToastContainer position="top-center" />
-      <h2>🔑 Yeni Şifre Belirle</h2>
-      {done ? (
-        <p>Şifreniz başarıyla güncellendi. <a href="/login">Giriş yapabilirsiniz.</a></p>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <input
-            type="password"
-            placeholder="Yeni şifre"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setError('');
-            }}
-            required
-            style={{ width: '100%', padding: 8, marginBottom: 10 }}
-            autoComplete="new-password"
-          />
-          <input
-            type="password"
-            placeholder="Tekrar girin"
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-            required
-            style={{ width: '100%', padding: 8, marginBottom: 10 }}
-            autoComplete="new-password"
-          />
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-          <button type="submit" style={{ width: '100%', padding: 10 }}>
-            Şifreyi Sıfırla
-          </button>
-        </form>
-      )}
+      <div className="reset-card">
+        <h2 className="text-center">🔑 Yeni Şifre Belirle</h2>
+        {done ? (
+          <p className="text-success text-center">
+            Şifreniz başarıyla güncellendi. <a href="/login">Giriş yap</a>
+          </p>
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <input
+              type="password"
+              placeholder="Yeni şifre"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError('');
+              }}
+              required
+              autoComplete="new-password"
+            />
+            <input
+              type="password"
+              placeholder="Yeni şifre (tekrar)"
+              value={confirm}
+              onChange={(e) => setConfirm(e.target.value)}
+              required
+              autoComplete="new-password"
+            />
+            {error && <div className="error-text">{error}</div>}
+            <button type="submit">Şifreyi Sıfırla</button>
+          </form>
+        )}
+      </div>
     </div>
   );
 };

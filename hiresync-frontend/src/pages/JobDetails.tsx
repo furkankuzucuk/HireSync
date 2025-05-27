@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../css/JobDetails.css";
 
 const JobDetails = () => {
   const { id } = useParams();
@@ -27,8 +28,8 @@ const JobDetails = () => {
   if (!job) return <div className="container mt-5">Yükleniyor...</div>;
 
   return (
-    <div className="container mt-5">
-      <div className="card shadow-lg border-0">
+    <div className="job-details container py-5">
+      <div className="card shadow border-0">
         <div className="card-header bg-primary text-white text-center py-3">
           <h3 className="mb-0">{job.title}</h3>
         </div>
@@ -37,12 +38,14 @@ const JobDetails = () => {
           <p><strong>Pozisyon:</strong> {job.jobName}</p>
           <p><strong>Açıklama:</strong> {job.description}</p>
           <p className="text-muted">Yayın Tarihi: {new Date(job.createDate).toLocaleDateString()}</p>
-
-          <button className="btn btn-success me-2" onClick={handleApplyClick}>
-            Başvur
-          </button>
-
-          <Link to="/" className="btn btn-secondary">Geri Dön</Link>
+          <div className="d-flex flex-column flex-sm-row gap-2 mt-4">
+            <button className="btn btn-success" onClick={handleApplyClick}>
+              Başvur
+            </button>
+            <Link to="/" className="btn btn-secondary">
+              Geri Dön
+            </Link>
+          </div>
         </div>
       </div>
     </div>

@@ -1,0 +1,9 @@
+.job-applications {
+    padding: 2rem 1rem;
+  }
+  
+  .job-applications .table th,
+  .job-applications .table td {
+    vertical-align: middle;
+  }
+  

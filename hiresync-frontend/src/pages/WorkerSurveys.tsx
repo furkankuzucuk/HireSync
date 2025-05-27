@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import '../css/WorkerSurveys.css';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import "../css/WorkerSurveys.css";
 
 interface Survey {
   satisfactionSurveyId: number;
@@ -18,14 +18,14 @@ const WorkerSurveys = () => {
   useEffect(() => {
     const fetchSurveys = async () => {
       try {
-        const response = await axios.get('http://localhost:5065/api/satisfactionsurveys/user-department', {
+        const response = await axios.get("http://localhost:5065/api/satisfactionsurveys/user-department", {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('authToken')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         });
         setSurveys(response.data);
       } catch (error) {
-        console.error('Error fetching surveys:', error);
+        console.error("Error fetching surveys:", error);
       } finally {
         setLoading(false);
       }
@@ -51,10 +51,7 @@ const WorkerSurveys = () => {
                 <span>Başlangıç: {new Date(survey.startDate).toLocaleDateString()}</span>
                 <span>Bitiş: {new Date(survey.endDate).toLocaleDateString()}</span>
               </div>
-              <Link 
-                to={`/survey/${survey.satisfactionSurveyId}`} 
-                className="take-survey-btn"
-              >
+              <Link to={`/survey/${survey.satisfactionSurveyId}`} className="take-survey-btn">
                 Ankete Katıl
               </Link>
             </div>

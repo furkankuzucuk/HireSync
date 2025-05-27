@@ -1,0 +1,33 @@
+.survey-edit-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .question-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .question-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    padding: 12px 16px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #dee2e6;
+  }
+  
+  .add-question-form textarea {
+    resize: vertical;
+  }
+  
+  .add-question-form button {
+    float: right;
+  }
+  
