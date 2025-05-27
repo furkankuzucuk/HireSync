@@ -6,11 +6,16 @@ const SurveyAddQuestion = () => {
   const { id } = useParams();
   const [questionText, setQuestionText] = useState('');
   const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleAdd = async () => {
     const token = localStorage.getItem('token');
+    setSuccessMessage('');
+    setErrorMessage('');
+
     if (!questionText.trim()) {
-      alert("Lütfen bir soru girin.");
+      setErrorMessage("⚠️ Lütfen bir soru girin.");
       return;
     }
 
@@ -30,14 +35,14 @@ const SurveyAddQuestion = () => {
       });
 
       if (response.ok) {
-        alert('✅ Soru başarıyla eklendi.');
+        setSuccessMessage('✅ Soru başarıyla eklendi.');
         setQuestionText('');
       } else {
-        alert('❌ Soru eklenemedi.');
+        setErrorMessage('❌ Soru eklenemedi.');
       }
     } catch (error) {
       console.error("Hata:", error);
-      alert("Bir hata oluştu.");
+      setErrorMessage("❌ Bir hata oluştu.");
     } finally {
       setLoading(false);
     }
@@ -48,6 +53,10 @@ const SurveyAddQuestion = () => {
       <div className="survey-card shadow">
         <h2 className="text-center mb-4">➕ Yeni Soru Ekle</h2>
         <p className="survey-id">Anket ID: {id}</p>
+
+        {successMessage && <div className="alert alert-success">{successMessage}</div>}
+        {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+
         <textarea
           className="form-control mb-3"
           rows={4}
@@ -55,6 +64,7 @@ const SurveyAddQuestion = () => {
           value={questionText}
           onChange={(e) => setQuestionText(e.target.value)}
         />
+
         <button
           className="btn btn-primary w-100"
           onClick={handleAdd}

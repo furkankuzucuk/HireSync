@@ -1,30 +1,19 @@
-.survey-create-container {
-    max-width: 500px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .survey-create-container h2 {
-    color: #2c3e50;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    font-weight: 600;
-    margin-bottom: 8px;
-    display: block;
-  }
-  
-  input.form-control {
-    height: 40px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    padding: 0 10px;
-  }
-  
+.alert {
+  padding: 12px 20px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 15px;
+}
+
+.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}

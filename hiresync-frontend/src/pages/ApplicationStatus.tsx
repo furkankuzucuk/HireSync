@@ -30,6 +30,7 @@ interface JobApplication {
 const ApplicationStatus: React.FC = () => {
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -38,7 +39,7 @@ const ApplicationStatus: React.FC = () => {
         const userId = localStorage.getItem("userId");
 
         if (!token || !userId) {
-          console.error("Token veya kullanıcı ID'si eksik.");
+          setErrorMessage("Token veya kullanıcı bilgisi eksik.");
           return;
         }
 
@@ -49,6 +50,7 @@ const ApplicationStatus: React.FC = () => {
         setApplications(response.data);
       } catch (error) {
         console.error("Başvuru verileri alınamadı:", error);
+        setErrorMessage("❌ Başvuru verileri alınamadı.");
       } finally {
         setLoading(false);
       }
@@ -62,10 +64,12 @@ const ApplicationStatus: React.FC = () => {
       <div className="status-box shadow-sm">
         <h2 className="mb-4">📄 Başvuru Durumlarım</h2>
 
+        {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+
         {loading ? (
           <p>Yükleniyor...</p>
         ) : applications.length === 0 ? (
-          <p>Hiç başvurunuz bulunmamaktadır.</p>
+          <div className="alert alert-info">Hiç başvurunuz bulunmamaktadır.</div>
         ) : (
           <div className="table-responsive">
             <table className="table table-bordered table-striped">

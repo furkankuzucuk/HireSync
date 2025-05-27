@@ -17,6 +17,7 @@ const SurveyDetail = () => {
   const navigate = useNavigate();
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState<{ [key: number]: string }>({});
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     axios.get(`/api/surveyquestions/survey/${id}`).then(res => {
@@ -39,8 +40,8 @@ const SurveyDetail = () => {
 
     try {
       await submitSurveyAnswers(submission);
-      alert("✅ Anket başarıyla gönderildi!");
-      navigate('/worker-dashboard/surveys');
+      setSuccessMessage("✅ Anket başarıyla gönderildi!");
+      setTimeout(() => navigate('/worker-dashboard/surveys'), 2000);
     } catch (error) {
       console.error("Gönderim hatası:", error);
       alert("❌ Anket gönderilemedi. Lütfen tekrar deneyin.");
@@ -50,6 +51,12 @@ const SurveyDetail = () => {
   return (
     <div className="survey-detail-container">
       <h2 className="text-center mb-4">📝 Anket Soruları</h2>
+
+      {successMessage && (
+        <div className="success-banner">
+          {successMessage}
+        </div>
+      )}
 
       {questions.map((q: any) => (
         <div key={q.surveyQuestionId} className="question-box">

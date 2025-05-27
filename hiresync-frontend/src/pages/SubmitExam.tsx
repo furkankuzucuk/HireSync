@@ -11,6 +11,7 @@ const SubmitExam = ({ examId }: { examId: number }) => {
   const [questions, setQuestions] = useState<QuestionDto[]>([]);
   const [answers, setAnswers] = useState<{ [questionId: number]: string }>({});
   const [loading, setLoading] = useState(true);
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const fetchExam = async () => {
@@ -41,8 +42,8 @@ const SubmitExam = ({ examId }: { examId: number }) => {
         examId,
         answers
       });
-      alert('✅ Sınav başarıyla gönderildi!');
-      navigate('/worker-dashboard/training');
+      setSuccessMessage("✅ Sınav başarıyla gönderildi!");
+      setTimeout(() => navigate('/worker-dashboard/training'), 2000);
     } catch (error) {
       console.error('Sınav gönderilemedi:', error);
       alert('❌ Bir hata oluştu.');
@@ -56,6 +57,13 @@ const SubmitExam = ({ examId }: { examId: number }) => {
     <div className="submit-exam-container">
       <div className="exam-card shadow">
         <h2 className="exam-title">{exam.examName}</h2>
+
+        {successMessage && (
+          <div className="alert alert-success text-center mb-3" role="alert">
+            {successMessage}
+          </div>
+        )}
+
         {questions.map((q: QuestionDto, idx) => (
           <div key={q.questionId} className="question-block">
             <p className="question-text">
@@ -75,6 +83,7 @@ const SubmitExam = ({ examId }: { examId: number }) => {
             ))}
           </div>
         ))}
+
         <button className="btn-submit" onClick={handleSubmit}>
           📤 Sınavı Gönder
         </button>

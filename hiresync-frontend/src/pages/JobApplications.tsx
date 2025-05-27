@@ -23,11 +23,13 @@ const statusOptions = [
 const JobApplications: React.FC = () => {
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [selectedPdfFilename, setSelectedPdfFilename] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (!token) {
-      console.error("Token bulunamadı. Giriş yapmış mısınız?");
+      setErrorMessage("⚠️ Token bulunamadı. Lütfen giriş yapın.");
       return;
     }
 
@@ -36,7 +38,10 @@ const JobApplications: React.FC = () => {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then((res) => setApplications(res.data))
-      .catch((err) => console.error("Veri alınamadı:", err));
+      .catch((err) => {
+        console.error("Veri alınamadı:", err);
+        setErrorMessage("❌ İş başvuruları yüklenemedi.");
+      });
   }, [token]);
 
   const handleStatusChange = (id: number, newStatus: string) => {
@@ -49,9 +54,12 @@ const JobApplications: React.FC = () => {
 
   const updateStatus = async (id: number, newStatus: string) => {
     if (!token) {
-      alert("Yetkisiz işlem. Giriş yapmanız gerekiyor.");
+      setErrorMessage("❌ Yetkisiz işlem. Giriş yapmanız gerekiyor.");
       return;
     }
+
+    setSuccessMessage("");
+    setErrorMessage("");
 
     try {
       await axios.put(
@@ -59,16 +67,20 @@ const JobApplications: React.FC = () => {
         { status: newStatus },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      alert("Durum güncellendi.");
+      setSuccessMessage("✅ Başvuru durumu güncellendi.");
     } catch (error: any) {
       console.error("Durum güncelleme hatası:", error.response?.data || error);
-      alert("Güncelleme sırasında hata oluştu.");
+      setErrorMessage("❌ Güncelleme sırasında bir hata oluştu.");
     }
   };
 
   return (
     <div className="job-applications container mt-4">
       <h2 className="mb-4">📂 İş Başvuruları</h2>
+
+      {successMessage && <div className="alert alert-success">{successMessage}</div>}
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
+
       <div className="table-responsive">
         <table className="table table-bordered table-striped">
           <thead className="table-dark">

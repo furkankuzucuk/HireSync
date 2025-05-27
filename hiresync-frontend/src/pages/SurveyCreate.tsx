@@ -5,35 +5,50 @@ import '../css/SurveyCreate.css';
 const SurveyCreate = () => {
   const [surveyTitle, setSurveyTitle] = useState('');
   const [surveyType, setSurveyType] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
   const handleCreate = async () => {
+    setSuccessMessage('');
+    setErrorMessage('');
+
     const token = localStorage.getItem('token');
 
-    const response = await fetch('/api/satisfactionsurveys', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        surveyTitle,
-        surveyType,
-      }),
-    });
+    try {
+      const response = await fetch('/api/satisfactionsurveys', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          surveyTitle,
+          surveyType,
+        }),
+      });
 
-    if (response.ok) {
-      const createdSurvey = await response.json();
-      alert('✅ Anket oluşturuldu, şimdi soru ekleyebilirsiniz.');
-      navigate(`/admin-dashboard/survey-add-question/${createdSurvey.satisfactionSurveyId}`);
-    } else {
-      alert('❌ Anket oluşturulamadı.');
+      if (response.ok) {
+        const createdSurvey = await response.json();
+        setSuccessMessage('✅ Anket oluşturuldu, şimdi soru ekleyebilirsiniz.');
+        setTimeout(() => {
+          navigate(`/admin-dashboard/survey-add-question/${createdSurvey.satisfactionSurveyId}`);
+        }, 2000);
+      } else {
+        setErrorMessage('❌ Anket oluşturulamadı.');
+      }
+    } catch (err) {
+      console.error('Anket oluşturma hatası:', err);
+      setErrorMessage('❌ Bir hata oluştu.');
     }
   };
 
   return (
     <div className="survey-create-container">
       <h2 className="text-center mb-4">📋 Yeni Anket Oluştur</h2>
+
+      {successMessage && <div className="alert alert-success">{successMessage}</div>}
+      {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
 
       <div className="form-group">
         <label>Anket Başlığı</label>
