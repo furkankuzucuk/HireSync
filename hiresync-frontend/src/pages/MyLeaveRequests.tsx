@@ -55,10 +55,10 @@ const MyLeaveRequests = () => {
             {requests.map((req) => (
               <tr key={req.leaveRequestId}>
                 <td>{req.leaveType}</td>
-                <td>{new Date(req.startDate).toLocaleDateString()}</td>
-                <td>{new Date(req.endDate).toLocaleDateString()}</td>
+                <td>{new Date(req.startDate).toLocaleDateString("tr-TR")}</td>
+                <td>{new Date(req.endDate).toLocaleDateString("tr-TR")}</td>
                 <td>{getStatusBadge(req.status)}</td>
-                <td>{new Date(req.requestDate).toLocaleDateString()}</td>
+                <td>{new Date(req.requestDate).toLocaleDateString("tr-TR")}</td>
               </tr>
             ))}
           </tbody>

@@ -29,7 +29,7 @@ const ExamList = () => {
             {exams.map(exam => (
               <li key={exam.examId} className="list-group-item d-flex justify-content-between align-items-center">
                 <div>
-                  <strong>{exam.examName}</strong> - {new Date(exam.examDate).toLocaleDateString()}
+                  <strong>{exam.examName}</strong> - {new Date(exam.examDate).toLocaleDateString("tr-TR")}
                 </div>
                 <button className="btn btn-outline-success btn-sm" onClick={() => handleStartExam(exam.examId)}>
                   Sınava Başla

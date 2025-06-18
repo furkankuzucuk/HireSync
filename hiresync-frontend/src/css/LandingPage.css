@@ -1,24 +1,109 @@
-@keyframes fadeScaleIn {
-  0% {
+/* Hero kısmı sadece yazının arkasında gradyan */
+.hero {
+  background: linear-gradient(135deg, #1c1f26, #3a6073, #16222a);
+  color: #f1f1f1;
+  padding: 5rem 1rem;
+  animation: fadeScaleIn 0.6s ease-in-out;
+  border-bottom: 2px solid #3a6073;
+}
+
+/* Giriş Yap Butonu */
+.btn-login {
+  background: linear-gradient(135deg, #232526, #414345);
+  border: 1px solid #495057;
+  color: #f8f9fa;
+  font-weight: 500;
+  padding: 0.5rem 1.2rem;
+  border-radius: 30px;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.btn-login:hover {
+  background: linear-gradient(135deg, #3a6073, #1c1f26);
+  transform: scale(1.05);
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(58, 96, 115, 0.5);
+}
+
+/* Şık başlık */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 2rem;
+  background: linear-gradient(to right, #3a6073, #16222a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: fadeInTitle 0.6s ease-in-out;
+}
+
+@keyframes fadeInTitle {
+  from {
     opacity: 0;
-    transform: scale(0.95);
+    transform: translateY(-10px);
   }
-  100% {
+  to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
   }
 }
 
+/* Kartlar */
 .job-card-animate {
-  animation-name: fadeScaleIn;
-  animation-duration: 0.5s;
-  animation-fill-mode: forwards;
-  animation-timing-function: ease-out;
+  animation: fadeScaleIn 0.5s ease-out forwards;
   opacity: 0;
 }
 
-footer {
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
+@keyframes fadeScaleIn {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.job-card-custom {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #e0e0e0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.job-card-custom:hover {
+  transform: translateY(-5px);
+}
+
+.job-card-header {
+  gap: 1rem;
+}
+
+.job-icon-alt {
+  font-size: 2rem;
+  color: #6c757d;
+  background-color: #e9ecef;
+  padding: 12px;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.job-title h5 {
+  color: #212529;
+}
+
+.job-description {
+  font-size: 0.95rem;
+  color: #6c757d;
+  flex-grow: 1;
 }

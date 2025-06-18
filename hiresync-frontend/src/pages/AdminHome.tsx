@@ -9,7 +9,7 @@ const AdminHome = () => {
   return (
     <div className="admin-home container">
       <div className="welcome-box shadow-sm">
-        <h2 className="welcome-title">🏠 Hoş Geldiniz, {username}</h2>
+        <h2 className="welcome-title">Hoş Geldiniz, {username}</h2>
         <p className="text-muted">Bugün: {new Date().toLocaleDateString("tr-TR")}</p>
         <p className="lead">Yönetim panelinden işlemlerinizi gerçekleştirebilirsiniz.</p>
       </div>

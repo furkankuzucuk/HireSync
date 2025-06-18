@@ -48,7 +48,13 @@ const JobListAdmin = () => {
                 <td>{job.jobName}</td>
                 <td>{job.title}</td>
                 <td>{job.description}</td>
-                <td>{new Date(job.createDate).toLocaleDateString()}</td>
+                <td>
+                  {new Date(job.createDate).toLocaleDateString("tr-TR", {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </td>
                 <td>
                   <button
                     className="btn btn-danger btn-sm"

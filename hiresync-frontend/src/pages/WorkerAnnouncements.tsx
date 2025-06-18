@@ -31,7 +31,7 @@ const WorkerAnnouncements = () => {
           <li key={a.announcementId}>
             <strong>{a.title}</strong>
             <p>{a.content}</p>
-            <p>{new Date(a.createdDate).toLocaleString()}</p>
+            <p>{new Date(a.createdDate).toLocaleDateString("tr-TR")}</p>
           </li>
         ))}
       </ul>

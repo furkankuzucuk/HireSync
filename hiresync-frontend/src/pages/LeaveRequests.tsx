@@ -65,8 +65,8 @@ const LeaveRequests = () => {
                 <tr key={req.leaveRequestId}>
                   <td>{req.userName}</td>
                   <td>{req.leaveType}</td>
-                  <td>{new Date(req.startDate).toLocaleDateString()}</td>
-                  <td>{new Date(req.endDate).toLocaleDateString()}</td>
+                  <td>{new Date(req.startDate).toLocaleDateString("tr-TR")}</td>
+                  <td>{new Date(req.endDate).toLocaleDateString("tr-TR")}</td>
                   <td>{req.status}</td>
                   <td>
                     <button

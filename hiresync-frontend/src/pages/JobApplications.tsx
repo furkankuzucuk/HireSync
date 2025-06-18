@@ -100,7 +100,8 @@ const JobApplications: React.FC = () => {
                 <td>{index + 1}</td>
                 <td>{app.userFullName}</td>
                 <td>{app.jobName}</td>
-                <td>{new Date(app.appDate).toLocaleString()}</td>
+                <td>{new Date(app.appDate).toLocaleDateString("tr-TR")}</td>
+
                 <td>{app.status}</td>
                 <td>
                   <select

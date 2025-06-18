@@ -99,6 +99,7 @@ namespace Project.Services.Mapper
             CreateMap<UserExam, UserExamDto>()
                 .ForMember(dest => dest.ExamName, opt => opt.MapFrom(src => src.Exam.ExamName))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.Name))
+                .ForMember(dest => dest.LastName,opt =>opt.MapFrom(src=>src.User.LastName))
                 .ReverseMap();
             CreateMap<UserExamInsertDto, UserExam>().ReverseMap();
             CreateMap<UserExamUpdateDto, UserExam>().ReverseMap();

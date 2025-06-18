@@ -1,5 +1,32 @@
 .job-details {
-  padding: 1rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.job-header {
+  background: linear-gradient(to right, #495057, #343a40);
+  color: #fff;
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.job-meta p {
+  font-size: 1rem;
+  color: #343a40;
+  margin-bottom: 0.8rem;
+}
+
+.animate-fade {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (min-width: 768px) {

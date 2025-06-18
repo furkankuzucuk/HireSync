@@ -1,11 +1,17 @@
+/* Giriş sayfası arka planı */
 .login-background {
-  background: linear-gradient(-45deg, #1e3c72, #9bdb1c, #00c9ff, #77c77f);
+  background: linear-gradient(-45deg, #1c1f26, #2f3e46, #3a6073, #2c5364);
   background-size: 400% 400%;
   animation: gradientBG 7s ease infinite;
   font-family: 'Segoe UI', sans-serif;
   padding: 1rem;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Gradyan animasyonu */
 @keyframes gradientBG {
   0% {
     background-position: 0% 50%;
@@ -18,39 +24,55 @@
   }
 }
 
+/* Login kartı */
 .login-card {
   width: 100%;
   max-width: 520px;
   min-height: 560px;
   border-radius: 16px;
-  background: #ffffffdd;
+  background: #ffffffdd; /* yarı saydam beyaz */
   backdrop-filter: blur(10px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* Giriş butonu */
 .btn-gradient {
-  background: linear-gradient(45deg, #1e3c72, #00c9ff);
+  background: linear-gradient(45deg, #2c5364, #3a6073);
   color: white;
   border: none;
-  transition: 0.3s ease;
+  font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-gradient:hover {
-  background: linear-gradient(45deg, #00c9ff, #1e3c72);
+  background: linear-gradient(45deg, #3a6073, #2c5364);
+  transform: scale(1.05);
   color: #fff;
 }
 
+/* Başlık veya vurgu yazısı için gradyan efekt */
 .text-gradient {
-  background: linear-gradient(to right, #1e3c72, #00c9ff);
+  background: linear-gradient(to right, #2c5364, #3a6073);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  font-weight: 700;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
-/* Yeni şık şifre linki */
+/* Şifre hatırlatma linki */
 .btn-forgot {
   display: inline-block;
   margin-top: 8px;
-  color: #007bff;
+  color: #5fa8d3;
   font-weight: 500;
   text-decoration: none;
   font-size: 0.95rem;
@@ -58,6 +80,31 @@
 }
 
 .btn-forgot:hover {
-  color: #0056b3;
+  color: #3a6073;
   text-decoration: underline;
+}
+
+/* Giriş başarılı uyarısı */
+.alert-success {
+  background: linear-gradient(135deg, #1e3c2f, #2e8b57);
+  color: #e2f9e1;
+  border: 1px solid #28a745;
+  font-weight: 500;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  animation: fadeSlideIn 0.4s ease-in-out;
+  margin-top: 1rem;
+}
+
+/* Giriş animasyonu */
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import "../css/ForgotPassword.css";
+import '../css/ForgotPassword.css';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -16,7 +14,7 @@ const ForgotPassword = () => {
     e.preventDefault();
 
     if (!email) {
-      toast.error("Lütfen geçerli bir e-posta adresi girin.");
+      setError("Lütfen geçerli bir e-posta adresi girin.");
       return;
     }
 
@@ -30,7 +28,7 @@ const ForgotPassword = () => {
 
       setTimeout(() => {
         navigate('/login');
-      }, 2000);
+      }, 2500);
     } catch {
       setError("Bir hata oluştu. Lütfen tekrar deneyin.");
     } finally {
@@ -39,37 +37,38 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="forgot-password-container d-flex justify-content-center align-items-center">
-      <div className="forgot-password-card shadow">
-        <h2 className="text-center mb-4">🔐 Şifre Sıfırlama</h2>
+    <div className="forgot-password-container">
+      <div className="forgot-password-card">
+        <h2 className="text-gradient">🔐 Şifremi Unuttum</h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="email" className="form-label">E-posta adresiniz</label>
-            <input
-              id="email"
-              className="form-control"
-              type="email"
-              placeholder="E-posta adresiniz"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setError('');
-              }}
-            />
-          </div>
-          {error && <p className="text-danger">{error}</p>}
-          <button className="btn btn-primary w-100" type="submit" disabled={loading}>
+          <label htmlFor="email" className="form-label">E-posta adresiniz</label>
+          <input
+            id="email"
+            className="form-control"
+            type="email"
+            placeholder="ornek@eposta.com"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setError('');
+            }}
+          />
+          {error && <div className="alert alert-danger mt-3">{error}</div>}
+
+          <button className="btn-reset mt-3" type="submit" disabled={loading}>
             {loading ? "Gönderiliyor..." : "Sıfırlama Linki Gönder"}
           </button>
         </form>
 
         {success && !loading && !error && (
-          <div className="alert alert-success mt-3" role="alert">
-            Mail gönderildi. Giriş ekranına yönlendiriliyorsunuz...
+          <div className="alert alert-success mt-3">
+            <span>✔️</span>
+            <span>Mail gönderildi. Giriş ekranına yönlendiriliyorsunuz...</span>
           </div>
         )}
+
+        <a href="/login" className="back-link">← Giriş ekranına dön</a>
       </div>
-      <ToastContainer />
     </div>
   );
 };

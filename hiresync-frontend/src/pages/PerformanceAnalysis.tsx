@@ -1,103 +1,152 @@
-// src/pages/PerformanceAnalysis.tsx
-import React, { useEffect, useState } from "react";
-import axios from "../services/axiosInstance";
-import { useNavigate } from "react-router-dom";
+// Gerekli chart.js bileşenleri
+import React, { useEffect, useState } from 'react';
+import axios from '../services/axiosInstance';
+import { Bar } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Tooltip,
+  Legend,
+  ChartOptions
+} from 'chart.js';
+
 import "../css/PerformanceAnalysis.css";
 
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
+
+interface UserExamResult {
+  userExamId: number;
+  userId: number;
+  examId: number;
+  examName: string;
+  userName: string;
+  lastName: string;
+  score: number;
+}
+
 const PerformanceAnalysis = () => {
-  const [users, setUsers] = useState([]);
-  const [exams, setExams] = useState([]);
+  const [results, setResults] = useState<UserExamResult[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
+  const [exams, setExams] = useState<any[]>([]);
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [selectedExam, setSelectedExam] = useState<number | null>(null);
-  const [results, setResults] = useState([]);
-  const navigate = useNavigate();
+  const [showCharts, setShowCharts] = useState(false);
 
   useEffect(() => {
-    axios.get("/api/users").then((res) => {
-      const onlyWorkers = res.data.filter((u: any) => u.roleName === "Worker");
-      setUsers(onlyWorkers);
-    });
-    axios.get("/api/exams").then((res) => setExams(res.data));
+    axios.get("/api/users").then(res => setUsers(res.data.filter((u: any) => u.roleName === "Worker")));
+    axios.get("/api/exams").then(res => setExams(res.data));
   }, []);
-  
 
-  useEffect(() => {
-    const params: any = {};
-    if (selectedUser) params.userId = selectedUser;
-    if (selectedExam) params.examId = selectedExam;
+  const fetchResults = async () => {
+    try {
+      const params: any = {};
+      if (selectedUser !== null) params.userId = selectedUser;
+      if (selectedExam !== null) params.examId = selectedExam;
 
-    axios
-      .get("/api/userexams/filter", { params })
-      .then((res) => setResults(res.data))
-      .catch((err) => console.error("Filter error", err));
-  }, [selectedUser, selectedExam]);
+      const res = await axios.get("/api/userexams/filter", { params });
+      setResults(res.data);
+      setShowCharts(true);
+    } catch (error) {
+      console.error("Veri alınamadı:", error);
+      setResults([]);
+      setShowCharts(false);
+    }
+  };
+
+  const scores = results.map(r => r.score);
+  const average = scores.length ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : 0;
+  const maxScore = scores.length ? Math.max(...scores) : 0;
+  const minScore = scores.length ? Math.min(...scores) : 0;
+
+  const warmColors = ['#FF6B6B', '#FFA94D', '#FFD43B', '#FAB005', '#FF922B', '#FF8A65', '#FF7043', '#FF5722', '#FF9800', '#FFC107'];
+
+  const barData = {
+    labels: results.map(r => r.examName),
+    datasets: [
+      {
+        label: 'Puanlar',
+        data: results.map(r => r.score),
+        backgroundColor: results.map((_, i) => warmColors[i % warmColors.length]),
+        borderColor: '#444',
+        borderWidth: 1
+      }
+    ]
+  };
+
+  const barOptions: ChartOptions<'bar'> = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: `📊 Ortalama: ${average} | 🏆 En Yüksek: ${maxScore} | 🧨 En Düşük: ${minScore}`,
+        font: { size: 16 }
+      },
+      tooltip: {
+        callbacks: {
+          title: (tooltipItems) => results[tooltipItems[0].dataIndex].examName,
+          label: (tooltipItem) => {
+            const result = results[tooltipItem.dataIndex];
+            return `${result.userName} ${result.lastName} - ${result.score} puan`;
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: {
+          maxRotation: 45,
+          minRotation: 45,
+          font: {
+            size: 12
+          }
+        }
+      },
+      y: {
+        beginAtZero: true,
+        max: 100
+      }
+    }
+  };
 
   return (
     <div className="performance-analysis container mt-4">
       <h2 className="mb-4">📊 Performans Analizi</h2>
 
-      <div className="filters mb-4">
-        <select
-          className="form-select"
-          onChange={(e) => setSelectedUser(Number(e.target.value) || null)}
-        >
+      <div className="filters mb-4 d-flex gap-3">
+        <select className="form-select" onChange={(e) => setSelectedUser(e.target.value ? Number(e.target.value) : null)}>
           <option value="">Tüm Kullanıcılar</option>
-          {users.map((u: any) => (
-            <option key={u.userId} value={u.userId}>
-              {u.name} {u.lastName}
-            </option>
+          {users.map((u) => (
+            <option key={u.userId} value={u.userId}>{u.name} {u.lastName}</option>
           ))}
         </select>
 
-        <select
-          className="form-select"
-          onChange={(e) => setSelectedExam(Number(e.target.value) || null)}
-        >
+        <select className="form-select" onChange={(e) => setSelectedExam(e.target.value ? Number(e.target.value) : null)}>
           <option value="">Tüm Sınavlar</option>
-          {exams.map((e: any) => (
-            <option key={e.examId} value={e.examId}>
-              {e.examName}
-            </option>
+          {exams.map((e) => (
+            <option key={e.examId} value={e.examId}>{e.examName}</option>
           ))}
         </select>
-      </div>
-
-      <div className="table-responsive">
-        <table className="table table-bordered table-striped">
-          <thead className="table-dark">
-            <tr>
-              <th>Kullanıcı</th>
-              <th>Sınav</th>
-              <th>Puan</th>
-            </tr>
-          </thead>
-          <tbody>
-            {results.map((r: any) => (
-              <tr key={r.userExamId}>
-                <td>{r.userName}</td>
-                <td>{r.examName}</td>
-                <td>{r.score}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
       </div>
 
       <button
-        disabled={!selectedUser}
-        className="btn btn-primary mt-3"
-        onClick={async () => {
-          try {
-            await axios.post(`/api/performancereviews/generate-review/${selectedUser}`);
-            navigate(`/admin-dashboard/performance-review?userId=${selectedUser}`);
-          } catch (error) {
-            console.error("Performans oluşturulamadı", error);
-            alert("Performans değerlendirmesi oluşturulamadı.");
-          }
-        }}
+        className="btn btn-primary mb-4"
+        onClick={fetchResults}
       >
         📈 Değerlendirmeyi Gör
       </button>
+
+      {showCharts && results.length > 0 && (
+        <div className="mb-5">
+          <Bar data={barData} options={barOptions} />
+        </div>
+      )}
+
+      {showCharts && results.length === 0 && (
+        <div className="text-center text-muted">Uygun veri bulunamadı.</div>
+      )}
     </div>
   );
 };

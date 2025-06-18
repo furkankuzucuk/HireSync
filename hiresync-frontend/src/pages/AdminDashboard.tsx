@@ -13,7 +13,7 @@ const AdminDashboard = () => {
       <aside className="sidebar bg-dark text-white">
         <h4 className="text-center mb-3"></h4>
         <p className="text-center">
-          Hoş Geldin, <strong>{username}</strong> 👋
+          Hoş Geldiniz
         </p>
         <ul className="nav flex-column mt-4">
           <li className="nav-item">
@@ -34,9 +34,7 @@ const AdminDashboard = () => {
           <li className="nav-item">
             <Link className="nav-link" to="/admin-dashboard/performance">📊 Performans</Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="/admin-dashboard/performance-review">📈 Değerlendirme</Link>
-          </li>
+          
           <li className="nav-item">
             <Link className="nav-link" to="/admin-dashboard/survey-results">📋 Anket Sonuçları</Link>
           </li>

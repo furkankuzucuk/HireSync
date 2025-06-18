@@ -132,11 +132,11 @@ namespace Project.Presentation.Controller
 
             int userId = int.Parse(userIdClaim.Value);
 
-            // Veritabanına sonucu kaydet
+            
             var userExamDto = new UserExamInsertDto
             {
                 ExamId = answerDto.ExamId,
-                //UserId = userId,
+            
                 Score = score
             };
 
